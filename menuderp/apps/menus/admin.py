@@ -1,24 +1,31 @@
 from django.contrib import admin
-from models import Food, Alert, Profile
+from models import Food, Watch, Profile
 
 class FoodsAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['name']}),
-        ('More Info', {'fields': ['last_date', 'next_date'], 'classes': ['collapse']}),
+        ('More Info', {'fields': ['last_date', 'next_date']}), #, 'classes': ['collapse']}),
     ]
     list_display = ('name', 'last_date', 'next_date')
-    #list_filter = ['year', 'suffix']
     search_fields = ['name']
 
 admin.site.register(Food, FoodsAdmin)
 
-class AlertsAdmin(admin.ModelAdmin):
+class WatchesAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['food']}),
-        ('More Info', {'fields': ['frequency'], 'classes': ['collapse']}),
+        (None,               {'fields': ['food', 'frequency', 'owner']}),
     ]
-    list_display = ('food', 'frequency')
-    #list_filter = ['year', 'suffix']
-    search_fields = ['food', 'frequency']
+    list_display = ('food', 'frequency', 'owner')
+    search_fields = ['food', 'frequency', 'owner']
 
-admin.site.register(Alert, AlertsAdmin)
+admin.site.register(Watch, WatchesAdmin)
+
+class ProfilesAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['user', 'pro']}),
+    ]
+    list_display = ('firstname', 'lastname', 'email', 'pro')
+    #list_filter = ['year', 'suffix']
+    search_fields = ['firstname', 'lastname', 'email']
+
+admin.site.register(Profile, ProfilesAdmin)
