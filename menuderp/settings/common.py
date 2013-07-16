@@ -182,6 +182,9 @@ DJANGO_APPS = (
     # Useful template tags:
     'django.contrib.humanize',
 
+    # admin skin:
+    'suit',
+
     # Admin panel and documentation:
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -268,3 +271,11 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.template.TemplateFilter',
 ]
 ########## END COMPRESSION CONFIGURATION
+
+########## SUIT CONFIGURATION
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'Menuderp'
+}
+
+########### END SUIT CONFIGURATION

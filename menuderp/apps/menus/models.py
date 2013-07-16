@@ -2,20 +2,14 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Food (models.Model):
-    name = models.CharField(max_length=50)
-    last_date = models.DateField()
-    next_date = models.DateField()
-
-    def __unicode__(self):
-        return self.name
-
-
 # Class to wrap django.contrib.auth's Users
 class Profile (models.Model):
     user = models.ForeignKey(User)
+    watches = models.ManyToManyField('Watch', blank=True, null=True)
     pro = models.BooleanField()
-    used_watches = models.IntegerField(default=0)
+
+    def used_watches(self):
+        return len(self.watches.all())
 
     def username(self):
         return self.user.get_username()
@@ -40,10 +34,22 @@ class Profile (models.Model):
             return True
         return False
 
+    can_create_new_watches.boolean = True
+    can_create_new_watches.short_description = "Watches left?"
+
+
+class Food (models.Model):
+    name = models.CharField(max_length=50)
+    last_date = models.DateField()
+    next_date = models.DateField()
+
+    def __unicode__(self):
+        return self.name
+
 
 class Watch (models.Model):
-    food = models.ForeignKey(Food)
-    owner = models.ForeignKey(Profile)
+    food = models.ForeignKey('Food')
+    owner = models.ForeignKey('Profile')
 
     # days per week the alert should go out
     # 1 = sunday night
@@ -54,13 +60,13 @@ class Watch (models.Model):
 
     def frequency_name(self):
         if self.frequency is 1:
-            return "weekly"
+            return "Weekly"
         elif self.frequency is 3:
-            return "tri-weekly"
+            return "Tri-weekly"
         elif self.frequency is 7:
-            return "daily"
+            return "Daily"
         else:
-            return "custom"
+            return "Custom"
 
     def __unicode__(self):
         return self.frequency_name() + " watch for " + self.food.__unicode__()
