@@ -79,6 +79,7 @@ CELERY_RESULT_BACKEND = 'amqp'
 # See: http://django-storages.readthedocs.org/en/latest/index.html
 INSTALLED_APPS += (
     'storages',
+    'django_s3_collectstatic',
 )
 
 # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
@@ -86,6 +87,7 @@ STATICFILES_STORAGE = DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoSto
 
 # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
 AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+AWS_PRELOAD_METADATA = True
 
 # See: http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html#settings
 AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID', '')
