@@ -9,3 +9,19 @@ import re
 
 def SignupView(request):
     return render(request, 'menus/signup.html')
+
+
+def HomeView(request):
+    return render(request, 'menus/home.html')
+
+
+def AccountView(request):
+    return render(request, 'menus/account.html')
+
+
+def UpsellView(request):
+    return render(request, 'menus/upsell.html')
+
+
+def PayMeView(request):
+    return render(request, 'menus/payme.html')
