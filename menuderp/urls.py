@@ -16,5 +16,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     # Menu views
+    url(r'^', menu_views.HomeView, name='home'),
     url(r'^signup/', menu_views.SignupView, name='signup'),
+    url(r'^account/', menu_views.AccountView, name='account'),
 )
