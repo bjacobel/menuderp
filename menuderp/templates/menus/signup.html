@@ -1,5 +1,33 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
-
+<form action="/signup/" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.email.errors }}
+        <label for="id_email">email:</label>
+        {{ form.email }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.fname.errors }}
+        <label for="id_fname">first:</label>
+        {{ form.fname }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.lname.errors }}
+        <label for="id_lname">last:</label>
+        {{ form.lname }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.pword1.errors }}
+        <label for="id_pword1">password:</label>
+        {{ form.pword1 }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.pword2.errors }}
+        <label for="id_pword2">again:</label>
+        {{ form.pword2 }}
+    </div>
+    <p><input type="submit" value="sign up!" /></p>
+</form>
 {% endblock %}
