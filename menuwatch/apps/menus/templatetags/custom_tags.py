@@ -4,5 +4,5 @@ register = template.Library()
 
 
 @register.simple_tag
-def menuderp():
-    return "<span class='menuderp'>menuderp</span>"
+def menuwatch():
+    return "<span class='menuwatch'>menuwatch</span>"

@@ -17,4 +17,4 @@ build
 # Celerybeat scheduler file:
 celerybeat-schedule
 
-menuderp/static/*
+menuwatch/static/*

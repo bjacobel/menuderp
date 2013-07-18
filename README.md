@@ -1,4 +1,4 @@
-# Menuderp
+# MenuWatch
 
 <!---![Mou icon](http://mouapp.com/Mou_128.png) --->
 
@@ -12,27 +12,26 @@ Are your friends lazy fucks who don't even bother checking menus because Moulton
 
 Do you *really, fucking love* Hungarian Mushroom Soup?
 
-**Menuderp is for you.**
+**MenuWatch is for you.**
 
 ***
 
-#### Features 
+#### Planned Features 
 
-* Track your favorite menu items at Moulton and Thorne and recieve email alerts when they're coming up.
-* That's pretty much it right now.
-
+* Track your favorite menu items at Moulton and Thorne and recieve email alerts when they're coming up
+* Customize your alerts: see the next day, three days, or week at a glance
+* See what foods are popular, and add them to your alerts instantly
+* iOS integration (via IFTTT)
 
 
 #### Testimonials
 
-> Menuderp is awesome!
+> "MenuWatch solves first-world problems I didn't even know I had."
 
 -- *you, potentially*
 
 
-#### Details
-Menuderp is a working title. Obviously.
+#### The Pitch
+[Send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug[^1] and I'll give you a free upgrade to a Pro account. Good? Good.
 
-Menuderp is in development. Features may (will) change, break or disappear at any time. 
-
-Menuderp is a Django app that you can clone, build the database and run locally, if that sounds like a fun use of your day off. [Email me](mailto:bjacobel@gmail.com) if you GAF.
+[^1]: and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc

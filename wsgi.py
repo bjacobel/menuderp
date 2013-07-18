@@ -1,5 +1,5 @@
 """
-WSGI config for menuderp project.
+WSGI config for menuwatch project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -15,7 +15,7 @@ framework.
 """
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "menuderp.settings.dev")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "menuwatch.settings.dev")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION

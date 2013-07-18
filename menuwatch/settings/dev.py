@@ -25,7 +25,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'menuderp',
+        'NAME': 'menuwatch',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
