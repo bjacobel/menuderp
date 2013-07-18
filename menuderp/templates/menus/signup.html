@@ -1,7 +1,7 @@
-{% extends "menus/base.html" %}
+{% extends "menus/entry.html" %}
 
-{% block body %}
-<form action="/signup/" method="post">{% csrf_token %}
+{% block signup %}
+<form action="/login/" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <div class="fieldWrapper">
         {{ form.email.errors }}
