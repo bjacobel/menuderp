@@ -1,6 +1,7 @@
 from datetime import datetime  # I fucking hate modules like this
 import requests
 import re
+from apps.menus import models as menu_model
 
 today = datetime.today()
 locations = {
@@ -40,13 +41,13 @@ for key, value in locations.iteritems():
             html.pop(0)
 
             # fuck express meal
-            for meal in html:
+            for meal_chunk in html:
                 if !re.search("Express Meal", meal):
 
                     # grab the food group (main course, soup, vegetable, etc)
-                    foodgroup = re.split('<span>', meal)[0]
+                    foodgroup = re.split('<span>', meal_chunk)[0]
 
-                    foods = re.split('<span>', meal)[1:]
+                    foods = re.split('<span>', meal_chunk)[1:]
                     for food in foods:
 
                         # grab the food details (ve, gf)
@@ -55,4 +56,6 @@ for key, value in locations.iteritems():
                         if match:
                             deets = match.group()
 
-                        #addRow(today.year, today.month, today.day, today.isoweekday(), value, meal)
+                        new_food = menu_model.Food()
+                        # set the following if the food does not already exist
+                        # today.year, today.month, today.day, today.isoweekday(), value, meal, foodgroup, food, deets
