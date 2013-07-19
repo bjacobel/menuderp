@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 import re
 from apps.menus import models as menu_models
+from hashlib import md5
 
 
 @task()
@@ -65,7 +66,7 @@ def build_db():
                             # then remove them
                             food = re.sub(r'\(.+\)', '', food)
 
-                            new_hash = hash(food + attrs)
+                            new_hash = md5(food + attrs).hexdigest()
 
                             matches_hash = menu_models.Food.objects.filter(myhash=new_hash)
 

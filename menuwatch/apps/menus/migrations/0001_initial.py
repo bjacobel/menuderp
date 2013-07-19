@@ -18,7 +18,7 @@ class Migration(SchemaMigration):
             ('location', self.gf('django.db.models.fields.CharField')(max_length=7)),
             ('meal', self.gf('django.db.models.fields.CharField')(max_length=9)),
             ('foodgroup', self.gf('django.db.models.fields.CharField')(max_length=25)),
-            ('_hash', self.gf('django.db.models.fields.IntegerField')()),
+            ('myhash', self.gf('django.db.models.fields.CharField')(max_length=32)),
         ))
         db.send_create_signal(u'menus', ['Food'])
 
@@ -90,13 +90,13 @@ class Migration(SchemaMigration):
         },
         u'menus.food': {
             'Meta': {'object_name': 'Food'},
-            '_hash': ('django.db.models.fields.IntegerField', [], {}),
             'attrs': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
             'foodgroup': ('django.db.models.fields.CharField', [], {'max_length': '25'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_date': ('django.db.models.fields.DateField', [], {}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '7'}),
             'meal': ('django.db.models.fields.CharField', [], {'max_length': '9'}),
+            'myhash': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'next_date': ('django.db.models.fields.DateField', [], {})
         },
