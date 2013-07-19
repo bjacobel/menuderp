@@ -32,7 +32,4 @@ Do you *really, fucking love* Hungarian Mushroom Soup?
 
 
 #### The Pitch
-[Send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug[^1] and I'll give you a free upgrade to a Pro account. Good? Good.
-
-
-[^1]: and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc
+[Send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug (and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc) and I'll give you a free upgrade to a Pro account. Sound good? Good.
