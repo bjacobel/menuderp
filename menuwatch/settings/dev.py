@@ -45,6 +45,12 @@ CACHES = {
 ########## END CACHE CONFIGURATION
 
 
+########## SECRET CONFIGURATION
+SECRET_FILE = normpath(join(DJANGO_ROOT, 'settings/secret_key'))
+SECRET_KEY = open(SECRET_FILE).read().strip()
+########## END SECRET CONFIGURATION
+
+
 ########## CELERY CONFIGURATION
 # See: http://docs.celeryq.org/en/latest/configuration.html#celery-always-eager
 CELERY_ALWAYS_EAGER = True

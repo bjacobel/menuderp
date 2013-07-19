@@ -21,7 +21,7 @@ EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', '')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host-user
-EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', 'your_email@example.com')
+EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', 'admin@menuwat.ch')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = environ.get('EMAIL_PORT', 587)
@@ -74,6 +74,10 @@ BROKER_URL = environ.get('RABBITMQ_URL') or environ.get('CLOUDAMQP_URL')
 CELERY_RESULT_BACKEND = 'amqp'
 ########## END CELERY CONFIGURATION
 
+########## SECRET CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+SECRET_KEY = environ.get('SECRET_KEY', '')
+########## END SECRET CONFIGURATION
 
 ########## STORAGE CONFIGURATION
 # See: http://django-storages.readthedocs.org/en/latest/index.html
@@ -125,12 +129,6 @@ COMPRESS_JS_FILTERS += [
     'compressor.filters.jsmin.JSMinFilter',
 ]
 ########## END COMPRESSION CONFIGURATION
-
-
-########## SECRET CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-SECRET_KEY = environ.get('SECRET_KEY', SECRET_KEY)
-########## END SECRET CONFIGURATION
 
 ########## ALLOWED HOSTS CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
