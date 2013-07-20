@@ -1,6 +1,5 @@
-# MenuWatch
+# MenuWatch ![Travis build status](https://travis-ci.org/bjacobel/menuwatch.png)
 
-<!---![Mou icon](http://mouapp.com/Mou_128.png) --->
 
 ### The menu tracker for Bowdoin students.
 
