@@ -6,7 +6,7 @@ import re
 
 class Food (models.Model):
     # fixed
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     attrs = models.CharField(max_length=25)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
 
     # variable
