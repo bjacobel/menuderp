@@ -67,10 +67,12 @@ def build_db():
 
                             new_hash = hash(food + attrs)
 
-                            if new_hash in menu_models.Food.objects.filter(_hash=new_hash):
+                            matches_hash = menu_models.Food.objects.filter(myhash=new_hash)
+
+                            if matches_hash:
                                 #it's a food we've seen before
                                 pass
                             else:
                                 # it's a brand new food
-                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=value, meal=meal, foodgroup=foodgroup, _hash=hash(food+attrs))
+                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=value, meal=meal, foodgroup=foodgroup, myhash=hash(food+attrs))
                                 new_food.save()
