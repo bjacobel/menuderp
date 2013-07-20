@@ -1,11 +1,36 @@
 from django.contrib.auth.models import User
 from django.db import models
+import re
 
 
 class Food (models.Model):
+    # fixed
     name = models.CharField(max_length=50)
+    attrs = models.CharField(max_length=25)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
+
+    # variable
     last_date = models.DateField()
     next_date = models.DateField()
+    location = models.CharField(max_length=7)
+    meal = models.CharField(max_length=9)
+    foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
+    _hash = models.IntegerField()
+
+    def is_vegan(self):
+        return re.search(' VE(,|$)', self.attrs)
+
+    def is_vegetarian(self):
+        return re.search(' VE(,|$)', self.attrs)
+
+    def is_gluten_free(self):
+        return re.search(' VE(,|$)', self.attrs)
+
+    # I don't actually know what these last two mean
+    def is_L(self):
+        return re.search(' L(,|$)', self.attrs)
+
+    def is_D(self):
+        return re.search(' D(,|$)', self.attrs)
 
     def num_watches(self):
         return len(self.watch_set.all())

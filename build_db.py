@@ -1,7 +1,7 @@
 from datetime import datetime  # I fucking hate modules like this
 import requests
 import re
-from apps.menus import models as menu_model
+from apps.menus import models as menu_models
 
 today = datetime.today()
 locations = {
@@ -33,7 +33,7 @@ for key, value in locations.iteritems():
             # remove <br>, \n, </h3>, </span>, </html>, </body>s
             html = re.sub(r'\n|<br>|</h3>|</span>|</html>|</body>', "", html)
 
-            # their utf-8 is broken
+            # their utf-8 is broken, probably in more ways than just this
             html = re.sub(r'&amp;', '&', html)
 
             # remove everything up to the first header
@@ -42,7 +42,7 @@ for key, value in locations.iteritems():
 
             # fuck express meal
             for meal_chunk in html:
-                if !re.search("Express Meal", meal):
+                if not re.search("Express Meal", meal):
 
                     # grab the food group (main course, soup, vegetable, etc)
                     foodgroup = re.split('<span>', meal_chunk)[0]
@@ -50,12 +50,22 @@ for key, value in locations.iteritems():
                     foods = re.split('<span>', meal_chunk)[1:]
                     for food in foods:
 
-                        # grab the food details (ve, gf)
-                        deets = []
+                        # grab the food specialty attributes (ve, gf)
+                        attrs = ""
                         match = re.search(r'\(.+\)', food)
                         if match:
-                            deets = match.group()
+                            attrs = match.group()
+                            attrs = re.sub(r'\(', '', attrs)
+                            attrs = re.sub(r'\)', ', ', attrs)[:-2]
 
-                        new_food = menu_model.Food()
-                        # set the following if the food does not already exist
-                        # today.year, today.month, today.day, today.isoweekday(), value, meal, foodgroup, food, deets
+                        # then remove them
+                        food = re.sub(r'\(.+\)', '', food)
+
+                        new_hash = hash(food + attrs)
+
+                        if new_hash in menu_models.Food.objects.filter(_hash=new_hash):
+                            #it's a food we've seen before
+                            pass
+                        else:
+                            # it's a brand new food
+                            new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=value, meal=meal, foodgroup=foodgroup, _hash=hash(food+attrs))
