@@ -19,5 +19,6 @@ urlpatterns = patterns(
     url(r'^$', menu_views.IndexView, name='index'),
     url(r'^login/', menu_views.EntryView, name='entry'),
     url(r'^account/', menu_views.AccountView, name='account'),
+    url(r'^exclude/', menu_views.ExcludeView, name='exclude'),
     url(r'^account/upgrade/', menu_views.UpgradeView, name='upgrade'),
 )

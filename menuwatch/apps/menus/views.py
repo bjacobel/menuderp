@@ -38,3 +38,6 @@ def AccountView(request):
 def UpgradeView(request):
     return render(request, 'menus/upgrade.html')
 
+def ExcludeView(request):
+    return render(request, 'menus/exclude.html')
+
