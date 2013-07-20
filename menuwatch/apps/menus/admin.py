@@ -1,15 +1,18 @@
 from django.contrib import admin
 from models import Food, Watch, Profile
 
+
 class FoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,              {'fields': ['name']}),
-        ('More Info',       {'fields': ['last_date', 'next_date']}), #, 'classes': ['collapse']}),
+        (None,              {'fields': ['name', 'attrs']}),
+        ('Up Next',       {'fields': ['next_date', 'location', 'meal', 'foodgroup']}),
+        ('More',       {'fields': ['last_date']}),
     ]
-    list_display = ('name', 'num_watches', 'last_date', 'next_date')
+    list_display = ('name', 'next_date', 'meal', 'location', 'foodgroup', 'attrs', 'num_watches', 'last_date', )
     search_fields = ['name']
 
 admin.site.register(Food, FoodsAdmin)
+
 
 class WatchesAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -19,6 +22,7 @@ class WatchesAdmin(admin.ModelAdmin):
     search_fields = ['food', 'frequency_name', 'owner']
 
 admin.site.register(Watch, WatchesAdmin)
+
 
 class ProfilesAdmin(admin.ModelAdmin):
     fieldsets = [

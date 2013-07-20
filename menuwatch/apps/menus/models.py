@@ -14,7 +14,7 @@ class Food (models.Model):
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
-    _hash = models.IntegerField()
+    myhash = models.IntegerField(editable=False)
 
     def is_vegan(self):
         return re.search(' VE(,|$)', self.attrs)
@@ -37,6 +37,10 @@ class Food (models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self):
+        self.myhash = hash(self.name + self.attrs)
+        super(Food, self).save()
 
     num_watches.short_description = "Watched by"
 
