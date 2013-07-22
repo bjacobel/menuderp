@@ -21,3 +21,5 @@ menuwatch/static/*
 
 # Django secret key (wtf, django)
 menuwatch/settings/secret_key
+
+mysql2psql.yml

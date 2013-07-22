@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
+from hashlib import md5
 import re
 
 
 class Food (models.Model):
     # fixed
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     attrs = models.CharField(max_length=25)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
 
     # variable
@@ -14,7 +15,7 @@ class Food (models.Model):
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
-    myhash = models.IntegerField(editable=False)
+    myhash = models.CharField(max_length=32,editable=False)
 
     def is_vegan(self):
         return re.search(' VE(,|$)', self.attrs)
@@ -39,7 +40,7 @@ class Food (models.Model):
         return self.name
 
     def save(self):
-        self.myhash = hash(self.name + self.attrs)
+        self.myhash = md5(self.name + self.attrs).hexdigest()
         super(Food, self).save()
 
     num_watches.short_description = "Watched by"

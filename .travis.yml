@@ -1,0 +1,22 @@
+language: python
+python:
+  - "2.7"
+services:
+  - rabbitmq
+  - postgres
+  - memcache
+env:
+  - DJANGO_SETTINGS_MODULE="menuwatch.settings.prod"
+  - SECRET_KEY="`cat /dev/urandom|LANG=C tr -dc 'a-zA-Z0-9-_\$\?'|fold -w 40|head -1`"
+  - PYTHONPATH="`python pathfix.py`"
+before_install:
+  - sudo apt-get install libevent-dev
+install:
+  - pip install -r requirements.txt --use-mirrors
+before_script:
+  - psql -c 'create database menuwatch;' -U postgres
+  - ln -s /home/travis/virtualenv/python2.7/lib/python2.7/site-packages/django/bin/django-admin.py ./django-admin.py
+  - python ./django-admin.py syncdb
+  - python ./django-admin.py migrate
+script:
+  - python ./django-admin.py test

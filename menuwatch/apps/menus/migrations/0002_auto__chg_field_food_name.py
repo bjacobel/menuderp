@@ -8,48 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Food'
-        db.create_table(u'menus_food', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('attrs', self.gf('django.db.models.fields.CharField')(max_length=25)),
-            ('last_date', self.gf('django.db.models.fields.DateField')()),
-            ('next_date', self.gf('django.db.models.fields.DateField')()),
-            ('location', self.gf('django.db.models.fields.CharField')(max_length=7)),
-            ('meal', self.gf('django.db.models.fields.CharField')(max_length=9)),
-            ('foodgroup', self.gf('django.db.models.fields.CharField')(max_length=25)),
-            ('myhash', self.gf('django.db.models.fields.CharField')(max_length=32)),
-        ))
-        db.send_create_signal(u'menus', ['Food'])
 
-        # Adding model 'Watch'
-        db.create_table(u'menus_watch', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('food', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['menus.Food'])),
-            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['menus.Profile'])),
-            ('frequency', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal(u'menus', ['Watch'])
-
-        # Adding model 'Profile'
-        db.create_table(u'menus_profile', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('pro', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal(u'menus', ['Profile'])
-
+        # Changing field 'Food.name'
+        db.alter_column(u'menus_food', 'name', self.gf('django.db.models.fields.CharField')(max_length=100))
 
     def backwards(self, orm):
-        # Deleting model 'Food'
-        db.delete_table(u'menus_food')
 
-        # Deleting model 'Watch'
-        db.delete_table(u'menus_watch')
-
-        # Deleting model 'Profile'
-        db.delete_table(u'menus_profile')
-
+        # Changing field 'Food.name'
+        db.alter_column(u'menus_food', 'name', self.gf('django.db.models.fields.CharField')(max_length=50))
 
     models = {
         u'auth.group': {
@@ -97,7 +63,7 @@ class Migration(SchemaMigration):
             'location': ('django.db.models.fields.CharField', [], {'max_length': '7'}),
             'meal': ('django.db.models.fields.CharField', [], {'max_length': '9'}),
             'myhash': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'next_date': ('django.db.models.fields.DateField', [], {})
         },
         u'menus.profile': {

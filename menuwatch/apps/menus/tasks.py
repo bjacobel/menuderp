@@ -1,9 +1,9 @@
 from celery import task
 from datetime import datetime
+from apps.menus import models as menu_models
+from hashlib import md5
 import requests
 import re
-from apps.menus import models as menu_models
-
 
 @task()
 def build_db():
@@ -65,14 +65,20 @@ def build_db():
                             # then remove them
                             food = re.sub(r'\(.+\)', '', food)
 
-                            new_hash = hash(food + attrs)
+                            new_hash = md5(food + attrs).hexdigest()
 
                             matches_hash = menu_models.Food.objects.filter(myhash=new_hash)
 
                             if matches_hash:
                                 #it's a food we've seen before
-                                pass
+                                old_food = matches_hash[0]
+                                old_food.last_date = old_food.next_date
+                                old_food.next_date = today
+                                old_food.location = key
+                                old_food.meal = meal
+                                old_food.foodgroup = foodgroup
+                                old_food.save()
                             else:
                                 # it's a brand new food
-                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=value, meal=meal, foodgroup=foodgroup, myhash=hash(food+attrs))
+                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=key, meal=meal, foodgroup=foodgroup)
                                 new_food.save()
