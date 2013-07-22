@@ -3,14 +3,11 @@ python:
   - "2.7"
 services:
   - rabbitmq
-  - postgres
-  - memcache
-env:
-  - DJANGO_SETTINGS_MODULE="menuwatch.settings.prod"
-  - SECRET_KEY="`cat /dev/urandom|LANG=C tr -dc 'a-zA-Z0-9-_\$\?'|fold -w 40|head -1`"
-  - PYTHONPATH="`python pathfix.py`"
 before_install:
   - sudo apt-get install libevent-dev
+  - export DJANGO_SETTINGS_MODULE="menuwatch.settings.prod"
+  - export SECRET_KEY="`cat /dev/urandom|LANG=C tr -dc 'a-zA-Z0-9-_\$\?'|fold -w 40|head -1`"
+  - export PYTHONPATH="`python pathfix.py`"
 install:
   - pip install -r requirements.txt --use-mirrors
 before_script:
@@ -20,3 +17,6 @@ before_script:
   - python ./django-admin.py migrate
 script:
   - python ./django-admin.py test
+notifications:
+  email:
+    - bjacobel@gmail.com
