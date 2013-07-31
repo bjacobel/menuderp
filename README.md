@@ -1,4 +1,4 @@
-# MenuWatch ![Travis build status](https://travis-ci.org/bjacobel/menuwatch.png)
+# MenuWatch
 
 
 ### The menu tracker for Bowdoin students.
