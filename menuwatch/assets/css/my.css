@@ -5,7 +5,12 @@
     display:none;
 }
 
-.nav-collapse {
+.nav-buttons {
     float:right;
     height:auto;
+    margin-top:10px;
+}
+
+.nav > li {
+    display:inline-block !important;
 }
