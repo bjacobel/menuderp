@@ -17,8 +17,12 @@ urlpatterns = patterns(
 
     # Menu views
     url(r'^$', menu_views.IndexView, name='index'),
-    url(r'^login/', menu_views.EntryView, name='entry'),
+    url(r'^login/', menu_views.LoginView, name='login'),
+    url(r'^logout/', menu_views.LogoutView, name='logout'),
+    url(r'^signup/', menu_views.AccountView, name='signup'),
     url(r'^account/', menu_views.AccountView, name='account'),
+    url(r'^browse/', menu_views.BrowseView, name='browse'),
+    url(r'^upgrade/', menu_views.UpgradeView, name='upgrade'),
     url(r'^exclude/', menu_views.ExcludeView, name='exclude'),
-    url(r'^account/upgrade/', menu_views.UpgradeView, name='upgrade'),
+
 )

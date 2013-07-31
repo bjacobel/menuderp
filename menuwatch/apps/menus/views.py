@@ -5,7 +5,27 @@ from apps.menus import forms
 import re
 
 
-def EntryView(request):
+def IndexView(request):
+    path = ''
+    credit = ''
+    link = ''
+    return render(request, 'menus/index.html', {"path": path, "credit": credit, "link": link})
+
+
+def BrowseView(request):
+    return render(request, 'menus/browse.html')
+
+
+def LoginView(request):
+    return render(request, 'menus/login.html')
+
+
+def LogoutView(request):
+    # log 'em out
+    return HttpResponseRedirect('/')
+
+
+def SignupView(request):
     if request.method == 'POST':  # If the form has been submitted...
         form = forms.SignupForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -18,17 +38,13 @@ def EntryView(request):
             user.first_name = fname
             user.last_name = lname
             user.save()
-            return HttpResponseRedirect('/index/')  # Redirect after POST
+            return HttpResponseRedirect('/browse/')  # Redirect after POST
     else:
         form = forms.SignupForm()  # An unbound form
 
-    return render(request, 'menus/entry.html', {
+    return render(request, 'menus/signup.html', {
         'form': form,
     })
-
-
-def IndexView(request):
-    return render(request, 'menus/index.html')
 
 
 def AccountView(request):
@@ -38,6 +54,6 @@ def AccountView(request):
 def UpgradeView(request):
     return render(request, 'menus/upgrade.html')
 
+
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')
-

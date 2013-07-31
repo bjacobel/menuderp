@@ -1,8 +1,105 @@
-.active {
+/* Bootstrap font overrides */
+
+.lato {
+    font-family:'Lato', Helvetica, Arial, sans-serif !important;
+    font-weight:400;
+}
+.lato-bold {
+    font-family:'Lato', Helvetica, Arial, sans-serif !important;
+    font-weight:700;
+}
+.lato-narrow {
+    font-family:'Lato', Helvetica, Arial, sans-serif !important;
+    font-weight:300;
+}
+.html{
+    -webkit-font-smoothing: antialiased;
+}
+
+/* End fonts */
+
+
+/* Custom color palette */
+
+.green {
+    color:#2ECC71;
+}
+.green-background {
+    background-color:#2ECC71;
+}
+.dark-green {
+    color:#27AE60;
+}
+.dark-green-background {
+    background-color:#27AE60;
+}
+.blue {
+    color:#3498DB;
+}
+.blue-background {
+    background-color:#3498DB;
+}
+.dark-blue {
+    color:#2980B9;
+}
+.dark-blue-background {
+    background-color:#2980B9;
+}
+.navy {
+    color:#34495E;
+}
+.navy-background {
+    background-color:#34495E;
+}
+.dark-navy {
+    color:#2C3E50;
+}
+.dark-navy-background {
+    background-color:#2C3E50;
+}
+
+
+/* End custom color palette */
+
+
+
+/* Global element styles */
+
+.visible {
     display:block;
 }
-.inactive {
+.invisible {
     display:none;
+    width:0;
+    height:0;
+    margin:0;
+    padding:0;
+}
+.inline {
+    display:inline;
+}
+.inline-block {
+    display:inline-block;
+}
+.unhighlightable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* End global element styles */
+
+
+
+/* Nav bar */
+/* Beware: incoming clusterfuck of overriding bootstrap styles */
+
+.navbar {
+    margin-bottom:3px;
+    border-bottom:3px solid #3498DB;
 }
 
 .nav-buttons {
@@ -10,7 +107,89 @@
     height:auto;
     margin-top:10px;
 }
-
 .nav > li {
     display:inline-block !important;
 }
+.sep {
+    height:100%;
+    font-size:12pt;
+    color:#808080;
+    color:rgba(170,170,170,0.7);
+}
+li.signup {
+    border:2px solid gray;
+    border-radius:10px;
+    overflow:hidden;
+    padding:0 15px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+li.signup:active {
+    border-color: #fff;
+}
+li.signup:hover {
+    background-color:rgba(250,250,250,0.7);
+}
+li.signup:before{
+    color: gray;
+    left: 70%;
+    opacity: 0;
+    top:0;
+    position:absolute;
+    height: 100%;
+    line-height:2.95;
+    z-index:2;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+li.signup:hover:before{
+    left: 80%;
+    opacity: 1;
+}
+a.signup {
+    border:2px solid transparent;
+    border-radius:10px;
+    overflow:hidden;
+    width:100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+a.signup:hover{
+    background-color:rgba(250,250,250,0.7) !important;
+    color:#428bca !important;
+}
+
+
+/* End nav bar */
+
+/* Footer */
+
+.footer{
+    width:100%;
+    height:10%;
+    bottom:0;
+}
+
+
+/*  Homepage */
+.banner {
+    background: url(http://placehold.it/2000x400) 50% 65% no-repeat;
+    background-size: cover;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    height:440px;
+    width:100%;
+    display:block;
+ }
+
+/* End homepage *?

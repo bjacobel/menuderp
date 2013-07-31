@@ -1,5 +1,13 @@
 {% extends "menus/base.html" %}
 
-{% block body %}
 
+{% block body %}
+    <div class="banner">
+    </div>
+{% endblock %}
+
+{% block footer_scripts %}
+    <script>
+    navbar_customize({"about":"enabled", "news":"enabled", "login":"enabled", "logout":"disabled", "signup":"enabled", "account":"disabled"});
+    </script>
 {% endblock %}
