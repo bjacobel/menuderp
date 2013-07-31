@@ -2,7 +2,8 @@
 {% load compress %}
 {% load custom_tags %}
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>MenuWatch</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +33,26 @@
 </head>
 
 <body>
-    {% block body %}{% endblock %}
+    <div class="wrapper">
+        <div class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="/"><img src="https://d17f28g3dsa4vh.cloudfront.net/img/kippt-logo-r.png" width="68"></a>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="http://blog.kippt.com/">Blog</a></li>
+                        <li class="sep"></li>
+                        <li></li>
+                        <li><a href="/login/">Log in</a></li>
+                        <li class="signup"><a href="/signup/">Sign up</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% block body %}{% endblock %}
+        <div class="footer">
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,11 @@
+.active {
+    display:block;
+}
+.inactive {
+    display:none;
+}
+
+.nav-collapse {
+    float:right;
+    height:auto;
+}
