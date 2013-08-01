@@ -2,14 +2,22 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
+from random import choice
 import re
+import os
+import sys
+from settings import common
 
 
 def IndexView(request):
-    path = ''
-    credit = ''
-    link = ''
-    return render(request, 'menus/index.html', {"path": path, "credit": credit, "link": link})
+    banner_root = common.STATIC_ROOT+"/img/banner/"
+    files = filter(lambda x: x[-4:] == ".jpg", os.listdir(banner_root))
+    path = choice(files)
+    credits = open(banner_root+path[:-4]+".cred", 'r')
+    name = credits.readline()
+    link = credits.readline()
+    path = "/static/img/banner/" + path
+    return render(request, 'menus/index.html', {"path": path, "name": name, "link": link})
 
 
 def BrowseView(request):

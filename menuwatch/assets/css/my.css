@@ -179,7 +179,7 @@ a.signup:hover{
 
 /*  Homepage */
 .banner {
-    background: url(http://placehold.it/2000x400) 50% 65% no-repeat;
+    /*background: url(http://placehold.it/2000x400) 50% 65% no-repeat;*/
     background-size: cover;
     position: relative;
     top: 0;
