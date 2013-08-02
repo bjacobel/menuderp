@@ -3,13 +3,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
 from random import choice
+from settings import common
 import re
 import os
-from settings import common
 
 
 def IndexView(request):
-    banner_root = common.STATIC_ROOT+"/img/banner/"
+    banner_root = common.STATIC_URL+"/img/banner/"
     files = filter(lambda x: x[-4:] == ".jpg", os.listdir(banner_root))
     path = choice(files)
     try:
