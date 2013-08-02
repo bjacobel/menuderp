@@ -202,7 +202,7 @@ a.signup:hover{
  }
 
  .banner-wrap{
-    overflow-y:hidden;
+    overflow:hidden;
     position: relative;
     top: 0;
     bottom: 0;
