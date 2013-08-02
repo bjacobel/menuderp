@@ -110,7 +110,7 @@
 /* Beware: incoming clusterfuck of overriding bootstrap styles */
 
 .navbar {
-    margin-bottom:3px;
+    margin-bottom:0 !important;
     border-bottom:3px solid #3498DB;
 }
 
@@ -196,7 +196,7 @@ a.signup:hover{
     background-position: 50% 65%;
     background-size: cover;
     position:relative;
-    height:100%;
+    height:102%;
     width:102%;
     margin:-1%;
  }
