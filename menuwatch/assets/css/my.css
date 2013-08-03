@@ -3,14 +3,17 @@
 .lato {
     font-family:'Lato', Helvetica, Arial, sans-serif !important;
     font-weight:400;
+    text-decoration:none;
 }
 .lato-bold {
     font-family:'Lato', Helvetica, Arial, sans-serif !important;
     font-weight:700;
+    text-decoration:none;
 }
 .lato-narrow {
     font-family:'Lato', Helvetica, Arial, sans-serif !important;
     font-weight:300;
+    text-decoration:none;
 }
 .html{
     -webkit-font-smoothing: antialiased;
@@ -102,6 +105,16 @@
     -webkit-filter: blur(2px);
 }
 
+a {
+    text-decoration:none !important; /* goodbye, 1999 */
+}
+
+/* call-to-action button with an animated flyin */
+.active-button {
+
+}
+
+
 /* End global element styles */
 
 
@@ -112,6 +125,7 @@
 .navbar {
     margin-bottom:0 !important;
     border-bottom:3px solid #3498DB;
+    background-color:white !important;
 }
 
 .nav-buttons {
@@ -133,6 +147,7 @@ li.signup {
     border-radius:10px;
     overflow:hidden;
     padding:0 15px;
+    margin-bottom:10px;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
@@ -191,17 +206,12 @@ a.signup:hover{
 
 /*  Homepage */
 .banner {
-    /*background: url(http://placehold.it/2000x400) 50% 65% no-repeat;*/
-    background-repeat: no-repeat;
-    background-position: 50% 65%;
-    background-size: cover;
-    position:relative;
+    position:absolute;
     height:102%;
-    width:102%;
-    margin:-1%;
- }
+    margin:0 -1% 0 -1%;
+}
 
- .banner-wrap{
+.banner-wrap{
     overflow:hidden;
     position: relative;
     top: 0;
@@ -212,6 +222,38 @@ a.signup:hover{
     height:450px;
     width:100%;
     display:block;
- }
+}
+
+.banner-text {
+    position:absolute;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    color:white;
+    top:100px;
+    width:100%;
+    z-index:100;
+    background-color:#333333;
+    background-color:rgba(50,50,50, 0.55);
+}
+
+.cta {
+    margin:50px 0 35px 0;
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    width:250px;
+    height:60px;
+    text-align:center;
+    border-radius:6px;
+    background-color:#3498DB;
+    color:white;
+    text-decoration:none;
+}
+
+.cta-text {
+    font-size:14pt;
+    padding:15px 0 15px 0;
+}
 
 /* End homepage *?

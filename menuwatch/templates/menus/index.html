@@ -1,9 +1,14 @@
 {% extends "menus/base.html" %}
 
-
 {% block body %}
     <div class="banner-wrap">
-        <div class="banner blur" style="background-image: url({{ path }})">
+        <img class="banner blur" src="{{ path }}"/>
+        <div class="banner-text">
+            <h1 class="lato-bold">Let food come to you.</h1>
+            <h2 class="lead lato">Menuwatch makes finding your favorite foods easy. Maybe <em>too</em> easy.</h3>
+            <a href="/signup/">
+                <div class="cta"><p class="lato cta-text">GET STARTED</p></div>
+            </a>
         </div>
     </div>
 {% endblock %}

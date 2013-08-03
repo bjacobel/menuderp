@@ -10,7 +10,7 @@ import os
 
 def IndexView(request):
     banner_root = common.STATIC_URL+"img/banner/"
-    photo_number = randint(0,9)
+    photo_number = randint(0,4)
     photo_path = banner_root+str(photo_number)+".jpg"
     try:
         credits = open(banner_root+str(photo_number)+".cred", 'r')
@@ -19,7 +19,13 @@ def IndexView(request):
     except:
         name = None
         link = None
-    return render(request, 'menus/index.html', {"path": photo_path, "name": name, "link": link})
+    authed = request.user.is_authenticated()
+    return render(request, 'menus/index.html', {
+        "path": photo_path,
+        "name": name,
+        "link": link,
+        "signedin": authed,
+    })
 
 
 def BrowseView(request):
