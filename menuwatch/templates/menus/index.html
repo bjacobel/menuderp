@@ -7,7 +7,7 @@
             <h1 class="lato-bold">Let your food come to you.</h1>
             <h2 class="lead lato">Menuwatch makes finding your favorite foods easy. Maybe <em>too</em> easy.</h3>
             <a href="/signup/">
-                <div class="cta"><p class="lato cta-text">GET STARTED</p><i class="icon-chevron-right"></i></div>
+                <div class="cta active-button"><p class="lato cta-text">GET STARTED</p><i class="icon-chevron-right"></i></div>
             </a>
         </div>
         {% if link and name %}
@@ -15,6 +15,11 @@
             <a href="{{ link }}"><p class="flickr-user lato-narrow"><em>{{ name }}</em></p></a>
         </div>
         {% endif %}
+    </div>
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4"></div>
     </div>
 {% endblock %}
 

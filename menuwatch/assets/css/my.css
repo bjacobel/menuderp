@@ -15,7 +15,7 @@
     font-weight:300;
     text-decoration:none;
 }
-.html{
+html{
     -webkit-font-smoothing: antialiased;
 }
 
@@ -110,8 +110,22 @@ a {
 }
 
 /* call-to-action button with an animated flyin */
-.active-button {
+.icon-chevron-right {
+    left: 70%;
+    opacity: 0;
+    top:38%;
+    position:absolute;
+    height: 100%;
+    z-index:2;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
 
+.active-button:hover .icon-chevron-right {
+    opacity:1;
+    left:80%;
 }
 
 
@@ -148,44 +162,23 @@ li.signup {
     overflow:hidden;
     padding:0 15px;
     margin-bottom:10px;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-}
-li.signup:before{
-    color: gray;
-    left: 70%;
-    opacity: 0;
-    top:0;
-    position:absolute;
-    height: 100%;
-    line-height:2.95;
-    z-index:2;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-}
-li.signup:hover:before{
-    left: 80%;
-    opacity: 1;
 }
 a.signup {
     border:2px solid transparent;
     border-radius:10px;
     overflow:hidden;
     width:100%;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
 }
 a.signup:hover{
-    background-color:rgba(250,250,250,0.7) !important;
+    background-color:#ffffff !important;
     color:#428bca !important;
 }
-
+.icon-in-nav {
+    font-size:8pt;
+}
+.active-button:hover .icon-in-nav {
+    left:90%;
+}
 
 /* End nav bar */
 
@@ -263,4 +256,4 @@ a.signup:hover{
     font-size:12px;
     margin:1px 5px 1px 6px;
 }
-/* End homepage *?
+/* End homepage */
