@@ -99,7 +99,7 @@
 
     /* SVGs for Firefox */
     filter: blur(2px);
-    filter: url("{{ STATIC_URL }}/img/blur.svg#blur");
+    filter: url("{{ STATIC_URL }}img/blur.svg#blur");
 
     /* good old webkit... doing things right since 1998 */
     -webkit-filter: blur(2px);
@@ -152,12 +152,6 @@ li.signup {
     -moz-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
-}
-li.signup:active {
-    border-color: #fff;
-}
-li.signup:hover {
-    background-color:rgba(250,250,250,0.7);
 }
 li.signup:before{
     color: gray;
@@ -256,4 +250,17 @@ a.signup:hover{
     padding:15px 0 15px 0;
 }
 
+.img-cred {
+    z-index:100;
+    position:absolute;
+    bottom:0;
+    right:0;
+}
+
+.flickr-user {
+    color:white;
+    text-shadow: 0 0 0.5em black;
+    font-size:12px;
+    margin:1px 5px 1px 6px;
+}
 /* End homepage *?

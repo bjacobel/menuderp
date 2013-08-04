@@ -5,23 +5,30 @@ from apps.menus import forms
 from random import randint
 from settings import common
 import re
-import os
+import sys
 
 
 def IndexView(request):
-    banner_root = common.STATIC_URL+"img/banner/"
-    photo_number = randint(0,4)
-    photo_path = banner_root+str(photo_number)+".jpg"
-    try:
-        credits = open(banner_root+str(photo_number)+".cred", 'r')
-        name = credits.readline()
-        link = credits.readline()
-    except:
-        name = None
-        link = None
+    photo_num = randint(0,4)
+    photo = str(photo_num)+".jpg"
+    
+    # YEAHHH I know, I'm storing data in a view. Sue me.
+    # Also this is a fairly strange way to work around python's lack of switch statements
+    # All in all, not one of the best code blocks I've ever written
+
+    credits = {
+        0: ("flic.kr/pinksherbet", "http://www.flickr.com/photos/pinksherbet/2316123291/"),
+        1: ("flic.kr/ginnerobot", "http://www.flickr.com/photos/ginnerobot/2523448766/"),
+        2: ("flic.kr/nomadic_lass", "http://www.flickr.com/photos/nomadic_lass/5846658416/"),
+        3: ("flic.kr/giovannijl-s_photohut", "http://www.flickr.com/photos/giovannijl-s_photohut/459381964/"),
+        4: ("flic.kr/clarity", "http://www.flickr.com/photos/clairity/1328402515/"),
+    }
+
+    name, link = credits.get(photo_num, (None,  None))
+    
     authed = request.user.is_authenticated()
     return render(request, 'menus/index.html', {
-        "path": photo_path,
+        "photo": photo,
         "name": name,
         "link": link,
         "signedin": authed,
