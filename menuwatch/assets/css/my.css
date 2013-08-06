@@ -180,6 +180,11 @@ a.signup:hover{
     left:90%;
 }
 
+svg text {
+    font-family:'Lato', Helvetica, Arial, sans-serif !important;
+    font-weight:900;
+}
+
 /* End nav bar */
 
 /* Footer */

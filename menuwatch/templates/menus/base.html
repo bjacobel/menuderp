@@ -13,7 +13,7 @@
     <link rel="icon" href="{{ STATIC_URL }}img/favicon.png"/>
     <!--[if IE]><link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico"><![endif]-->
 
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet" type="text/css">
     
     {% compress css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/my.css?{% now "U" %}"/>
@@ -35,7 +35,45 @@
     <div class="wrapper">
         <div class="navbar">
             <div class="container">
-                <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/menuwatch.svg" width="200"></a>
+                <a class="navbar-brand" href="/" width="200">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="212.4px" height="35.04px" viewBox="0 0 212.4 35.04" enable-background="new 0 0 212.4 35.04" xml:space="preserve">
+                        <g id="Group_2_1_">
+                            <g id="Polygon_2">
+                                <g>
+                                    <polygon fill="#D35400" points="39.601,5.039 51.479,28.797 63.357,5.039"/>
+                                </g>
+                            </g>
+                            <g id="Polygon_1">
+                                <g>
+                                    <polygon fill="#E67E22" points="29.521,5.039 41.399,28.797 53.277,5.039"/>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="Group_1_1_">
+                            <g id="Polygon_2_copy">
+                                <g>
+                                    <polygon fill="#2980B9" points="19.321,5.042 7.443,28.801 31.199,28.801"/>
+                                </g>
+                            </g>
+                            <g id="Polygon_1_copy">
+                                <g>
+                                    <polygon fill="#3498DB" points="29.641,5.042 17.763,28.801 41.519,28.801"/>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="Group_3_1_">
+                            <rect x="56.054" y="16.333" fill="#FFFFFF" width="1.875" height="3.125"/>
+                            <g id="menu">
+                                <rect x="49.68" y="6.323" fill="none" width="77.372" height="28.83"/>
+                                    <text transform="matrix(1 0 0 1 49.6792 28.8071)" fill="#3498DB" font-size="30" letter-spacing="-1">menu</text>
+                            </g>
+                            <g id="watch">
+                                <rect x="119.132" y="6.24" fill="none" width="91.474" height="27.075"/>
+                                    <text transform="matrix(1 0 0 1 119.1309 28.7231)" fill="#D35400" font-size="30" letter-spacing="-1">watch</text>
+                            </g>
+                        </g>
+                    </svg>
+                </a>
                 <div class="nav-buttons unhighlightable">
                     <ul class="nav lato-narrow">
                         <li id="about"><a href="/about/">ABOUT</a></li>
