@@ -1,6 +1,7 @@
 from celery import task
 from datetime import datetime
 from apps.menus import models as menu_models
+from django.core.mail import send_mail
 from hashlib import md5
 import requests
 import re
@@ -82,3 +83,8 @@ def build_db():
                                 # it's a brand new food
                                 new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=key, meal=meal, foodgroup=foodgroup)
                                 new_food.save()
+
+
+@task()
+def celery_test():
+    send_mail('Celery is running!', 'Here\'s the test message to prove Celery is up and running on Heroku.', 'mail@menuwat.ch', ['bjacobel@gmail.com'], fail_silently=False)
