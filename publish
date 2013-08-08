@@ -1,3 +1,7 @@
 #!/bin/sh
+DATE=`date +"%r, %Y/%m/%d"`
 
 pelican -t pelican/themes/pelican-svbtle/ -o . -m md pelican/content/
+git add .
+git commit -m "Blog update at $DATE"
+git push origin gh-pages
