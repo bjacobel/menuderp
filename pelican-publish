@@ -1,9 +1,0 @@
-#!/bin/sh
-
-TIME=`date +"%r %Y/%m/%d"`
-
-cd pelican/output/
-pelican -o . -m md ../content/ 
-git add .
-git commit -am "Blog update at $TIME"
-git push origin gh-pages
