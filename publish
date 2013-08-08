@@ -1,2 +1,3 @@
 #!/bin/sh
 
+pelican -t pelican/themes/pelican-svbtle/ -o . -m md pelican/content/

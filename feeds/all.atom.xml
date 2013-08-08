@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Pelican Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2013-08-07T00:00:00Z</updated><entry><title>First Post</title><link href="/first-post.html" rel="alternate"></link><updated>2013-08-07T00:00:00Z</updated><author><name></name></author><id>tag:,2013-08-07:first-post.html</id><summary type="html">&lt;h2&gt;Checking to see if this works&lt;/h2&gt;</summary></entry></feed>
