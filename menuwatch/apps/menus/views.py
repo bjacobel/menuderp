@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
@@ -44,7 +45,7 @@ def LoginView(request):
 
 
 def LogoutView(request):
-    # log 'em out
+    logout(request)
     return HttpResponseRedirect('/')
 
 
