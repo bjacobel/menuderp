@@ -1,6 +1,6 @@
-{% extends "menus/entry.html" %}
+{% extends "menus/base.html" %}
 
-{% block signup %}
+{% block body %}
 <form action="/login/" method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <div class="fieldWrapper">
@@ -30,4 +30,10 @@
     </div>
     <p><input type="submit" value="sign up!" /></p>
 </form>
+{% endblock %}
+
+{% block footer_scripts %}
+    <script>
+        navbar_customize({"about":"enabled", "news":"enabled", "login":"enabled", "logout":"disabled", "signup":"disabled", "account":"disabled"});
+    </script>
 {% endblock %}

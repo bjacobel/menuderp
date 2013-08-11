@@ -41,6 +41,7 @@ def BrowseView(request):
 
 
 def LoginView(request):
+    
     return render(request, 'menus/login.html')
 
 
