@@ -109,6 +109,12 @@ a {
     text-decoration:none !important; /* goodbye, 1999 */
 }
 
+.centered {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
 /* call-to-action button with an animated flyin */
 .icon-chevron-right {
     left: 70%;
@@ -262,3 +268,21 @@ svg text {
     margin:1px 5px 1px 6px;
 }
 /* End homepage */
+
+
+/* Signup Page */
+.signupbox {
+    height:350px;
+    width:300px;
+    border:2px solid #3498DB;
+    border-radius:10px;
+    padding:15px;
+}
+.signup-header{
+    font-size: 35px;
+    height:70px;
+    width:150px;
+    display:block;
+    text-align:center;
+}
+/* End Signup Page */
