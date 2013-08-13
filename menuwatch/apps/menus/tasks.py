@@ -1,5 +1,5 @@
 from celery import task
-from datetime import datetime
+from datetime import datetime, timedelta
 from apps.menus import models as menu_models
 from hashlib import md5
 import requests
@@ -7,8 +7,8 @@ import re
 import sys
 
 @task()
-def build_db():
-    today = datetime.today()
+def build_db(lookahead=0):
+    today = datetime.today() + timedelta(days=lookahead)
     locations = {
         "Moulton": 48,
         "Thorne": 49,
@@ -73,11 +73,14 @@ def build_db():
                             if matches_hash:
                                 #it's a food we've seen before
                                 old_food = matches_hash[0]
-                                old_food.last_date = old_food.next_date
-                                old_food.next_date = today
                                 old_food.location = key
                                 old_food.meal = meal
                                 old_food.foodgroup = foodgroup
+                                
+                                # don't update dates if we're out into the future
+                                if today < datetime.today():
+                                    old_food.last_date = old_food.next_date
+                                    old_food.next_date = today
                                 old_food.save()
                             else:
                                 # it's a brand new food
@@ -86,5 +89,9 @@ def build_db():
 
 
 @task()
-def celery_test():
-    print >>sys.stderr, "Celery is working!"
+def build_db_future(days):
+    for i in days:
+        build_db(i)
+    
+
+
