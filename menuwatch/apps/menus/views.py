@@ -38,9 +38,9 @@ def IndexView(request):
 def BrowseView(request):
     if request.user.is_authenticated():
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
-            context = {"foodlist": []}
+            context = {"foodlist": menumods.Food.objects.all().extra(order_by = ['-watch__food'])}
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
-            context = {"foodlist": menumods.Food.objects.filter(last_date__gte=datetime.date(datetime.today()) - timedelta(days=2))}
+            context = {"foodlist": menumods.Food.objects.filter(last_date__gte=datetime.date(datetime.today()) - timedelta(days=2)).extra(order_by = ['-last_date'])}
         else:
             # default to showing ALL the foods!
             context = {"foodlist": menumods.Food.objects.all()}
