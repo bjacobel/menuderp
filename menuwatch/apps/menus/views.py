@@ -7,8 +7,6 @@ from apps.menus import models as menumods
 from random import randint
 from settings import common
 import re
-import sys
-
 
 def IndexView(request):
     photo_num = randint(0,4)
@@ -36,7 +34,6 @@ def IndexView(request):
         "signedin": authed,
     })
 
-
 def BrowseView(request):
     if request.user.is_authenticated():
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
@@ -60,7 +57,6 @@ def LogoutView(request):
     if request.user.is_authenticated():
         logout(request)
     return HttpResponseRedirect('/')
-
 
 def SignupView(request):
     if request.user.is_authenticated():
@@ -86,20 +82,17 @@ def SignupView(request):
             'form': form,
         })
 
-
 def AccountView(request):
     if request.user.is_authenticated():
         return render(request, 'menus/account.html')
     else:
         return HttpResponseRedirect('/login/')
 
-
 def UpgradeView(request):
     if request.user.is_authenticated():
         return render(request, 'menus/upgrade.html')
     else:
         return HttpResponseRedirect('/login/')
-
 
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')
