@@ -6,6 +6,7 @@ from apps.menus import forms
 from apps.menus import models as menumods
 from random import randint
 from settings import common
+from datetime import datetime, timedelta
 import re
 
 def IndexView(request):
@@ -39,7 +40,7 @@ def BrowseView(request):
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
             context = {"foodlist": []}
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
-            context = {"foodlist": []}
+            context = {"foodlist": menumods.Food.objects.filter(last_date__gte=datetime.date(datetime.today()) - timedelta(days=2))}
         else:
             # default to showing ALL the foods!
             context = {"foodlist": menumods.Food.objects.all()}
