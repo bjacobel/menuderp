@@ -2,4 +2,12 @@
 
 {% block body %}
 
+    {% if foodlist %}
+        {% for item in foodlist %}
+            <li>{{ item.name }}</li>
+        {% endfor %}
+    {% else %}
+        {# redirect to 500? #}
+    {% endif %}
+
 {% endblock %}

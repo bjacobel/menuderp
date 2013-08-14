@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
+from apps.menus import models as menumods
 from random import randint
 from settings import common
 import re
@@ -37,47 +38,62 @@ def IndexView(request):
 
 
 def BrowseView(request):
-    return render(request, 'menus/browse.html')
-
+    if request.user.is_authenticated():
+        foods = menumods.Food.objects.all()
+        context = {"foodlist": foods}
+        return render(request, 'menus/browse.html', context)
+    else:
+        return HttpResponseRedirect('/login/')
 
 def LoginView(request):
-    
-    return render(request, 'menus/login.html')
-
+    if request.user.is_authenticated():
+        return render(request, 'menus/login.html')
+    else:
+        return HttpResponseRedirect('/browse/')
 
 def LogoutView(request):
-    logout(request)
+    if request.user.is_authenticated():
+        logout(request)
     return HttpResponseRedirect('/')
 
 
 def SignupView(request):
-    if request.method == 'POST':  # If the form has been submitted...
-        form = forms.SignupForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
-            email = form.cleaned_data['email']
-            fname = form.cleaned_data['fname'].capitalize()
-            lname = form.cleaned_data['lname'].capitalize()
-            pword = form.cleaned_data['pword1']
-            uname = re.split(r'@', email)[0]
-            user = User.objects.create_user(uname, email, pword)
-            user.first_name = fname
-            user.last_name = lname
-            user.save()
-            return HttpResponseRedirect('/browse/')  # Redirect after POST
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/browse/')
     else:
-        form = forms.SignupForm()  # An unbound form
+        if request.method == 'POST':  # If the form has been submitted...
+            form = forms.SignupForm(request.POST)  # A form bound to the POST data
+            if form.is_valid():  # All validation rules pass
+                email = form.cleaned_data['email']
+                fname = form.cleaned_data['fname'].capitalize()
+                lname = form.cleaned_data['lname'].capitalize()
+                pword = form.cleaned_data['pword1']
+                uname = re.split(r'@', email)[0]
+                user = User.objects.create_user(uname, email, pword)
+                user.first_name = fname
+                user.last_name = lname
+                user.save()
+                return HttpResponseRedirect('/browse/')  # Redirect after POST
+        else:
+            form = forms.SignupForm()  # An unbound form
 
-    return render(request, 'menus/signup.html', {
-        'form': form,
-    })
+        return render(request, 'menus/signup.html', {
+            'form': form,
+        })
 
 
 def AccountView(request):
-    return render(request, 'menus/account.html')
+    if request.user.is_authenticated():
+        return render(request, 'menus/account.html')
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 def UpgradeView(request):
-    return render(request, 'menus/upgrade.html')
+    if request.user.is_authenticated():
+        return render(request, 'menus/upgrade.html')
+    else:
+        return HttpResponseRedirect('/login/')
 
 
 def ExcludeView(request):
