@@ -39,8 +39,13 @@ def IndexView(request):
 
 def BrowseView(request):
     if request.user.is_authenticated():
-        foods = menumods.Food.objects.all()
-        context = {"foodlist": foods}
+        if 'sort' in request.GET and request.GET['sort'] == 'popular':
+            context = {"foodlist": []}
+        elif 'sort' in request.GET and request.GET['sort'] == 'recent':
+            context = {"foodlist": []}
+        else:
+            # default to showing ALL the foods!
+            context = {"foodlist": menumods.Food.objects.all()}
         return render(request, 'menus/browse.html', context)
     else:
         return HttpResponseRedirect('/login/')
