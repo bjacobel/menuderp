@@ -274,7 +274,7 @@ svg text {
 .signupbox {
     height:350px;
     width:300px;
-    border:2px solid #3498DB;
+    background-color:#3498DB;
     border-radius:10px;
     padding:15px;
 }
