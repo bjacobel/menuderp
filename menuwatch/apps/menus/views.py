@@ -50,9 +50,9 @@ def BrowseView(request):
 
 def LoginView(request):
     if request.user.is_authenticated():
-        return render(request, 'menus/login.html')
-    else:
         return HttpResponseRedirect('/browse/')
+    else:
+        return render(request, 'menus/login.html')
 
 def LogoutView(request):
     if request.user.is_authenticated():
