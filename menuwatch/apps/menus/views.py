@@ -49,7 +49,7 @@ def BrowseView(request):
         return HttpResponseRedirect('/login/')
 
     def getNumWatches(foodObject):
-        return foodObject.num_watches
+        return foodObject.num_watches()
 
 def LoginView(request):
     if request.user.is_authenticated():
@@ -88,7 +88,7 @@ def SignupView(request):
 
 def AccountView(request):
     if request.user.is_authenticated():
-        return render(request, 'menus/account.html')
+        return render(request, 'menus/account.html', menumods.Profile.objects.filter(user__username=request.user.username))
     else:
         return HttpResponseRedirect('/login/')
 
