@@ -5,8 +5,7 @@ from django.shortcuts import render
 from apps.menus import forms
 from apps.menus import models as menumods
 from random import randint
-from settings import common
-from datetime import datetime, timedelta
+import operator
 import re
 
 def IndexView(request):
@@ -38,18 +37,15 @@ def IndexView(request):
 def BrowseView(request):
     if request.user.is_authenticated():
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
-            context = {"foodlist": list(menumods.Food.objects.all()).sort(key=getNumWatches)[:15]}
+            context = {"foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:30]}
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
-            context = {"foodlist": menumods.Food.objects.filter(last_date__gte=datetime.date(datetime.today()) - timedelta(days=2)).extra(order_by = ['-last_date'])}
+            context = {"foodlist": menumods.Food.objects.order_by('-last_date')[:30]}
         else:
             # default to showing ALL the foods!
             context = {"foodlist": menumods.Food.objects.all()}
         return render(request, 'menus/browse.html', context)
     else:
         return HttpResponseRedirect('/login/')
-
-    def getNumWatches(foodObject):
-        return foodObject.num_watches()
 
 def LoginView(request):
     if request.user.is_authenticated():
