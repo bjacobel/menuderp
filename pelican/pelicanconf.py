@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Menuwatch'
 SITENAME = u'News | Menuwatch'
-SITEURL = ''
+SITEURL = 'http://www.menuwat.ch'
 
 THEME = u'themes/pelican-svbtle/'
 
