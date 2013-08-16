@@ -19,8 +19,8 @@ TRANSLATION_FEED_ATOM = None
 
 # Blogroll
 LINKS =  (
-    ('Twitter', 'http://twitter.com/menuwatch'),
-    ('<img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png"></img>', 'http://github.com/bjacobel/menuwatch'),
+    ('Twitter >', 'http://twitter.com/menuwatch'),
+    ('GitHub >', 'http://github.com/bjacobel/menuwatch'),
 )
 
 # Social widget
@@ -30,6 +30,8 @@ LINKS =  (
 DEFAULT_PAGINATION = False
 
 GOOGLE_ANALYTICS = u'UA-38327978-2'
+
+AUTHOR_BIO = 'A website designed around the Bowdoin dining experience. <a href="http://www.menuwat.ch">menuwat.ch</a>'
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
