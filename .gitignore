@@ -23,3 +23,5 @@ menuwatch/static/*
 menuwatch/settings/secret_key
 
 mysql2psql.yml
+
+pelican/
