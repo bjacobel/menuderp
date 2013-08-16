@@ -18,8 +18,10 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 # Blogroll
-LINKS =  (('Twitter', 'http://twitter.com/menuwatch'),
-          ('<img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png"></img>', 'http://github.com/bjacobel/menuwatch'),
+LINKS =  (
+    ('Twitter', 'http://twitter.com/menuwatch'),
+    ('<img src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Logo.png"></img>', 'http://github.com/bjacobel/menuwatch'),
+)
 
 # Social widget
 #SOCIAL = (('You can add links in your config file', '#'),
