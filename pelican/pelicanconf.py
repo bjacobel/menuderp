@@ -29,7 +29,7 @@ LINKS =  (
 
 DEFAULT_PAGINATION = False
 
-GOOGLE_ANALYTICS = u'UA-38327978-2'
+GOOGLE_ANALYTICS = u'UA-38327978-3'
 
 AUTHOR_BIO = 'A website designed around the Bowdoin dining experience. <a href="http://www.menuwat.ch">menuwat.ch</a>'
 
