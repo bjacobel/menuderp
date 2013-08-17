@@ -104,6 +104,12 @@ html{
     /* good old webkit... doing things right since 1998 */
     -webkit-filter: blur(2px);
 }
+.left {
+    float:left;
+}
+.right {
+    float:right;
+}
 
 a {
     text-decoration:none !important; /* goodbye, 1999 */
@@ -220,6 +226,7 @@ svg text {
     height:450px;
     width:100%;
     display:block;
+    border-bottom: 2px solid #3498DB;
 }
 
 .banner-text {
@@ -266,6 +273,20 @@ svg text {
     text-shadow: 0 0 0.5em black;
     font-size:12px;
     margin:1px 5px 1px 6px;
+}
+
+.subhero {
+    font-size: 26px;
+    text-align:center;
+}
+
+.subhero-unit {
+    width:100%;
+}
+
+.subhero-img {
+    width:200px;
+    margin:25px 0;
 }
 /* End homepage */
 
