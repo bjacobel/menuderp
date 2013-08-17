@@ -278,15 +278,23 @@ svg text {
 .subhero {
     font-size: 26px;
     text-align:center;
+    width:50%;
+    height:200px;
+    display:block;
+    padding:25px;
+    margin:50px 0;
+
+    background-repeat:no-repeat !important;
+    background-position:center !important;
+    background-size:contain !important;
 }
 
-.subhero-unit {
-    width:100%;
-}
-
-.subhero-img {
-    width:200px;
-    margin:25px 0;
+.subhero-wrapper:after {
+    content:'';
+    width:85%;
+    height:1px;
+    margin:0 auto;
+    background-color:#3498DB;
 }
 /* End homepage */
 
