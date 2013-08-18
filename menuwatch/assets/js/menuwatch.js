@@ -19,3 +19,7 @@ navbar_customize = function(params){
         }
     });
 };
+
+$(document).ready(function() {
+
+});
