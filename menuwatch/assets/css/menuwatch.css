@@ -282,13 +282,17 @@ svg text {
     width:50%;
     height:200px;
     display:block;
-    padding:25px;
-    margin:50px 0;
+    margin:25px auto;
+    padding:0 7px;
     overflow:hidden;
 
     background-repeat:no-repeat !important;
     background-position:center !important;
     background-size:contain !important;
+}
+
+.subhero h3 {
+    margin-top:55px!important;
 }
 
 .subhero h4 {
