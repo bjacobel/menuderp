@@ -169,20 +169,13 @@ a {
     color:#808080;
     color:rgba(170,170,170,0.7);
 }
-li.signup {
-    border:2px solid gray;
+.signup {
     border-radius:10px;
-    overflow:hidden;
+    border:2px solid gray;
     padding:0 15px;
     margin-bottom:10px;
 }
-a.signup {
-    border:2px solid transparent;
-    border-radius:10px;
-    overflow:hidden;
-    width:100%;
-}
-a.signup:hover{
+a.signup-inside:hover{
     background-color:#ffffff !important;
     color:#428bca !important;
 }
