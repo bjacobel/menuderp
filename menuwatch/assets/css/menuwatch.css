@@ -123,7 +123,7 @@ a {
 
 /* call-to-action button with an animated flyin */
 .icon-chevron-right {
-    left: 70%;
+    left: 75%;
     opacity: 0;
     top:38%;
     position:absolute;
@@ -137,7 +137,7 @@ a {
 
 .active-button:hover .icon-chevron-right {
     opacity:1;
-    left:80%;
+    left:85%;
 }
 
 

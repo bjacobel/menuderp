@@ -17,6 +17,7 @@ urlpatterns = patterns(
 
     # Menu views
     url(r'^$', menu_views.IndexView, name='index'),
+    url(r'^about/', menu_views.AboutView, name='about'),
     url(r'^login/', menu_views.LoginView, name='login'),
     url(r'^logout/', menu_views.LogoutView, name='logout'),
     url(r'^signup/', menu_views.SignupView, name='signup'),

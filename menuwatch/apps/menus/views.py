@@ -96,3 +96,6 @@ def UpgradeView(request):
 
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')
+
+def AboutView(request):
+    return render(request, 'menus/about.html')
