@@ -19,7 +19,7 @@ TRANSLATION_FEED_ATOM = None
 
 # Blogroll
 LINKS =  (
-    ('Twitter >', 'http://twitter.com/menuwatch'),
+    ('Twitter >', 'http://twitter.com/menuwatdotch'),
     ('GitHub >', 'http://github.com/bjacobel/menuwatch'),
 )
 
