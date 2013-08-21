@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="signupbox centered">
-    <p class="lato-bold signup-header">Sign Up</p>
+    <p class="lato bold signup-header">Sign Up</p>
     <form action="/signup/" method="post">{% csrf_token %}
         {{ form.non_field_errors }}
         <div class="fieldWrapper">

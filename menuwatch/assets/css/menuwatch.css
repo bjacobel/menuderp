@@ -2,18 +2,14 @@
 
 .lato {
     font-family:'Lato', Helvetica, Arial, sans-serif !important;
-    font-weight:400;
+    font-weight:400 !important;
     text-decoration:none;
 }
-.lato-bold {
-    font-family:'Lato', Helvetica, Arial, sans-serif !important;
-    font-weight:700;
-    text-decoration:none;
+.bold {
+    font-weight:700 !important;
 }
-.lato-narrow {
-    font-family:'Lato', Helvetica, Arial, sans-serif !important;
-    font-weight:300;
-    text-decoration:none;
+.narrow {
+    font-weight: 300 !important;
 }
 html{
     -webkit-font-smoothing: antialiased;
@@ -319,3 +315,23 @@ svg text {
     text-align:center;
 }
 /* End Signup Page */
+
+
+/* About page */
+
+.about-header{
+    margin:45px auto;
+    width:100%;
+    max-width:650px;
+    height:140px;
+    position:relative;
+    display:block;
+}
+
+.about-header svg {
+    width:100%;
+    height:100%;
+    position:absolute;
+}
+
+/* end About page */
