@@ -129,6 +129,9 @@ a {
     left:85%;
 }
 
+.pointer {
+    cursor:pointer;
+}
 
 /* End global element styles */
 
@@ -161,12 +164,16 @@ a {
 .signup {
     border-radius:10px;
     border:2px solid gray;
-    padding:0 15px;
     margin-bottom:10px;
 }
-a.signup-inside:hover{
+.signup-inside {
+    padding:10px 30px !important;
+    border:none;
+}
+.signup-inside:hover{
     background-color:#ffffff !important;
     color:#428bca !important;
+    background-color:transparent !important;
 }
 .icon-in-nav {
     font-size:8pt;
@@ -242,6 +249,12 @@ svg text {
 .cta-text {
     font-size:14pt;
     padding:15px 0 15px 0;
+}
+
+.cta-link {
+    display: block;
+    width: 250px;
+    margin: auto;
 }
 
 .img-cred {
