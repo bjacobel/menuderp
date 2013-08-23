@@ -5,8 +5,11 @@ from django.shortcuts import render
 from apps.menus import forms
 from apps.menus import models as menumods
 from random import randint
+from hashlib import md5
+from urllib import urlencode
 import operator
 import re
+
 
 def IndexView(request):
     photo_num = randint(0,4)
@@ -34,6 +37,7 @@ def IndexView(request):
         "signedin": authed,
     })
 
+
 def BrowseView(request):
     if request.user.is_authenticated():
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
@@ -45,11 +49,12 @@ def BrowseView(request):
             context = {"foodlist": menumods.Food.objects.all()}
         return render(request, 'menus/browse.html', context)
     else:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/login')
+
 
 def LoginView(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/browse/')
+        return HttpResponseRedirect('/browse')
     else:
         if request.method == 'POST':  # If the form has been submitted...
             form = forms.LoginForm(request.POST)  # A form bound to the POST data
@@ -59,9 +64,9 @@ def LoginView(request):
                 user = authenticate(username=email, password=pword)
                 if user is not None:
                     login(request, user)
-                    return HttpResponseRedirect('/browse/')  # Redirect after POST
+                    return HttpResponseRedirect('/browse')  # Redirect after POST
                 else:
-                    return HttpResponseRedirect('/login/')  # Redirect after POST
+                    return HttpResponseRedirect('/login')  # Redirect after POST
         else:
             form = forms.LoginForm()  # An unbound form
 
@@ -72,14 +77,16 @@ def LoginView(request):
             'css_override': ".auth-box{min-height:160px;}"
         })
 
+
 def LogoutView(request):
     if request.user.is_authenticated():
         logout(request)
     return HttpResponseRedirect('/')
 
+
 def SignupView(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/browse/')
+        return HttpResponseRedirect('/browse')
     else:
         if request.method == 'POST':  # If the form has been submitted...
             form = forms.SignupForm(request.POST)  # A form bound to the POST data
@@ -91,12 +98,12 @@ def SignupView(request):
                 user = User.objects.create_user(email, email, pword)
                 user.first_name = fname
                 user.last_name = lname
+                user.is_active = False
                 user.save()
                 profile = menumods.Profile.objects.create(user_id=user.pk)
                 profile.save()
-                newuser = authenticate(username=email, password=pword)
-                login(request, newuser)
-                return HttpResponseRedirect('/browse/')  # Redirect after POST
+                verify_link = "http://www.menuwat.ch/verify?" + urlencode({'e':email, 'v':md5(email).hexdigest()})
+                return HttpResponseRedirect('/verify')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form
 
@@ -106,20 +113,39 @@ def SignupView(request):
             'button_text': "SIGN UP",
         })
 
+
+def VerifyView(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/login')
+    elif request.GET and 'e' in request.GET and 'v' in request.GET:
+        email = request.GET['e']
+        emailhash = request.GET['v']
+        if md5(email).hexdigest() == emailhash:
+            to_verify = User.objects.filter(username=email)[0]
+            to_verify.is_active=True
+            to_verify.save()
+        return HttpResponseRedirect('/login')
+    else:
+        return render(request, 'menus/verify.html')
+
+
 def AccountView(request):
     if request.user.is_authenticated():
-        return render(request, 'menus/account.html', menumods.Profile.objects.filter(user__username=request.user.username))
+        return render(request, 'menus/account.html')
     else:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/login')
+
 
 def UpgradeView(request):
     if request.user.is_authenticated():
         return render(request, 'menus/upgrade.html')
     else:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/login')
+
 
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')
+
 
 def AboutView(request):
     return render(request, 'menus/about.html')

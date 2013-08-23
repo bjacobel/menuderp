@@ -313,7 +313,7 @@ svg text {
 .auth-box {
     position:relative;
     margin:25px auto;
-    min-height:350px;
+    min-height:330px;
     width:300px;
     border-radius:10px;
     border:2px solid #3498DB;
