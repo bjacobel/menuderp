@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from apps.menus import views as menu_views
 
-
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/admin/#hooking-adminsite-instances-into-your-urlconf
 admin.autodiscover()
 
@@ -26,5 +25,4 @@ urlpatterns = patterns(
     url(r'^browse', menu_views.BrowseView, name='browse'),
     url(r'^upgrade', menu_views.UpgradeView, name='upgrade'),
     url(r'^exclude', menu_views.ExcludeView, name='exclude'),
-
 )

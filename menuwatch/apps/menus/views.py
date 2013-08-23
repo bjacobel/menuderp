@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
@@ -85,6 +86,19 @@ def LogoutView(request):
 
 
 def SignupView(request):
+    def send_verify_mail(fname, lname, email, link):
+        msg = EmailMessage(
+            subject="Menuwatch Signup Confirmation",
+            from_email="Menuwatch <mail@menuwat.ch>",
+            to=["{} {} <{}>".format(fname, lname, email),],
+        )
+        msg.template_name = "signup-verification"
+        msg.global_merge_vars = {
+            'FNAME': fname,
+            'LINK': link,
+        }
+        msg.send()
+
     if request.user.is_authenticated():
         return HttpResponseRedirect('/browse')
     else:
@@ -103,6 +117,7 @@ def SignupView(request):
                 profile = menumods.Profile.objects.create(user_id=user.pk)
                 profile.save()
                 verify_link = "http://www.menuwat.ch/verify?" + urlencode({'e':email, 'v':md5(email).hexdigest()})
+                send_verify_mail(fname, lname, email, verify_link)
                 return HttpResponseRedirect('/verify')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form
