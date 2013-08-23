@@ -7,7 +7,7 @@ import re
 class Food (models.Model):
     # fixed
     name = models.CharField(max_length=100)
-    attrs = models.CharField(max_length=25)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
+    attrs = models.CharField(max_length=25, blank=True)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
 
     # variable
     last_date = models.DateField()
@@ -79,7 +79,7 @@ class Watch (models.Model):
 # Class to wrap django.contrib.auth's Users
 class Profile (models.Model):
     user = models.ForeignKey(User)
-    pro = models.BooleanField()
+    pro = models.BooleanField(default=False)
 
     def used_watches(self):
         return len(self.my_watches())

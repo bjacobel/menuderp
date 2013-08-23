@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from apps.menus import forms
@@ -56,14 +56,12 @@ def LoginView(request):
             if form.is_valid():  # All validation rules pass
                 email = form.cleaned_data['email']
                 pword = form.cleaned_data['pword']
-                uname = re.split(r'@', email)[0]
-                user = authenticate(username=uname, password=pword)
+                user = authenticate(username=email, password=pword)
                 if user is not None:
                     login(request, user)
                     return HttpResponseRedirect('/browse/')  # Redirect after POST
                 else:
-                    pass
-                    # Return an 'invalid login' error message.
+                    return HttpResponseRedirect('/login/')  # Redirect after POST
         else:
             form = forms.LoginForm()  # An unbound form
 
@@ -90,11 +88,14 @@ def SignupView(request):
                 fname = form.cleaned_data['fname'].capitalize()
                 lname = form.cleaned_data['lname'].capitalize()
                 pword = form.cleaned_data['pword1']
-                uname = re.split(r'@', email)[0]
-                user = User.objects.create_user(uname, email, pword)
+                user = User.objects.create_user(email, email, pword)
                 user.first_name = fname
                 user.last_name = lname
                 user.save()
+                profile = menumods.Profile.objects.create(user_id=user.pk)
+                profile.save()
+                newuser = authenticate(username=email, password=pword)
+                login(request, newuser)
                 return HttpResponseRedirect('/browse/')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form

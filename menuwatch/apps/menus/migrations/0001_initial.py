@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Food'
         db.create_table(u'menus_food', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('attrs', self.gf('django.db.models.fields.CharField')(max_length=25)),
             ('last_date', self.gf('django.db.models.fields.DateField')()),
             ('next_date', self.gf('django.db.models.fields.DateField')()),
@@ -97,7 +97,7 @@ class Migration(SchemaMigration):
             'location': ('django.db.models.fields.CharField', [], {'max_length': '7'}),
             'meal': ('django.db.models.fields.CharField', [], {'max_length': '9'}),
             'myhash': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'next_date': ('django.db.models.fields.DateField', [], {})
         },
         u'menus.profile': {

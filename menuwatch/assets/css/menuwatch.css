@@ -345,7 +345,7 @@ svg text {
 }
 .field-wrapper > ul {
     list-style-type:none;
-    padding-left:px;
+    padding-left:10px;
 }
 .auth-action {
     color:white;
