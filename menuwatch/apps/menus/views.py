@@ -92,10 +92,11 @@ def SignupView(request):
             from_email="Menuwatch <mail@menuwat.ch>",
             to=["{} {} <{}>".format(fname, lname, email),],
         )
+        msg.template_content = {}
         msg.template_name = "signup-verification"
         msg.global_merge_vars = {
             'FNAME': fname,
-            'LINK': link,
+            'LINK': link
         }
         msg.send()
 
