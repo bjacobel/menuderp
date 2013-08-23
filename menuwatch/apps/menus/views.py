@@ -63,7 +63,7 @@ def LoginView(request):
                 email = form.cleaned_data['email']
                 pword = form.cleaned_data['pword']
                 user = authenticate(username=email, password=pword)
-                if user is not None:
+                if user is not None and user.is_active:
                     login(request, user)
                     return HttpResponseRedirect('/browse')  # Redirect after POST
                 else:
