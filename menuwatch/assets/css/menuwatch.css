@@ -314,6 +314,24 @@ svg text {
     display:block;
     text-align:center;
 }
+.auth-form {
+    position:relative;
+    width:100%;
+}
+.auth-action {
+    color:white;
+    position:relative;
+    width:100%;
+    -webkit-appearance:none !important;
+    border:none;
+    background-color:transparent;
+}
+.auth-action-wrapper {
+    margin:15px 0px 0px -75px;
+    position:relative;
+    width:150px;
+    left:50%;
+}
 /* End Signup Page */
 
 
