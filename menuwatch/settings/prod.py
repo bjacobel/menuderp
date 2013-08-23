@@ -79,6 +79,10 @@ CELERY_RESULT_BACKEND = 'amqp'
 SECRET_KEY = environ.get('SECRET_KEY', '')
 ########## END SECRET CONFIGURATION
 
+########## MANDRILL CONFIGURATION
+MANDRILL_KEY = environ.get('MANDRILL_KEY', '')
+########## MANDRILL CONFIGURATION
+
 ########## STORAGE CONFIGURATION
 # See: http://django-storages.readthedocs.org/en/latest/index.html
 INSTALLED_APPS += (

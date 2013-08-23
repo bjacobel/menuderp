@@ -51,6 +51,12 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 ########## END SECRET CONFIGURATION
 
 
+########## MANDRILL CONFIGURATION
+MANDRILL_FILE = normpath(join(DJANGO_ROOT, 'settings/mandrill_key'))
+MANDRILL_KEY = open(SECRET_FILE).read().strip()
+########## END MANDRILL CONFIGURATION
+
+
 ########## CELERY CONFIGURATION
 # See: http://docs.celeryq.org/en/latest/configuration.html#celery-always-eager
 CELERY_ALWAYS_EAGER = True
