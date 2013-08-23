@@ -22,6 +22,9 @@ menuwatch/static/*
 # Django secret key (wtf, django)
 menuwatch/settings/secret_key
 
+# API keys
+menuwatch/settings/mandrill_key
+
 mysql2psql.yml
 
 pelican/
