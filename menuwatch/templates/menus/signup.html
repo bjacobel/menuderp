@@ -1,8 +1,9 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
-<div class="signupbox centered">
-    <p class="lato bold signup-header">Sign Up</p>
+<div class="shim"></div>
+<div class="auth-box">
+    <p class="lato bold auth-header">Sign Up</p>
     <form action="/signup/" method="post">{% csrf_token %}
         {{ form.non_field_errors }}
         <div class="fieldWrapper">
@@ -33,6 +34,10 @@
         <p><input type="submit" value="sign up!" /></p>
     </form>
 </div>
+<div class="shim"></div>
+<script>
+    $(".shim").css("height", ($(window).height()-75-$(".navbar").height()-$(".auth-box").height())/2);
+</script>
 {% endblock %}
 
 {% block footer_scripts %}

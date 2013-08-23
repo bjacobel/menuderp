@@ -63,7 +63,6 @@ html{
 
 
 /* Global element styles */
-
 .visible {
     display:block;
 }
@@ -109,12 +108,6 @@ html{
 
 a {
     text-decoration:none !important; /* goodbye, 1999 */
-}
-
-.centered {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
 }
 
 /* call-to-action button with an animated flyin */
@@ -299,15 +292,22 @@ svg text {
 /* End homepage */
 
 
-/* Signup Page */
-.signupbox {
+/* Signup + Login Page */
+.shim {
+    position:relative;
+    width:100%;
+}
+.auth-box {
+    position:relative;
+    margin:25px auto;
     height:350px;
     width:300px;
-    background-color:#3498DB;
     border-radius:10px;
+    border:2px solid #3498DB;
+    box-shadow:0 0 3px 2px rgba(150,150,150,0.7);
     padding:15px;
 }
-.signup-header{
+.auth-header {
     font-size: 35px;
     height:70px;
     width:150px;

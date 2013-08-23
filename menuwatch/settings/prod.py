@@ -138,3 +138,12 @@ ALLOWED_HOSTS = [
 ]
 ########## END ALLOWED HOST CONFIGURATION
 
+########## CACHED LOADERS 
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+########## END WHATEVER THAT WAS
+
