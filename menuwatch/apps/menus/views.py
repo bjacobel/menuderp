@@ -51,7 +51,28 @@ def LoginView(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/browse/')
     else:
-        return render(request, 'menus/login.html')
+        if request.method == 'POST':  # If the form has been submitted...
+            form = forms.LoginForm(request.POST)  # A form bound to the POST data
+            if form.is_valid():  # All validation rules pass
+                email = form.cleaned_data['email']
+                pword = form.cleaned_data['pword']
+                uname = re.split(r'@', email)[0]
+                user = authenticate(username=uname, password=pword)
+                if user is not None:
+                    login(request, user)
+                    return HttpResponseRedirect('/browse/')  # Redirect after POST
+                else:
+                    pass
+                    # Return an 'invalid login' error message.
+        else:
+            form = forms.LoginForm()  # An unbound form
+
+        return render(request, 'menus/auth.html', {
+            'form': form,
+            'action': 'login',
+            'button_text': "LOG IN",
+            'css_override': ".auth-box{min-height:160px;}"
+        })
 
 def LogoutView(request):
     if request.user.is_authenticated():
@@ -78,8 +99,10 @@ def SignupView(request):
         else:
             form = forms.SignupForm()  # An unbound form
 
-        return render(request, 'menus/signup.html', {
+        return render(request, 'menus/auth.html', {
             'form': form,
+            'action': 'signup',
+            'button_text': "SIGN UP",
         })
 
 def AccountView(request):

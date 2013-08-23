@@ -1,13 +1,14 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
+import re
 
 class SignupForm(forms.Form):
-    email = forms.EmailField(max_length=50)
-    fname = forms.CharField(max_length=50)
-    lname = forms.CharField(max_length=50)
-    pword1 = forms.CharField(widget=forms.PasswordInput)
-    pword2 = forms.CharField(widget=forms.PasswordInput)
+    fname = forms.CharField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    lname = forms.CharField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    pword1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    pword2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password, again'}))
 
     def clean_pword2(self):
         pword1 = self.cleaned_data.get('pword1')
@@ -22,3 +23,7 @@ class SignupForm(forms.Form):
     def clean_email(self):
         if User.objects.filter(email = self.cleaned_data.get('email')).count():
             raise forms.ValidationError(mark_safe('A user with this email already exists. Did you mean to <a href="/login/">login</a>, or to <a href="/login#reset">reset your password</a>?'))
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    pword = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))

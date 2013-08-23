@@ -1,0 +1,33 @@
+{% extends "menus/base.html" %}
+
+{% block body %}
+<div class="shim"></div>
+<div class="auth-box">
+    <form class="auth-form" action="/{{ action }}/" method="post">{% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="field-wrapper lato bold">
+                {{ field }}
+                {% if field.errors %}
+                    <ul>
+                        {% for error in field.errors %}
+                            <li><i class="icon-warning-sign">  </i>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <p class="cta active-button auth-action-wrapper"><input class="auth-action lato cta-text" type="submit" value="{{ button_text }}"/><i class="icon-chevron-right pointer"></i></p>
+    </form>
+</div>
+{% if css_override %}
+    <style>{{ css_override }}</style>
+{% endif %}
+<div class="shim"></div>
+<script>
+    $(".shim").css("height", ($(window).height()-100-$(".navbar").height()-$(".auth-box").height())/2);
+</script>
+{% endblock %}
+
+{% block footer_scripts %}
+{% endblock %}

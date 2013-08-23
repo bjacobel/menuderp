@@ -313,7 +313,7 @@ svg text {
 .auth-box {
     position:relative;
     margin:25px auto;
-    height:350px;
+    min-height:350px;
     width:300px;
     border-radius:10px;
     border:2px solid #3498DB;
@@ -330,6 +330,22 @@ svg text {
 .auth-form {
     position:relative;
     width:100%;
+}
+.field-wrapper > input {
+    height:35px;
+    margin:4px 0;
+    border:1px solid rgba(52,152,219,0.4);
+    border-radius:2px;
+    width:100%;
+    padding:0 10px;
+}
+.field-wrapper > input:focus {
+    outline:0;
+    box-shadow:0 0 3px 1px rgba(150,150,150,0.5) inset;
+}
+.field-wrapper > ul {
+    list-style-type:none;
+    padding-left:px;
 }
 .auth-action {
     color:white;
