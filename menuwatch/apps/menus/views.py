@@ -170,6 +170,7 @@ def UnsubView(request):
         # so you can't just randomly unsubscribe people... that would be funny
         user = request.GET['u'] 
         if md5(User.objects.filter(email=user)[0].date_joined.isoformat()).hexdigest() == request.GET['t']:
+            User.objects.filter(email=user)[0].delete()
             return render(request, 'menus/unsubscribe.html')
         else:
             return HttpResponseServerError()
