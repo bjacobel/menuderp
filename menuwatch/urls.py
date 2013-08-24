@@ -25,4 +25,5 @@ urlpatterns = patterns(
     url(r'^browse', menu_views.BrowseView, name='browse'),
     url(r'^upgrade', menu_views.UpgradeView, name='upgrade'),
     url(r'^exclude', menu_views.ExcludeView, name='exclude'),
+    url(r'^unsubscribe', menu_views.UnsubView, name='unsub'),
 )

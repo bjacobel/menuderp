@@ -86,17 +86,18 @@ def LogoutView(request):
 
 
 def SignupView(request):
-    def send_verify_mail(fname, lname, email, link):
+    def send_verify_mail(user, link):
         msg = EmailMessage(
             subject="Menuwatch Signup Confirmation",
             from_email="Menuwatch <mail@menuwat.ch>",
-            to=["{} {} <{}>".format(fname, lname, email),],
+            to=["{} {} <{}>".format(user.first_name, user.last_name, user.email),],
         )
         msg.template_content = {}
         msg.template_name = "signup-verification"
         msg.global_merge_vars = {
-            'FNAME': fname,
-            'LINK': link
+            'FNAME': user.first_name,
+            'LINK': link,
+            'UNSUB': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
         }
         msg.send()
 
@@ -118,7 +119,7 @@ def SignupView(request):
                 profile = menumods.Profile.objects.create(user_id=user.pk)
                 profile.save()
                 verify_link = "http://www.menuwat.ch/verify?" + urlencode({'e':email, 'v':md5(email).hexdigest()})
-                send_verify_mail(fname, lname, email, verify_link)
+                send_verify_mail(user, verify_link)
                 return HttpResponseRedirect('/verify')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form
@@ -146,21 +147,34 @@ def VerifyView(request):
 
 
 def AccountView(request):
-    if request.user.is_authenticated():
-        return render(request, 'menus/account.html')
-    else:
+    if not request.user.is_authenticated():
         return HttpResponseRedirect('/login')
+    else:
+        return render(request, 'menus/account.html')
 
 
 def UpgradeView(request):
-    if request.user.is_authenticated():
-        return render(request, 'menus/upgrade.html')
-    else:
+    if not request.user.is_authenticated():
         return HttpResponseRedirect('/login')
+    else:
+        return render(request, 'menus/upgrade.html')
 
 
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')
+
+
+def UnsubView(request):
+    if 'u' in request.GET and 't' in request.GET:
+        # need to pass a plaintext username and the MD5hashed signup date of that user
+        # so you can't just randomly unsubscribe people... that would be funny
+        user = request.GET['u'] 
+        if md5(User.objects.filter(email=user)[0].date_joined.isoformat()).hexdigest() == request.GET['t']:
+            return render(request, 'menus/unsubscribe.html')
+        else:
+            return HttpResponseServerError()
+    else:
+        return HttpResponseRedirect('/')
 
 
 def AboutView(request):
