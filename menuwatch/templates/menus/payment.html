@@ -10,25 +10,25 @@
     <script>$(".navbar").addClass("invisible");</script>
     <script src="https://checkout.stripe.com/v2/checkout.js"></script>
     <script>
-    $(document).ready(function(){
-      var token = function(res){
-        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-        $('form').append($input).submit();
-      };
+        $(document).ready(function(){
+            var token = function(res){
+                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                $('form').append($input).submit();
+            };
 
-      StripeCheckout.open({
-        key:         'pk_test_3lJbgHb3MndGr6YnKjkoMpnz',
-        address:     false,
-        amount:      399,
-        currency:    'usd',
-        name:        'Menuwatch',
-        description: 'Account upgrade',
-        panelLabel:  'Upgrade to Pro: ',
-        image:       '{{ STATIC_URL }}img/med_logo.png',
-        token:       token
-      });
+            StripeCheckout.open({
+                key:         'pk_test_3lJbgHb3MndGr6YnKjkoMpnz',
+                address:     false,
+                amount:      399,
+                currency:    'usd',
+                name:        'Menuwatch',
+                description: 'Account upgrade',
+                panelLabel:  'Upgrade to Pro: ',
+                image:       '{{ STATIC_URL }}img/med_logo.png',
+                token:       token
+            });
 
-      return false;
-    });
-  </script>
+            return false;
+        });
+    </script>
 {% endblock %}

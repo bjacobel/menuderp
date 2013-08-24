@@ -314,7 +314,6 @@ svg text {
 .auth-box {
     position:relative;
     margin:25px auto;
-    min-height:330px;
     width:300px;
     border-radius:10px;
     border:2px solid #3498DB;
@@ -357,7 +356,7 @@ svg text {
     background-color:transparent;
 }
 .auth-action-wrapper {
-    margin:15px 0px 0px -75px;
+    margin:15px 0px 15px -75px;
     position:relative;
     width:150px;
     left:50%;

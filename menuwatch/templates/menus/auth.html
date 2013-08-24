@@ -18,11 +18,11 @@
             </div>
         {% endfor %}
         <p class="cta active-button auth-action-wrapper"><input class="auth-action lato cta-text" type="submit" value="{{ button_text }}"/><i class="icon-chevron-right pointer"></i></p>
+        <p class="lato text-center">
+            (or, did you mean to <a href="/{{ other_action }}">{{ other_button_text }}</a>?)
+        </p>
     </form>
 </div>
-{% if css_override %}
-    <style>{{ css_override }}</style>
-{% endif %}
 <div class="shim"></div>
 <script>
     $(".shim").css("height", ($(window).height()-100-$(".navbar").height()-$(".auth-box").height())/2);

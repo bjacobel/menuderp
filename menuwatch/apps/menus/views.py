@@ -75,7 +75,8 @@ def LoginView(request):
             'form': form,
             'action': 'login',
             'button_text': "LOG IN",
-            'css_override': ".auth-box{min-height:160px;}"
+            'other_action': 'signup',
+            'other_button_text': "sign up",
         })
 
 
@@ -128,6 +129,8 @@ def SignupView(request):
             'form': form,
             'action': 'signup',
             'button_text': "SIGN UP",
+            'other_action': 'login',
+            'other_button_text': "log in",
         })
 
 
