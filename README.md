@@ -1,4 +1,4 @@
-# MenuWatch
+# Menuwatch
 
 
 ### The menu tracker for Bowdoin students.
@@ -11,16 +11,15 @@ Are your friends lazy shits who don't even bother checking menus because Moulton
 
 Do you *really, fucking love* Hungarian Mushroom Soup?
 
-**MenuWatch is for you.**
+**Menuwatch is for you.**
 
 ***
 
 #### Planned Features 
 
 * Track your favorite menu items at Moulton and Thorne and recieve email alerts when they're coming up
-* Customize your alerts: see the next day, three days, or week at a glance
-* See what foods are popular, and add them to your alerts instantly
-* iOS integration (via IFTTT)
+* Customize your alerts: see the next day, three days, or week at a glance. Don't ever go to Moulton? Enable alerts for Thorne only.
+* See what foods are recent or popular, and add them to your alerts instantly
 
 
 #### Testimonials
@@ -31,4 +30,4 @@ Do you *really, fucking love* Hungarian Mushroom Soup?
 
 
 #### The Pitch
-The site hasn't launched yet, but when it does - [send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug (and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc) and I'll give you a free upgrade to a Pro account. Sound good? Good.
+The isn't quite ready yet, but when it is - [send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug (and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc) and I'll give you a free upgraded account. Sound good? Good.
