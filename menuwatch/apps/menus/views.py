@@ -160,6 +160,9 @@ def UpgradeView(request):
         context = { "popular" : sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:10]}
         return render(request, 'menus/upgrade.html', context)
 
+def PaymentView(request):
+    return render(request, 'menus/payment.html')
+
 
 def ExcludeView(request):
     return render(request, 'menus/exclude.html')

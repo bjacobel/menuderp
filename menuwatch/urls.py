@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^account', menu_views.AccountView, name='account'),
     url(r'^browse', menu_views.BrowseView, name='browse'),
     url(r'^upgrade', menu_views.UpgradeView, name='upgrade'),
+    url(r'^payment', menu_views.PaymentView, name='payment'),
     url(r'^exclude', menu_views.ExcludeView, name='exclude'),
     url(r'^unsubscribe', menu_views.UnsubView, name='unsub'),
 )

@@ -79,7 +79,7 @@ html{
 .inline-block {
     display:inline-block;
 }
-.unhighlightable {
+.unhighlightable, svg {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -412,3 +412,19 @@ svg text {
     text-align:center;
 }
 /* End Upgrade page */
+
+/* Payment page */
+.logo-bg {
+    margin:50px auto;
+    padding-right:50px;
+    width:100%;
+    height:500px;
+    position:relative;
+    display:block;
+}
+.logo-bg svg {
+    width:100%;
+    height:100%;
+    position:absolute;
+}
+/* End Payment Page */
