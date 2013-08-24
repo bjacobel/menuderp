@@ -1,5 +1,59 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
+    <div class="container">
+        <h1 class="lato bold text-center">
+            Want to find more of your favorites?
+        </h1>
+        <h3 class="lato text-center">
+            Menuwatch Pro lets you recieve alerts for <strong>unlimited</strong> foods. Foods like...
+        </h3>
+        <div class="popular-foods">
+            <div class="carousel slide">
+                <div class="carousel-inner">
+                    {% for item in popular %}
+                        <div class="item">
+                            <h2 class="swipe-text lato bold">{{ item.name }}</h2>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <h3 class="lato text-center">
+            Upgrade right now for <strong>$2.99</strong>.
+        </h3>
+        <div class="cta-link">
+            <div class="cta active-button"><p class="lato cta-text">GO PRO</p><i class="icon-chevron-right"></i></div>
+        </div>
+        <h4 class="lato text-center show-more-info">More Info</h4>
+        <h4 class="lato more-info invisible">
+            <ul>
+                <li><strong>So, I pay you three bucks a month? </strong> Nope. The one-time upgrade gives you unlimited watches and alerts forever.</li>
+                <li><strong>Is this secure? </strong> Menuwatch uses a payment processor who <a href="https://stripe.com/help/security">takes security <strong>very</strong> seriously</a>. Your payment information isn't stored by Menuwatch - in fact it never touches our servers.</li>
+                <li><strong>How come it's so expensive / so cheap? </strong> The upgrade price is exactly enough to cover the cost of expanding Menuwatch if it becomes popular. I'm not looking to make money, just to bring Menuwatch to as many people as possible.</li>
+            </ul>
+        </h4>
+    </div>
+{% endblock %}
 
+{% block footer_scripts %}
+    <script>
+        $(".show-more-info").click(function() {
+            $(".more-info").removeClass("invisible");
+            $(".show-more-info").addClass("invisible");
+        });
+
+        $(".item").each(function() {
+            $(this).addClass("active");
+            swipeText = $(this).children()[0];
+            margins = ($(".carousel").width() - swipeText.scrollWidth)/2;
+            $(swipeText).css("margin-left", margins);
+            $(swipeText).css("margin-right", margins);            
+            $(this).removeClass("active");
+        });
+
+        $(".carousel-inner > .item:first").addClass("active");
+
+        $('.carousel').carousel({interval:2500});
+    </script>
 {% endblock %}

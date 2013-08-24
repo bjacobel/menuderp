@@ -252,6 +252,7 @@ svg text {
 }
 
 .cta-link {
+    cursor:pointer; /* in case this is a div, not an a */
     display: block;
     width: 250px;
     margin: auto;
@@ -382,3 +383,32 @@ svg text {
 }
 
 /* end About page */
+
+/* Upgrade Page */
+
+.show-more-info {
+    cursor:pointer;
+    color:#3498DB;
+}
+
+.more-info > ul {
+    list-style-type:none;
+    padding-left:10px;
+    max-width:720px;
+    margin:0 auto;
+}
+
+.more-info > ul > li {
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.popular-foods > .carousel {
+    width:100%;
+}
+
+.swipe-text{
+    display:inline-block;
+    text-align:center;
+}
+/* End Upgrade page */

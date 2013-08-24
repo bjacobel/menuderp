@@ -157,7 +157,8 @@ def UpgradeView(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login')
     else:
-        return render(request, 'menus/upgrade.html')
+        context = { "popular" : sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:10]}
+        return render(request, 'menus/upgrade.html', context)
 
 
 def ExcludeView(request):
