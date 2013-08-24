@@ -22,12 +22,5 @@ Do you *really, fucking love* Hungarian Mushroom Soup?
 * See what foods are recent or popular, and add them to your alerts instantly
 
 
-#### Testimonials
-
-> "MenuWatch solves first-world problems I didn't even know I had."
-
--- *you, potentially*
-
-
 #### The Pitch
 The isn't quite ready yet, but when it is - [send me an email](mailto:bjacobel@gmail.com) if you're interested in beta testing, or just [head over to the site](http://menuwat.ch) and start kicking the tires. Find a bug (and have it confirmed by me that said bug is reproduceable/significant/not actually a feature/etc) and I'll give you a free upgraded account. Sound good? Good.
