@@ -50,27 +50,11 @@ class Watch (models.Model):
     food = models.ForeignKey('Food')
     owner = models.ForeignKey('Profile')
 
-    # days per week the alert should go out
-    # 1 = sunday night
-    # 3 = sunday night, wednesday night, friday night
-    # 7 = every night
-    # TODO: custom times (with Pro only)
-    frequency = models.IntegerField()
-
-    def frequency_name(self):
-        if self.frequency == 1:
-            return "Weekly"
-        elif self.frequency == 3:
-            return "Tri-weekly"
-        elif self.frequency == 7:
-            return "Daily"
-        else:
-            return "Custom"
+    def frequency(self):
+        return self.owner.frequency.__unicode__()
 
     def __unicode__(self):
-        return self.frequency_name() + " watch for " + self.food.__unicode__()
-
-    frequency_name.short_description = "Frequency"
+        return owner.__unicode__() + "'s watch for " + self.food.__unicode__()
 
     class Meta:
         verbose_name_plural = "Watches"
@@ -80,6 +64,7 @@ class Watch (models.Model):
 class Profile (models.Model):
     user = models.ForeignKey(User)
     pro = models.BooleanField(default=False)
+    frequency = models.IntegerField(default=1)
 
     def used_watches(self):
         return len(self.my_watches())
@@ -109,6 +94,16 @@ class Profile (models.Model):
         if self.pro or self.used_watches() < 5:
             return True
         return False
+
+    def frequency_name(self):
+        if self.frequency == 1:
+            return "Weekly"
+        elif self.frequency == 3:
+            return "Tri-weekly"
+        elif self.frequency == 7:
+            return "Daily"
+
+    frequency_name.short_description = "Frequency"
 
     can_create_new_watches.boolean = True
     can_create_new_watches.short_description = "Has watches left?"
