@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -8,6 +9,7 @@ from apps.menus import models as menumods
 from random import randint
 from hashlib import md5
 from urllib import urlencode
+import requests
 import operator
 import re
 
@@ -78,12 +80,6 @@ def LoginView(request):
             'other_action': 'signup',
             'other_button_text': "sign up",
         })
-
-
-def LogoutView(request):
-    if request.user.is_authenticated():
-        logout(request)
-    return HttpResponseRedirect('/')
 
 
 def SignupView(request):
@@ -208,6 +204,27 @@ def UnsubView(request):
             return HttpResponseServerError()
     else:
         return HttpResponseRedirect('/')
+
+
+@csrf_exempt
+def AddView(request):
+    if request.method == 'POST':  # api endpoint only accepts POSTs
+        getdict = request.GET
+    else:
+        return HttpResponseServerError()
+
+
+@csrf_exempt
+def DeleteView(request):
+    if request.method == 'POST':  # api endpoint only accepts POSTs
+        getdict = request.GET
+    else:
+        return HttpResponseServerError()
+
+def LogoutView(request):
+    if request.user.is_authenticated():
+        logout(request)
+    return HttpResponseRedirect('/')
 
 
 def PaymentView(request):
