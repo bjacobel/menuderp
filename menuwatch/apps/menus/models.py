@@ -50,11 +50,14 @@ class Watch (models.Model):
     food = models.ForeignKey('Food')
     owner = models.ForeignKey('Profile')
 
+    def foodname(self):
+        return self.food
+
     def frequency(self):
-        return self.owner.frequency.__unicode__()
+        return self.owner.frequency
 
     def __unicode__(self):
-        return owner.__unicode__() + "'s watch for " + self.food.__unicode__()
+        return self.owner.__unicode__() + "'s watch for " + self.food.__unicode__()
 
     class Meta:
         verbose_name_plural = "Watches"
@@ -65,6 +68,7 @@ class Profile (models.Model):
     user = models.ForeignKey(User)
     pro = models.BooleanField(default=False)
     frequency = models.IntegerField(default=1)
+    locations = models.IntegerField(default=1)
 
     def used_watches(self):
         return len(self.my_watches())
@@ -102,6 +106,14 @@ class Profile (models.Model):
             return "Tri-weekly"
         elif self.frequency == 7:
             return "Daily"
+
+    def location_name(self):
+        if self.frequency == 1:
+            return "Both"
+        elif self.frequency == 2:
+            return "Moulton Only"
+        elif self.frequency == 3:
+            return "Thorne Only"
 
     frequency_name.short_description = "Frequency"
 
