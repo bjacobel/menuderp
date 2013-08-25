@@ -440,16 +440,37 @@ svg text {
     display:block;
     margin-top:130px;
 }
+
 .account-field {
     margin-left:-15px;
     margin-bottom:50px;
 }
+
 .account-field-header {
     padding-bottom:10px;
     border-bottom:1px solid #333;
 }
+
+.watch-row:hover {
+    color:#E74C3C;
+}
+
 .watch-list {
     padding-left:20px;
+}
+
+.watch-list-item {
+    display:inline-block;
+    margin:5px 0;
+}
+
+.right.icon-remove {
+    margin-top:10px;
+    cursor:pointer;
+}
+
+h4 .icon-caret-right {
+    padding-left:7px;
 }
 
 /* End Account Page */

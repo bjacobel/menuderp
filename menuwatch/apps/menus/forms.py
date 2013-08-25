@@ -30,6 +30,27 @@ class SignupForm(forms.Form):
             raise forms.ValidationError(mark_safe('A user with this email already exists. Did you mean to <a href="/login/">login</a>, or to <a href="/login#reset">reset your password</a>?'))
         return email
 
+
 class LoginForm(forms.Form):
     email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     pword = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+
+
+class ChangePasswordForm(forms.Form):
+    pword0 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
+    pword1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    pword2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password, again'}))
+
+    def clean_pword1(self):
+        pword1 = self.cleaned_data.get('pword1')
+        if len(pword1) < 6:
+            raise forms.ValidationError("Your password must be at least six characters")
+        return pword1
+
+    def clean_pword2(self):
+        pword1 = self.cleaned_data.get('pword1')
+        pword2 = self.cleaned_data.get('pword2')
+
+        if pword1 != pword2:
+            raise forms.ValidationError("Passwords do not match")
+        return pword2

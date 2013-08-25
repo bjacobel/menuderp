@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^logout', menu_views.LogoutView, name='logout'),
     url(r'^signup', menu_views.SignupView, name='signup'),
     url(r'^verify', menu_views.VerifyView, name='verify'),
+    url(r'^account/password', menu_views.ChangePasswordView, name='chpwd'),
     url(r'^account', menu_views.AccountView, name='account'),
     url(r'^browse', menu_views.BrowseView, name='browse'),
     url(r'^upgrade', menu_views.UpgradeView, name='upgrade'),

@@ -141,7 +141,7 @@ def VerifyView(request):
         email = request.GET['e']
         emailhash = request.GET['v']
         if md5(email).hexdigest() == emailhash:
-            to_verify = User.objects.filter(username=email)[0]
+            to_verify = User.objects.get(username__exact=email)
             to_verify.is_active=True
             to_verify.save()
         return HttpResponseRedirect('/login')
@@ -154,10 +154,38 @@ def AccountView(request):
         return HttpResponseRedirect('/login')
     else:
         context = {
-            "profile": menumods.Profile.objects.filter(user=request.user.pk)[0],
+            "profile": menumods.Profile.objects.get(user__exact=request.user.pk),
             'unsub_link': urlencode({'u':request.user.email, 't':md5(request.user.date_joined.isoformat()).hexdigest()}),
         }
         return render(request, 'menus/account.html', context)
+
+
+def ChangePasswordView(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/login')
+    else:
+        if request.method == 'POST':  # If the form has been submitted...
+            form = forms.ChangePasswordForm(request.POST)  # A form bound to the POST data
+            if form.is_valid():  # All validation rules pass
+                old_pword = form.cleaned_data['pword0']
+                new_pword = form.cleaned_data['pword1']
+                if authenticate(username=request.user.email, password=old_pword):
+                    u = User.objects.get(username__exact=request.user.email)
+                    u.set_password(new_pword)
+                    u.save()
+                    return HttpResponseRedirect('/account')
+                else:
+                    return HttpResponseRedirect('/account/password')
+        else:
+            form = forms.ChangePasswordForm()  # An unbound form
+
+        return render(request, 'menus/auth.html', {
+            'form': form,
+            'action': 'account/password',
+            'button_text': "CHANGE",
+            'other_action': 'account',
+            'other_button_text': "go back",
+        })    
 
 
 def UpgradeView(request):
@@ -167,26 +195,27 @@ def UpgradeView(request):
         context = { "popular" : sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:10]}
         return render(request, 'menus/upgrade.html', context)
 
-def PaymentView(request):
-    return render(request, 'menus/payment.html')
-
-
-def ExcludeView(request):
-    return render(request, 'menus/exclude.html')
-
 
 def UnsubView(request):
     if 'u' in request.GET and 't' in request.GET:
         # need to pass a plaintext username and the MD5hashed signup date of that user
         # so you can't just randomly unsubscribe people... that would be funny
         user = request.GET['u'] 
-        if md5(User.objects.filter(email=user)[0].date_joined.isoformat()).hexdigest() == request.GET['t']:
-            User.objects.filter(email=user)[0].delete()
+        if md5(User.objects.get(email__exact=user).date_joined.isoformat()).hexdigest() == request.GET['t']:
+            User.objects.get(email__exact=user).delete()
             return render(request, 'menus/unsubscribe.html')
         else:
             return HttpResponseServerError()
     else:
         return HttpResponseRedirect('/')
+
+
+def PaymentView(request):
+    return render(request, 'menus/payment.html')
+
+
+def ExcludeView(request):
+    return render(request, 'menus/exclude.html')
 
 
 def AboutView(request):
