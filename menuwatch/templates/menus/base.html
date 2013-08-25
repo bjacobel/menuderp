@@ -61,6 +61,9 @@
     </div>
 </body>
 
-{% block footer_scripts %}{% endblock %}
+{% compress js %}
+{% block footer_scripts %}
+{% endblock %}
+{% endcompress %}
 
 </html>
