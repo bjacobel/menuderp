@@ -153,7 +153,10 @@ def AccountView(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login')
     else:
-        return render(request, 'menus/account.html')
+        context = {
+            "profile": menumods.Profile.objects.filter(user=request.user.pk)[0]
+        }
+        return render(request, 'menus/account.html', context)
 
 
 def UpgradeView(request):

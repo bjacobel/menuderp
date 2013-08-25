@@ -1,5 +1,41 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
-
+    <div class="container lato">
+        <h1 class="lato">Account Management</h1>
+        <h2 class="lato">{{ profile.fullname }}</h2>
+        <div class-"container account-fields">
+            <div class="col-xs-12 col-sm-4 account-field">
+                <h3 class="account-field-header lato narrow">SETTINGS</h3>
+                <h4 class="lato">Alert frequency:</h4>
+                <h4 class="lato">Password:</h4>
+                <h4 class="lato">Delete account</h4>
+            </div>
+            <div class="col-xs-12 col-sm-4 account-field">
+                <h3 class="account-field-header lato narrow">WATCHES</h3>
+                <ul class="lato watch-list">
+                    {% for watch in profile.my_watches|slice:":9" %}
+                        <li>{{ watch }}</li>
+                        {% if forloop.counter = 9 %}
+                            <li>... and others.</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4 account-field">
+                <h3 class="account-field-header lato narrow">PRO</h3>
+                {% if profile.pro %}
+                    <h4 class="lato">Pro account enabled! Enjoy unlimited watches.</h4>
+                {% else %}
+                    <h4 class="lato">You're on a basic account, with {{ profile.used_watches }} of your 5 watches used. <a href="/upgrade">Upgrade now ></a></h4>
+                {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-4 account-field">
+                <h3 class="account-field-header lato narrow">ACCOUNT</h3>
+                <h4 class="lato">Email: {{ profile.email }}</h4>
+                <h4 class="lato">Password:</h4>
+                <h4 class="lato">Delete account</h4>
+            </div>
+        </div>
+    </div>
 {% endblock %}

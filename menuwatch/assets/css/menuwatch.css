@@ -410,9 +410,13 @@ svg text {
     display:inline-block;
     text-align:center;
 }
+
 /* End Upgrade page */
 
+
+
 /* Payment page */
+
 .logo-bg {
     margin:50px auto;
     padding-right:50px;
@@ -426,4 +430,26 @@ svg text {
     height:100%;
     position:absolute;
 }
+
 /* End Payment Page */
+
+
+/* Account page */
+
+.account-fields {
+    display:block;
+    margin-top:130px;
+}
+.account-field {
+    margin-left:-15px;
+    height:250px;
+}
+.account-field-header {
+    padding-bottom:10px;
+    border-bottom:1px solid #333;
+}
+.watch-list {
+    padding-left:20px;
+}
+
+/* End Account Page */
