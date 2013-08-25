@@ -3,24 +3,22 @@
 {% block body %}
     <div class="container lato">
         <h1 class="lato">Account Management</h1>
-        <h2 class="lato">{{ profile.fullname }}</h2>
+        <h2 class="lato">{{ profile.fullname }} <span class="narrow">({{ profile.email }})</span></h2>
         <div class-"container account-fields">
             <div class="col-xs-12 col-sm-4 account-field">
                 <h3 class="account-field-header lato narrow">SETTINGS</h3>
-                <h4 class="lato">Alert frequency:</h4>
-                <h4 class="lato">Password:</h4>
-                <h4 class="lato">Delete account</h4>
-            </div>
-            <div class="col-xs-12 col-sm-4 account-field">
-                <h3 class="account-field-header lato narrow">WATCHES</h3>
-                <ul class="lato watch-list">
-                    {% for watch in profile.my_watches|slice:":9" %}
-                        <li>{{ watch }}</li>
-                        {% if forloop.counter = 9 %}
-                            <li>... and others.</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                <h4 class="lato">
+                    <div class="dropdown">
+                        Email frequency: <a data-toggle="dropdown" data-target="#" href="/account">{{ profile.frequency_name }}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Daily</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Tri-Weekly</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Weekly</a></li>
+                        </ul>
+                    </div>
+                </h4>
+                <h4 class="lato">Password: <a href="">Change</a></h4>
+                <h4 class="lato"><a href="/unsubscribe?{{ unsub_link }}">Delete account</a></h4>
             </div>
             <div class="col-xs-12 col-sm-4 account-field">
                 <h3 class="account-field-header lato narrow">PRO</h3>
@@ -31,10 +29,15 @@
                 {% endif %}
             </div>
             <div class="col-xs-12 col-sm-4 account-field">
-                <h3 class="account-field-header lato narrow">ACCOUNT</h3>
-                <h4 class="lato">Email: {{ profile.email }}</h4>
-                <h4 class="lato">Password:</h4>
-                <h4 class="lato">Delete account</h4>
+                <h3 class="account-field-header lato narrow">WATCHES</h3>
+                <ul class="lato watch-list">
+                    {% for watch in profile.my_watches|slice:":9" %}
+                        <li>{{ watch.foodname }}</li>
+                        {% if forloop.counter = 9 %}
+                            <li>... and others.</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

@@ -17,20 +17,20 @@ admin.site.register(Food, FoodsAdmin)
 
 class WatchesAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['food', 'frequency', 'owner']}),
+        (None,               {'fields': ['food', 'owner']}),
     ]
-    list_display = ('food', 'frequency_name', 'owner')
-    search_fields = ['food', 'frequency_name', 'owner']
+    list_display = ('food',  'owner')
+    search_fields = ['food', 'owner']
 
 admin.site.register(Watch, WatchesAdmin)
 
 
 class ProfilesAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,                  {'fields': ['user', 'pro']}),
+        (None,                  {'fields': ['user', 'pro', 'frequency']}),
     ]
-    list_display = ('fullname', 'email', 'used_watches', 'pro', 'can_create_new_watches')
-    list_filter = ['pro']
+    list_display = ('fullname', 'email', 'used_watches', 'pro', 'frequency_name', 'can_create_new_watches')
+    list_filter = ['pro', 'frequency']
     search_fields = ['firstname', 'lastname', 'email']
 
 admin.site.register(Profile, ProfilesAdmin)

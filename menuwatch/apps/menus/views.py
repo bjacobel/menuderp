@@ -154,7 +154,8 @@ def AccountView(request):
         return HttpResponseRedirect('/login')
     else:
         context = {
-            "profile": menumods.Profile.objects.filter(user=request.user.pk)[0]
+            "profile": menumods.Profile.objects.filter(user=request.user.pk)[0],
+            'unsub_link': urlencode({'u':request.user.email, 't':md5(request.user.date_joined.isoformat()).hexdigest()}),
         }
         return render(request, 'menus/account.html', context)
 
