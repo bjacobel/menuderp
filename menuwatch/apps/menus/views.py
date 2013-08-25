@@ -209,17 +209,25 @@ def UnsubView(request):
 @csrf_exempt
 def AddView(request):
     if request.method == 'POST':  # api endpoint only accepts POSTs
-        getdict = request.GET
-    else:
-        return HttpResponseServerError()
+        if request.user is not None:  # api should only work for signed-in users
+            if 'pk' in request.GET:
+                food = request.GET['pk']
+                user = request.user.pk
+                watch = menumods.Watch.create(food=food, owner=user)
+                watch.save()
+    return HttpResponseServerError()
 
 
 @csrf_exempt
 def DeleteView(request):
     if request.method == 'POST':  # api endpoint only accepts POSTs
-        getdict = request.GET
-    else:
-        return HttpResponseServerError()
+        if request.user is not None:  # api should only work for signed-in users
+            if 'pk' in request.GET:
+                food = request.GET['pk']
+                user = request.user.pk
+                watch = menumods.Watch.objects.get(food__exact=food, owner__exact=user)
+                watch.delete()
+    return HttpResponseServerError()
 
 def LogoutView(request):
     if request.user.is_authenticated():
