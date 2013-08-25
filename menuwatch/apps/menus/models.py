@@ -108,7 +108,7 @@ class Profile (models.Model):
             return "Daily"
 
     def location_name(self):
-        if self.frequency == 1:
+        if self.locations == 1:
             return "Both"
         elif self.frequency == 2:
             return "Moulton Only"

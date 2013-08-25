@@ -442,7 +442,7 @@ svg text {
 }
 .account-field {
     margin-left:-15px;
-    height:250px;
+    margin-bottom:50px;
 }
 .account-field-header {
     padding-bottom:10px;

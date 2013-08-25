@@ -17,6 +17,16 @@
                         </ul>
                     </div>
                 </h4>
+                <h4 class="lato">
+                    <div class="dropdown">
+                        Locations: <a data-toggle="dropdown" data-target="#" href="/account">{{ profile.location_name }}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Both</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Moulton Only</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">Thorne Only</a></li>
+                        </ul>
+                    </div>
+                </h4>
                 <h4 class="lato">Password: <a href="">Change</a></h4>
                 <h4 class="lato"><a href="/unsubscribe?{{ unsub_link }}">Delete account</a></h4>
             </div>
@@ -31,14 +41,15 @@
             <div class="col-xs-12 col-sm-4 account-field">
                 <h3 class="account-field-header lato narrow">WATCHES</h3>
                 <ul class="lato watch-list">
-                    {% for watch in profile.my_watches|slice:":9" %}
-                        <li>{{ watch.foodname }}</li>
-                        {% if forloop.counter = 9 %}
-                            <li>... and others.</li>
-                        {% endif %}
+                    {% for watch in profile.my_watches %}
+                        <li><h4 class="lato">{{ watch.foodname }}</h4></li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block footer_scripts %}
+
 {% endblock %}
