@@ -393,13 +393,14 @@ svg text {
 .more-info > ul {
     list-style-type:none;
     padding-left:10px;
-    max-width:720px;
+    max-width:740px;
     margin:0 auto;
 }
 
 .more-info > ul > li {
-    text-align:center;
+    text-align:justify;
     margin-bottom:25px;
+    line-height:1.5;
 }
 
 .popular-foods > .carousel {
