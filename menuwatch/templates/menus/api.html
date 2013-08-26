@@ -43,23 +43,27 @@
             success: function(response) {
                 spinner.stop();
                 if (apiendpoint == 'delete') {
-                    $button.parent().remove();
+                    $button.removeClass("delete");
+                    $button.addClass("add");
+                    $icon.replaceWith("<i class='icon-plus'></i>");
                 } else if (apiendpoint == 'add') {
-                    $icon.fadeIn();
+                    $button.removeClass("api add");
+                    $button.unbind("click");
                     $icon.replaceWith("<i class='icon-ok'></i>");
                 }
+                $icon.fadeIn();
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 console.log(xhr, ajaxOptions, thrownError);
                 
+                // if the error was because you've run out of watches... go pay me money.
+                if (xhr.status==431) {
+                    window.location.href = "/upgrade";
+                }
+
                 // go back to the way things were
                 spinner.stop();
                 $icon.fadeIn();
-
-                // if the error was because you've run out of watches... go pay me money.
-                if (xhr.status==418) {
-                    window.location.href = "/upgrade";
-                }
             }
         });
     });

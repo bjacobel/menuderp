@@ -424,8 +424,8 @@ a.del-account:hover {
     max-width:80%;
 }
 
-.right > .icon-remove {
-    cursor:pointer;
+.watch-row > h4 > i {
+    padding:0;
 }
 
 h4 .icon-caret-right {

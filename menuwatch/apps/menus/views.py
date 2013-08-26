@@ -214,7 +214,7 @@ def AddView(request):
         if request.user is not None:  # api should only work for signed-in users
             if 'food_pk' in request.POST:
                 food = int(request.POST['food_pk'])
-                user = request.user.pk
+                user = int(request.user.pk)
                 if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
                     try:
                         watch = menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
@@ -238,9 +238,9 @@ def DeleteView(request):
         if request.user is not None:
             if 'food_pk' in request.POST:
                 food = int(request.POST['food_pk'])
-                user = request.user.pk
+                user = int(request.user.pk)
                 try:
-                    watch = menumods.Watch.objects.get(food__exact=food, owner__exact=user)
+                    watch = menumods.Watch.objects.get(food__exact=food, owner__exact=menumods.Profile.objects.get(user__exact=user))
                     watch.delete()
                     return HttpResponse("Watch successfully deleted", status=200)
                 except:
