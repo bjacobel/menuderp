@@ -213,22 +213,41 @@ def AddView(request):
             if 'food_pk' in request.POST:
                 food = int(request.POST['food_pk'])
                 user = request.user.pk
-                watch = menumods.Watch.create(food=food, owner=user)
-                return HttpResponse(status=200)
-    return HttpResponseServerError()
+                if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
+                    try:
+                        watch = menumods.Watch.create(food=food, owner=user)
+                        return HttpResponse("Watch successfully created", status=200)
+                    except:
+                        return HttpResponse("Specified food does not exist", status=404)
+                else:
+                    return HttpResponse("Watch limit reached", status=403)
+            else:
+                return HttpResponse("No food_pk specified", status=400)
+        else:
+            return HttpResponse("No authenticated user present", status=403)
+    else:
+        return HttpResponse("I'm a teapot", status=418)
 
 
 @csrf_exempt
 def DeleteView(request):
-    if request.method == 'POST':  # api endpoint only accepts POSTs
-        if request.user is not None:  # api should only work for signed-in users
+    if request.method == 'POST':
+        if request.user is not None:
             if 'food_pk' in request.POST:
                 food = int(request.POST['food_pk'])
                 user = request.user.pk
-                watch = menumods.Watch.objects.get(food__exact=food, owner__exact=user)
-                watch.delete()
-                return HttpResponse(status=200)
-    return HttpResponseServerError()
+                try:
+                    watch = menumods.Watch.objects.get(food__exact=food, owner__exact=user)
+                    watch.delete()
+                    return HttpResponse("Watch successfully deleted", status=200)
+                except:
+                    return HttpResponse("No watch mathing those parameters found", status=404)
+            else:
+                return HttpResponse("No food_pk specified", status=400)
+        else:
+            return HttpResponse("No authenticated user present", status=403)
+    else:
+        return HttpResponse("I'm a teapot", status=418)
 
 def LogoutView(request):
     if request.user.is_authenticated():
