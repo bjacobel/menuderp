@@ -1,13 +1,38 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
+    <div class="container">
+        <table class="table table-hover">  {# bootstrap makes using htmltables just barely tolerable #}
+            <thead>
+                <td><h4 class="lato narrow">FOOD</h4></td>
+                <td><h4 class="lato narrow">INFO</h4></td>
+                <td><h4 class="lato narrow">COURSE</h4></td>
+                <td><h4 class="lato narrow">NEXT UP</h4></td>
+                <td><h4 class="lato narrow">AT</h4></td>
+                <td><h4 class="lato narrow">FOR</h4></td>
+                <td><h4 class="lato narrow">WATCH?</h4></td>
+            </thead>
+            <tbody>
+            {% for item in foodlist %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.attrs }}</td>
+                    <td>{{ item.foodgroup }}</td>
+                    <td>{{ item.next_date_readable }}</td>
+                    <td>{{ item.location }}</td>
+                    <td>{{ item.meal }}</td>
+                    {% if user in item.watchers %}
+                        <td class="row-icon api delete" data="{{ item.pk }}"><i class="icon-remove"></i></td>
+                    {% else %}
+                        <td class="row-icon api add" data="{{ item.pk }}"><i class="icon-plus"></i></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
 
-    {% if foodlist %}
-        {% for item in foodlist %}
-            <li>{{ item.name }}</li>
-        {% endfor %}
-    {% else %}
-        {# redirect to 500? #}
-    {% endif %}
-
+{% block footer_scripts %}
+    {% include 'menus/api.html' %}
 {% endblock %}

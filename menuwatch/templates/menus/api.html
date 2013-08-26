@@ -1,3 +1,4 @@
+<script type="text/javascript" src="{{ STATIC_URL }}js/spin.min.js"></script>
 <script>
     var opts = {
         lines: 10, // The number of lines to draw
@@ -14,8 +15,8 @@
         hwaccel: false, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: '1', // Top position relative to parent in px
-        left: '-2' // Left position relative to parent in px
+        top: 'auto', // Top position relative to parent in px
+        left: 'auto' // Left position relative to parent in px
     };
     $(".api").click(function() {
         // drop your cocks and grab your socks
@@ -23,7 +24,7 @@
         $icon = $('i', $(this))
 
         // remove the button's icon
-        $icon.addClass('invisible');
+        $icon.fadeOut();
 
         // fire up a spinner in place of the button's icon
         spinner = new Spinner(opts).spin($(this)[0]);
@@ -42,9 +43,10 @@
             success: function(response) {
                 spinner.stop();
                 if (apiendpoint == 'delete') {
-                    $icon.parent().parent().remove();
+                    $button.parent().remove();
                 } else if (apiendpoint == 'add') {
-                    $icon.replaceWith("<i class='icon-ok green></i>");
+                    $icon.fadeIn();
+                    $icon.replaceWith("<i class='icon-ok'></i>");
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
@@ -52,7 +54,7 @@
                 
                 // go back to the way things were
                 spinner.stop();
-                $icon.removeClass('invisible');
+                $icon.fadeIn();
 
                 // if the error was because you've run out of watches... go pay me money.
                 if (xhr.status==418) {

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from hashlib import md5
+from datetime import date, timedelta
 import re
 
 
@@ -17,24 +18,41 @@ class Food (models.Model):
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
     myhash = models.CharField(max_length=32,editable=False)
 
+    def next_date_readable(self):
+        if self.next_date == date.today()+timedelta(days=0):
+            return "Today"
+        elif self.next_date == date.today()+timedelta(days=1):
+            return "Tomorrow"
+        elif self.next_date > date.today() and self.next_date < date.today()+timedelta(days=6):
+            return self.next_date.strftime("%A")
+        else:
+            self.next_date.strftime("%b %d")
+
+
     def is_vegan(self):
-        return re.search(' VE(,|$)', self.attrs)
+        return re.search('\s?V(,|$)', self.attrs)
 
     def is_vegetarian(self):
-        return re.search(' VE(,|$)', self.attrs)
+        return re.search('\s?VE(,|$)', self.attrs)
 
     def is_gluten_free(self):
-        return re.search(' VE(,|$)', self.attrs)
+        return re.search('\s?GF(,|$)', self.attrs)
 
     # I don't actually know what these last two mean
     def is_L(self):
-        return re.search(' L(,|$)', self.attrs)
+        return re.search('\s?L(,|$)', self.attrs)
 
     def is_D(self):
-        return re.search(' D(,|$)', self.attrs)
+        return re.search('\s?D(,|$)', self.attrs)
 
     def num_watches(self):
         return len(self.watch_set.all())
+
+    def watchers(self):
+        watchers = []
+        for watch in self.watch_set.all():
+            watchers.append(watch.owner.user)
+        return watchers
 
     def __unicode__(self):
         return self.name

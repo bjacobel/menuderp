@@ -217,7 +217,7 @@ def AddView(request):
                 user = request.user.pk
                 if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
                     try:
-                        watch = menumods.Watch.create(food=food, owner=user)
+                        watch = menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
                         return HttpResponse("Watch successfully created", status=201)
                     except:
                         return HttpResponse("Specified food does not exist", status=404)

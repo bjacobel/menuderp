@@ -18,49 +18,6 @@ html{
 /* End fonts */
 
 
-/* Custom color palette */
-
-.green {
-    color:#2ECC71;
-}
-.green-background {
-    background-color:#2ECC71;
-}
-.dark-green {
-    color:#27AE60;
-}
-.dark-green-background {
-    background-color:#27AE60;
-}
-.blue {
-    color:#3498DB;
-}
-.blue-background {
-    background-color:#3498DB;
-}
-.dark-blue {
-    color:#2980B9;
-}
-.dark-blue-background {
-    background-color:#2980B9;
-}
-.navy {
-    color:#34495E;
-}
-.navy-background {
-    background-color:#34495E;
-}
-.dark-navy {
-    color:#2C3E50;
-}
-.dark-navy-background {
-    background-color:#2C3E50;
-}
-
-
-/* End custom color palette */
-
-
 
 /* Global element styles */
 .visible {
@@ -461,10 +418,6 @@ a.del-account:hover {
     list-style-type:none;
 }
 
-.watch-row > h4.delete:hover {
-    color:#E74C3C;
-}
-
 .watch-row > h4 {
     display:inline-block;
     margin:5px 0;
@@ -480,3 +433,32 @@ h4 .icon-caret-right {
 }
 
 /* End Account Page */
+
+
+/* Shared between Account and Browse page */
+
+.icon-remove {
+    padding:7px 30px;
+    cursor:pointer;
+    color:#E74C3C;
+}
+
+.icon-plus {
+
+}
+
+td:hover .icon-plus {
+    color:#2ECC71;
+}
+
+.icon-ok {
+    color:#27AE60;
+}
+
+/* End shared styles */
+
+/* Browse Page (best for last) */
+.row-icon {
+    cursor:pointer;
+    text-align:center;
+}

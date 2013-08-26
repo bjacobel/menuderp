@@ -43,6 +43,7 @@
                         <li id="news"><a href="http://news.menuwat.ch">NEWS</a></li>
                         <li class="sep">|</li>
                         {% if user.is_authenticated %}
+                            <li id="foods"><a href="/browse">FOODS</a></li>
                             <li id="account"><a href="/account">ACCOUNT</a></li>
                             <li id="logout"><a href="/logout">LOGOUT</a></li>
                         {% else %}
