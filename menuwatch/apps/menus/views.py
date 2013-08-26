@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError
@@ -206,6 +207,7 @@ def UnsubView(request):
         return HttpResponseRedirect('/')
 
 
+@never_cache
 @csrf_exempt
 def AddView(request):
     if request.method == 'POST':  # api endpoint only accepts POSTs
@@ -216,11 +218,11 @@ def AddView(request):
                 if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
                     try:
                         watch = menumods.Watch.create(food=food, owner=user)
-                        return HttpResponse("Watch successfully created", status=200)
+                        return HttpResponse("Watch successfully created", status=201)
                     except:
                         return HttpResponse("Specified food does not exist", status=404)
                 else:
-                    return HttpResponse("Watch limit reached", status=403)
+                    return HttpResponse("Watch limit reached", status=431)  # 'server is unwilling to process the request' UNTIL YOU PAY ME MONIES
             else:
                 return HttpResponse("No food_pk specified", status=400)
         else:
@@ -229,6 +231,7 @@ def AddView(request):
         return HttpResponse("I'm a teapot", status=418)
 
 
+@never_cache
 @csrf_exempt
 def DeleteView(request):
     if request.method == 'POST':

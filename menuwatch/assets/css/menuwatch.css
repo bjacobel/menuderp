@@ -460,7 +460,7 @@ a.del-account:hover {
     list-style-type:none;
 }
 
-.watch-row:hover {
+.watch-row > h4.delete:hover {
     color:#E74C3C;
 }
 
