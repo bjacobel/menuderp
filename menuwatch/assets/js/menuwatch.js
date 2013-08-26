@@ -1,6 +1,6 @@
 /*  
     ONLY SITE-WIDE SCRIPTS go in this file. Anything else should go into
-    {% footer_scripts %} blocks in the views it needs to run on.
+    footer_scripts blocks in the views it needs to run on.
 */
 
 $(document).ready(function() {

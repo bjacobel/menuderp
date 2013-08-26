@@ -451,21 +451,26 @@ svg text {
     border-bottom:1px solid #333;
 }
 
-.watch-row:hover {
+a.del-account:hover {
     color:#E74C3C;
 }
 
 .watch-list {
-    padding-left:20px;
+    padding-left:0;
+    list-style-type:none;
 }
 
-.watch-list-item {
+.watch-row:hover {
+    color:#E74C3C;
+}
+
+.watch-row > h4 {
     display:inline-block;
     margin:5px 0;
+    max-width:80%;
 }
 
-.right.icon-remove {
-    margin-top:10px;
+.right > .icon-remove {
     cursor:pointer;
 }
 

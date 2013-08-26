@@ -28,7 +28,7 @@
                     </div>
                 </h4>
                 <h4 class="lato">Password: <a href="/account/password">Change<i class="icon-caret-right"></i></a></h4>
-                <h4 class="lato"><a href="/unsubscribe?{{ unsub_link }}">Delete account<i class="icon-caret-right"></i></a></h4>
+                <h4 class="lato"><a class="del-account" href="/unsubscribe?{{ unsub_link }}">Delete account<i class="icon-caret-right"></i></a></h4>
             </div>
             <div class="col-xs-12 col-sm-4 account-field">
                 <h3 class="account-field-header lato narrow">PRO</h3>
@@ -42,7 +42,7 @@
                 <h3 class="account-field-header lato narrow">WATCHES</h3>
                 <ul class="lato watch-list">
                     {% for watch in profile.my_watches %}
-                        <li class="watch-row"><h4 class="lato watch-list-item">{{ watch.foodname }}</h4><i class="right icon-remove"></i></li>
+                        <li class="watch-row"><h4 class="lato">{{ watch.foodname }}</h4><h4 class="right api delete" data="{{ watch.food.pk }}"><i class="icon-remove"></i></h4></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -51,5 +51,50 @@
 {% endblock %}
 
 {% block footer_scripts %}
-
+    <script type="text/javascript" src="{{ STATIC_URL }}js/spin.min.js"></script>
+    <script>
+        var opts = {
+            lines: 10, // The number of lines to draw
+            length: 4, // The length of each line
+            width: 2, // The line thickness
+            radius: 3, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#333', // #rgb or #rrggbb or array of colors
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '1', // Top position relative to parent in px
+            left: '-2' // Left position relative to parent in px
+        };
+        $(".api").click(function() {
+            $icon = $('i', $(this))
+            $icon.addClass('invisible');
+            spinner = new Spinner(opts).spin($(this)[0]);
+            apiendpoint = '/';
+            if($(this).hasClass("delete")) {
+                apiendpoint = 'api/delete';
+            } else if($(this).hasClass("add")) {
+                apiendpoint = '/api/add';
+            }
+            $.ajax({
+                data: {"food_pk": $(this).attr("data")},
+                type: 'post',
+                url: apiendpoint,
+                success: function(response) {
+                    $icon.parent().parent().remove();
+                },
+                error: function(response) {
+                    console.log('failure');
+                    console.log(response);
+                    spinner.stop();
+                    $icon.removeClass('invisible');
+                }
+            });
+        });
+    </script>
 {% endblock %}

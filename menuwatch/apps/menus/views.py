@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMessage
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError
 from django.shortcuts import render
 from apps.menus import forms
 from apps.menus import models as menumods
@@ -210,11 +210,11 @@ def UnsubView(request):
 def AddView(request):
     if request.method == 'POST':  # api endpoint only accepts POSTs
         if request.user is not None:  # api should only work for signed-in users
-            if 'pk' in request.GET:
-                food = request.GET['pk']
+            if 'food_pk' in request.POST:
+                food = int(request.POST['food_pk'])
                 user = request.user.pk
                 watch = menumods.Watch.create(food=food, owner=user)
-                watch.save()
+                return HttpResponse(status=200)
     return HttpResponseServerError()
 
 
@@ -222,11 +222,12 @@ def AddView(request):
 def DeleteView(request):
     if request.method == 'POST':  # api endpoint only accepts POSTs
         if request.user is not None:  # api should only work for signed-in users
-            if 'pk' in request.GET:
-                food = request.GET['pk']
+            if 'food_pk' in request.POST:
+                food = int(request.POST['food_pk'])
                 user = request.user.pk
                 watch = menumods.Watch.objects.get(food__exact=food, owner__exact=user)
                 watch.delete()
+                return HttpResponse(status=200)
     return HttpResponseServerError()
 
 def LogoutView(request):
