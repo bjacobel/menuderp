@@ -45,8 +45,8 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 
 
 ########## MANDRILL CONFIGURATION
-MANDRILL_FILE = normpath(join(DJANGO_ROOT, 'settings/mandrill_key'))
-MANDRILL_API_KEY = open(MANDRILL_FILE).read().strip()
+MAILGUN_FILE = normpath(join(DJANGO_ROOT, 'settings/mailgun_key'))
+MAILGUN_ACCESS_KEY = open(MAILGUN_FILE).read().strip()
 ########## END MANDRILL CONFIGURATION
 
 

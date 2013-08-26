@@ -293,8 +293,10 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 ############ END NOSE CONFIGURATION
 
-############ DJRILL CONFIGURATION
+############ DJANGO-MAILGUN CONFIGURATION
 
-EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_SERVER_NAME = 'app16993132.mailgun.org'
 
-############ END DJRILL CONFIGURATION
+############ END DJANGO-MAILGUN CONFIGURATION
+
