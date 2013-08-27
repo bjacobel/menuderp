@@ -95,7 +95,7 @@ def SignupView(request):
         })
         msg = EmailMultiAlternatives(
             "Menuwatch Signup Confirmation",
-            "Menuwatch requires an HTML-enabled email client. Sorry!",
+            "Hi, {}! Please visit this URL to finish setting up your account. {}".format(context['first_name'], context['verify_link']),
             "Menuwatch <mail@menuwat.ch>",
             ["{} {} <{}>".format(new_user.first_name, new_user.last_name, new_user.email),],
         )

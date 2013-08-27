@@ -19,14 +19,16 @@ class Food (models.Model):
     myhash = models.CharField(max_length=32,editable=False)
 
     def next_date_readable(self):
-        if self.next_date == date.today()+timedelta(days=0):
+        if self.next_date == date.today():
             return "Today"
         elif self.next_date == date.today()+timedelta(days=1):
             return "Tomorrow"
         elif self.next_date > date.today() and self.next_date < date.today()+timedelta(days=6):
             return self.next_date.strftime("%A")
+        elif self.next_date < date.today():
+            return "Unknown"
         else:
-            self.next_date.strftime("%b %d")
+            return self.next_date.strftime("%b %d")
 
 
     def is_vegan(self):
