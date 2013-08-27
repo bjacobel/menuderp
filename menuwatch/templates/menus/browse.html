@@ -1,7 +1,7 @@
 {% extends "menus/base.html" %}
 
 {% block body %}
-    <div class="container">
+    <div class="container table-container">
         <table class="table table-hover">  {# bootstrap makes using htmltables just barely tolerable #}
             <thead>
                 <td><h4 class="lato narrow">FOOD</h4></td>
@@ -30,6 +30,11 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="tabs">
+        <a href="/browse?sort=popular" id="popular" class="lato bold tab">POPULAR</a>
+        <a href="/browse?sort=recent" id="recent" class="lato bold tab">RECENT</a>
+        <a href="/browse?sort=search" id="search" class="lato bold tab">SEARCH</a>
     </div>
 {% endblock %}
 

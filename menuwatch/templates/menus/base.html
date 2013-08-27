@@ -39,16 +39,16 @@
                 </a>
                 <div class="nav-buttons unhighlightable">
                     <ul class="nav lato narrow">
-                        <li id="about"><a href="/about">ABOUT</a></li>
-                        <li id="news"><a href="http://news.menuwat.ch">NEWS</a></li>
+                        <li><a href="/about">ABOUT</a></li>
+                        <li><a href="http://news.menuwat.ch">NEWS</a></li>
                         <li class="sep">|</li>
                         {% if user.is_authenticated %}
-                            <li id="foods"><a href="/browse">FOODS</a></li>
-                            <li id="account"><a href="/account">ACCOUNT</a></li>
-                            <li id="logout"><a href="/logout">LOGOUT</a></li>
+                            <li><a href="/browse">FOODS</a></li>
+                            <li><a href="/account">ACCOUNT</a></li>
+                            <li><a href="/logout">LOGOUT</a></li>
                         {% else %}
-                            <li id="login"><a href="/login">LOG IN</a></li>
-                            <li id="signup" class="signup active-button">
+                            <li><a href="/login">LOG IN</a></li>
+                            <li class="signup active-button">
                                 <a class="signup-inside unhighlightable" href="/signup">SIGN UP<i class="icon-chevron-right icon-in-nav"></i></a>
                             </li>
                         {% endif %}

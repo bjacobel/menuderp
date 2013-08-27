@@ -443,10 +443,6 @@ h4 .icon-caret-right {
     color:#E74C3C;
 }
 
-.icon-plus {
-
-}
-
 td:hover .icon-plus {
     color:#2ECC71;
 }
@@ -457,8 +453,52 @@ td:hover .icon-plus {
 
 /* End shared styles */
 
+
 /* Browse Page (best for last) */
+
+.table-container {
+    margin-left:35px !important;
+}
+
 .row-icon {
     cursor:pointer;
     text-align:center;
+}
+
+.tabs {
+    position:fixed;
+    left:-10px;
+    top:150px;
+}
+
+.tab {
+    position:relative;
+    border-radius:5px;
+    width:45px;
+    height:100px;
+    margin:5px 0;
+    display:block;
+    color:white !important;
+
+    -webkit-transition:left 0.15s ease-in;
+       -moz-transition:left 0.15s ease-in;
+         -o-transition:left 0.15s ease-in;
+            transition:left 0.15s ease-in;
+}
+
+.tab:hover {
+    color:white !important;
+    left:7px;
+}
+
+#popular.tab {
+    background-color:#3498DB;
+}
+
+#recent.tab {
+    background-color:#E74C3C;
+}
+
+#search.tab {
+    background-color:#3498DB;
 }

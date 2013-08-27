@@ -12,8 +12,12 @@ from random import randint
 from hashlib import md5
 from urllib import urlencode
 import requests
+import datetime
 import operator
 import re
+
+
+# god damn this file is getting massive
 
 
 def IndexView(request):
@@ -50,8 +54,8 @@ def BrowseView(request):
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
             context = {"foodlist": menumods.Food.objects.order_by('-last_date')[:30]}
         else:
-            # default to showing ALL the foods!
-            context = {"foodlist": menumods.Food.objects.all()}
+            # default to showing ALL the foods! (that are upcoming, at least)
+            context = {"foodlist": menumods.Food.objects.filter(next_date__gte=datetime.date.today()).order_by('-next_date')}
         return render(request, 'menus/browse.html', context)
     else:
         return HttpResponseRedirect('/login')
