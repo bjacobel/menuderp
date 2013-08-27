@@ -212,15 +212,16 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
     float:left;
 }
 
-    .button {
-        padding:15px 25px;
-        background-color:#3498DB;
-        border-radius:6px;
-        text-decoration:none;
-        color:white;
-        font-weight:700;
-        font-weight:bold;
-    }
+.button {
+    padding:15px 25px;
+    background-color:#3498DB;
+    border-radius:6px;
+    text-decoration:none;
+    color:white;
+    font-weight:700;
+    font-weight:bold;
+}
+
 /* Be sure to place a .clear element after each set of columns, just to be safe */
 .clear { display: block; clear: both; }
 
@@ -278,10 +279,20 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
             <table>
                 <tr>
                     <td>
-                        <h3>Hi, *|FNAME|*!</h3>
-                        <p class="lead">You're just a few seconds away from getting started with Menuwatch. Click the button below to activate your account:</p>
-                        <br/>
-                        <a href="*|LINK|*" class="button">Finish Signup</a>                 
+                        <h3>Hi, {{ first_name }}!</h3>
+                        {% if email_type == "alert" %}
+                            <p class="lead">Just dropping you a line to let you know these favorites of yours are coming up soon:</p>
+                            <p class="items">{{ item_list }}</p>
+                            
+                            <!-- Callout Panel -->
+                            <p class="callout">
+                                In the mood for something else? <a href="http://menuwat.ch/browse">Manage your alerts &raquo;</a>
+                            </p><!-- /Callout Panel -->
+                        {% elif email_type == "verify" %}
+                            <p class="lead">You're just a few seconds away from getting started with Menuwatch. Click the button below to activate your account:</p>
+                            <br/>
+                            <a href="{{ verify_link }}" class="button">Finish Signup</a>
+                        {% endif %}              
                     </td>
                 </tr>
             </table>
@@ -306,7 +317,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
                         <p>
                             <a href="http://www.menuwat.ch/about">About</a> |
                             <a href="http://news.menuwat.ch">News</a> |
-                            <a href="http://www.menuwat.ch/unsubscribe?*|UNSUB|*">Unsubscribe</a>
+                            <a href="http://www.menuwat.ch/unsubscribe?{{ unsubscribe_link }}">Unsubscribe</a>
                         </p>
                     </td>
                 </tr>

@@ -44,10 +44,10 @@ SECRET_KEY = open(SECRET_FILE).read().strip()
 ########## END SECRET CONFIGURATION
 
 
-########## MANDRILL CONFIGURATION
+########## MAILGUN CONFIGURATION
 MAILGUN_FILE = normpath(join(DJANGO_ROOT, 'settings/mailgun_key'))
 MAILGUN_ACCESS_KEY = open(MAILGUN_FILE).read().strip()
-########## END MANDRILL CONFIGURATION
+########## END MAILGUN CONFIGURATION
 
 
 ########## CELERY CONFIGURATION

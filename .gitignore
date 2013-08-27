@@ -23,7 +23,6 @@ menuwatch/static/*
 menuwatch/settings/secret_key
 
 # API keys
-menuwatch/settings/mandrill_key
 menuwatch/settings/mailgun_key
 
 mysql2psql.yml

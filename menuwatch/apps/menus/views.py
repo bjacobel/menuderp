@@ -2,8 +2,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import EmailMessage
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError
+from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import RequestContext, loader
 from django.shortcuts import render
 from apps.menus import forms
 from apps.menus import models as menumods
@@ -84,19 +85,22 @@ def LoginView(request):
 
 
 def SignupView(request):
-    def send_verify_mail(user, link):
-        msg = EmailMessage(
-            subject="Menuwatch Signup Confirmation",
-            from_email="Menuwatch <mail@menuwat.ch>",
-            to=["{} {} <{}>".format(user.first_name, user.last_name, user.email),],
+    def send_verify_mail(request, new_user):
+        template = loader.get_template('menus/email.html')
+        context = RequestContext(request, {
+            'first_name': new_user.first_name,
+            'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':new_user.email, 'v':md5(new_user.email).hexdigest()}),
+            'unsubscribe_link': urlencode({'u':new_user.email, 't':md5(new_user.date_joined.isoformat()).hexdigest()}),
+            'email_type': 'verify',
+        })
+        msg = EmailMultiAlternatives(
+            "Menuwatch Signup Confirmation",
+            "Menuwatch requires an HTML-enabled email client. Sorry!",
+            "Menuwatch <mail@menuwat.ch>",
+            ["{} {} <{}>".format(new_user.first_name, new_user.last_name, new_user.email),],
         )
-        msg.template_content = {}
-        msg.template_name = "signup-verification"
-        msg.global_merge_vars = {
-            'FNAME': user.first_name,
-            'LINK': link,
-            'UNSUB': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
-        }
+        msg.attach_alternative(template.render(context), "text/html")
+        msg.content_subtype = "html"
         msg.send()
 
     if request.user.is_authenticated():
@@ -109,15 +113,14 @@ def SignupView(request):
                 fname = form.cleaned_data['fname'].capitalize()
                 lname = form.cleaned_data['lname'].capitalize()
                 pword = form.cleaned_data['pword1']
-                user = User.objects.create_user(email, email, pword)
-                user.first_name = fname
-                user.last_name = lname
-                user.is_active = False
-                user.save()
-                profile = menumods.Profile.objects.create(user_id=user.pk)
+                new_user = User.objects.create_user(email, email, pword)
+                new_user.first_name = fname
+                new_user.last_name = lname
+                new_user.is_active = False
+                new_user.save()
+                profile = menumods.Profile.objects.create(user_id=new_user.pk)
                 profile.save()
-                verify_link = "http://www.menuwat.ch/verify?" + urlencode({'e':email, 'v':md5(email).hexdigest()})
-                send_verify_mail(user, verify_link)
+                send_verify_mail(request, new_user)
                 return HttpResponseRedirect('/verify')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form
