@@ -480,10 +480,22 @@ td:hover .icon-plus {
     display:block;
     color:white !important;
 
+    // this is insane. fuck everyone who ever worked on a non-standards-compliant browser
+    // and didn't speak out against fusterclucks like this. 
+
     -webkit-transition:left 0.15s ease-in;
        -moz-transition:left 0.15s ease-in;
+        -ms-transition:left 0.15s ease-in;
          -o-transition:left 0.15s ease-in;
             transition:left 0.15s ease-in;
+}
+
+.tab > span {
+    -webkit-transform:rotate(-90deg);
+       -moz-transform:rotate(-90deg);
+        -ms-transform:rotate(-90deg);
+         -o-transform:rotate(-90deg);
+            transform:rotate(-90deg);
 }
 
 .tab:hover {
