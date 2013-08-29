@@ -8,3 +8,4 @@ django-suit==0.2.2
 requests==1.2.3
 django-nose==1.1
 django-mailgun==0.2.2
+django-picklefield==0.3.0

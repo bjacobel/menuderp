@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from hashlib import md5
 from datetime import date, timedelta
+from picklefield.fields import PickledObjectField
 import re
 
 
@@ -13,23 +14,11 @@ class Food (models.Model):
     # variable
     last_date = models.DateField()
     next_date = models.DateField()
+    next_date_array = PickledObjectField(default=[], editable=False)
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
     myhash = models.CharField(max_length=32,editable=False)
-
-    def next_date_readable(self):
-        if self.next_date == date.today():
-            return "Today"
-        elif self.next_date == date.today()+timedelta(days=1):
-            return "Tomorrow"
-        elif self.next_date > date.today() and self.next_date < date.today()+timedelta(days=6):
-            return self.next_date.strftime("%A")
-        elif self.next_date < date.today():
-            return "Unknown"
-        else:
-            return self.next_date.strftime("%b %d")
-
 
     def is_vegan(self):
         return re.search('\s?V(,|$)', self.attrs)
@@ -55,6 +44,27 @@ class Food (models.Model):
         for watch in self.watch_set.all():
             watchers.append(watch.owner.user)
         return watchers
+
+    def push_next_date(self, date):  # add a future date to the end of the date array
+        self.next_date_array.append(date)
+
+    def pop_next_date(self):  # pop and return the true next date
+        return self.next_date_array.pop(0)
+
+    def peek_next_date(self):  # peek at the true next date
+        return self.next_date_array[0]
+
+    def next_date_readable(self):
+        if self.peek_next_date() == date.today():
+            return "Today"
+        elif self.peek_next_date() == date.today()+timedelta(days=1):
+            return "Tomorrow"
+        elif self.peek_next_date() > date.today() and self.peek_next_date() < date.today()+timedelta(days=6):
+            return self.next_date.strftime("%A")
+        elif self.peek_next_date() < date.today():
+            return "Unknown"
+        else:
+            return self.next_date.strftime("%b %d")
 
     def __unicode__(self):
         return self.name

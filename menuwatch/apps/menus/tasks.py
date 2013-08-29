@@ -77,14 +77,13 @@ def build_db(lookahead=0):
                                 old_food.meal = meal
                                 old_food.foodgroup = foodgroup
                                 
-                                if False and I_can_find_a_way_to_make_next_date_an_array:
-                                    old_food.last_date = old_food.next_date[0]
-                                    old_food.next_date.append(today)
+                                old_food.push_next_date.append(today)  # stick on the end of the array
 
                                 old_food.save()
                             else:
                                 # it's a brand new food
-                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, next_date=today, location=key, meal=meal, foodgroup=foodgroup)
+                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, location=key, meal=meal, foodgroup=foodgroup)
+                                new_food.push_next_date(today)
                                 new_food.save()
 
 
@@ -93,5 +92,8 @@ def build_db_future(days):
     for i in days:
         build_db(i)
     
-
+@task()
+def sync_food_dates():
+    for food in menu_models.Food.objects.filter(peek_next_date__exact=date.today()):
+        food.last_date = old_food.pop_next_date()  # pop from the front of the array
 
