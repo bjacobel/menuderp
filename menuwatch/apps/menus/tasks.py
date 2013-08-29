@@ -68,28 +68,30 @@ def build_db(lookahead=0):
 
                             new_hash = md5(food + attrs).hexdigest()
 
-                            matches_hash = menu_models.Food.objects.get(myhash__exact=new_hash)
+                            try:
+                                old_food = menu_models.Food.objects.get(myhash__exact=new_hash)
+                            except: 
+                                old_food = None
 
-                            if matches_hash:
+                            if old_food is not None:
                                 #it's a food we've seen before
-                                old_food = matches_hash[0]
                                 old_food.location = key
                                 old_food.meal = meal
                                 old_food.foodgroup = foodgroup
                                 
-                                old_food.push_next_date.append(today)  # stick on the end of the array
+                                old_food.push_next_date(today)  # stick on the end of the array
 
                                 old_food.save()
                             else:
                                 # it's a brand new food
-                                new_food = menu_models.Food(name=food, attrs=attrs, last_date=today, location=key, meal=meal, foodgroup=foodgroup)
+                                new_food = menu_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
                                 new_food.push_next_date(today)
                                 new_food.save()
 
 
 @task()
 def build_db_future(days):
-    for i in days:
+    for i in xrange(0, days):
         build_db(i)
     
 @task()

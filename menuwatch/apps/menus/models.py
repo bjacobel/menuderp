@@ -12,9 +12,9 @@ class Food (models.Model):
     attrs = models.CharField(max_length=25, blank=True)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
 
     # variable
-    last_date = models.DateField()
-    next_date = models.DateField()
-    next_date_array = PickledObjectField(default=[], editable=False)
+    last_date = models.DateField(null=True)
+    next_date = models.DateField(default=date.today())
+    next_date_array = PickledObjectField(default=[])
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
@@ -46,7 +46,11 @@ class Food (models.Model):
         return watchers
 
     def push_next_date(self, date):  # add a future date to the end of the date array
-        self.next_date_array.append(date)
+        array = self.next_date_array
+        if array == u'':
+            array = []
+        array.append(date)
+        self.next_date_array = array
 
     def pop_next_date(self):  # pop and return the true next date
         return self.next_date_array.pop(0)
