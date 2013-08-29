@@ -5,10 +5,10 @@ from models import Food, Watch, Profile
 class FoodsAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,              {'fields': ['name', 'attrs']}),
-        ('Up Next',       {'fields': ['next_date', 'location', 'meal', 'foodgroup']}),
+        ('Up Next',       {'fields': ['location', 'meal', 'foodgroup']}),
         ('More',       {'fields': ['last_date']}),
     ]
-    list_display = ('name', 'next_date', 'meal', 'location', 'foodgroup', 'attrs', 'num_watches', 'last_date', )
+    list_display = ('name', 'peek_next_date', 'meal', 'location', 'foodgroup', 'attrs', 'num_watches', 'last_date', )
     list_filter = ['meal', 'foodgroup', 'location', 'attrs']
     search_fields = ['name']
 
