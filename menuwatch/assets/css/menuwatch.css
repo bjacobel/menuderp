@@ -480,8 +480,8 @@ td:hover .icon-plus {
     display:block;
     color:white !important;
 
-    // this is insane. fuck everyone who ever worked on a non-standards-compliant browser
-    // and didn't speak out against fusterclucks like this. 
+    /* this is insane. fuck everyone who ever worked on a non-standards-compliant browser
+    and didn't speak out against fusterclucks like this. */
 
     -webkit-transition:left 0.15s ease-in;
        -moz-transition:left 0.15s ease-in;
