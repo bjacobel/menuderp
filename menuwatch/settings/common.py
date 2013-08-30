@@ -201,9 +201,6 @@ THIRD_PARTY_APPS = (
 
     # Nose test suite
     'django_nose',
-
-    # Mandrill email backend
-    'djrill',
 )
 
 LOCAL_APPS = (
