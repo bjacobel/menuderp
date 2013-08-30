@@ -61,21 +61,15 @@ class Food (models.Model):
         except:
             return None
 
-    def peek_last_next_date(self):
-        try:
-            return self.next_date_array[-1]
-        except:
-            return None
-
     def next_date_readable(self):
         if self.peek_next_date() == date.today():
             return "Today"
         elif self.peek_next_date() == date.today()+timedelta(days=1):
             return "Tomorrow"
-        elif self.peek_next_date() > date.today() and self.peek_next_date() < date.today()+timedelta(days=6):
+        elif self.peek_next_date() < date.today()+timedelta(days=30):
             return self.next_date.strftime("%A")
-        elif self.peek_next_date() < date.today():
-            return "Unknown"
+        elif self.peek_next_date() is None:
+            return "Next Month"
         else:
             return self.next_date.strftime("%b %d")
 

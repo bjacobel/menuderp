@@ -4,7 +4,6 @@ from apps.menus import models as menu_models
 from hashlib import md5
 import requests
 import re
-import sys
 
 @task()
 def build_db(lookahead=0):
@@ -78,24 +77,29 @@ def build_db(lookahead=0):
                                 old_food.location = key
                                 old_food.meal = meal
                                 old_food.foodgroup = foodgroup
-                                
-                                old_food.push_next_date(today)  # stick on the end of the array
+
+                                try:
+                                    most_recent_date_found = old_food.next_date_array[-1]
+                                    if most_recent_date_found != today:
+                                        old_food.push_next_date(today)  # stick on the end of the array
+                                except:
+                                    pass
+
                                 old_food.save()
                             else:
                                 # it's a brand new food
-                                new_food = menu_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
-
-                                most_recent_date_found = new_food.peek_last_next_date 
-
-                                if most_recent_date_found is not None and most_recent_date_found is not today:  # prevent date from being multiply appended
+                                try:
+                                    new_food = menu_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
                                     new_food.push_next_date(today)
-
-                                new_food.save()
+                                    new_food.save()
+                                except:  # they goofed something in the menu formatting. IDGAF. Drop it.
+                                    pass
 
     # sync the dates
     for food in menu_models.Food.objects.all():
         if food.peek_next_date() == date.today() - timedelta(days=1):  # the food was offered yesterday
             food.last_date = food.pop_next_date()  # pop from the front of the array
+            food.save()
 
 
 @task()
