@@ -46,17 +46,26 @@ class Food (models.Model):
         return watchers
 
     def push_next_date(self, date):  # add a future date to the end of the date array
-        array = self.next_date_array
-        if array == u'':
-            array = []
-        array.append(date)
-        self.next_date_array = array
+        self.next_date_array = list(self.next_date_array) + [date,]
+        return self.next_date_array
 
     def pop_next_date(self):  # pop and return the true next date
-        return self.next_date_array.pop(0)
+        try:
+            return self.next_date_array.pop(0)
+        except:
+            return None
 
     def peek_next_date(self):  # peek at the true next date
-        return self.next_date_array[0]
+        try:
+            return self.next_date_array[0]
+        except:
+            return None
+
+    def peek_last_next_date(self):
+        try:
+            return self.next_date_array[-1]
+        except:
+            return None
 
     def next_date_readable(self):
         if self.peek_next_date() == date.today():
