@@ -11,7 +11,6 @@ from apps.menus import models as menumods
 from random import randint
 from hashlib import md5
 from urllib import urlencode
-import datetime
 import operator
 
 
@@ -48,12 +47,35 @@ def IndexView(request):
 def BrowseView(request):
     if request.user.is_authenticated():
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
-            context = {"foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:30]}
+            context = {
+                "tab": "popular",
+                "foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:30]
+            }
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
-            context = {"foodlist": menumods.Food.objects.order_by('-last_date')[:30]}
+            context = {
+                "tab": "recent",
+                "foodlist": menumods.Food.objects.order_by('-last_date')[:30]
+            }
+        elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
+            foods = sorted(menumods.Food.objects.filter(name__icontains=request.GET['query']), key=operator.attrgetter("peek_next_date"))
+            if len(foods) == 0:
+                foods = None
+            context = {
+                "tab": "searchresults",
+                "searchstr": request.GET['query'],
+                "foodlist": foods
+            } 
+        elif 'sort' in request.GET and request.GET['sort'] == 'search':
+            context = {
+                "tab": "search",
+                "foodlist": None
+            }
         else:
-            # default to showing ALL the foods! (that are upcoming, at least)
-            context = {"foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter('peek_next_date'))}
+            # default to showing ALL the foods!
+            context = {
+                "tab": "all",
+                "foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter('peek_next_date'))
+            }
         return render(request, 'menus/browse.html', context)
     else:
         return HttpResponseRedirect('/login')
@@ -256,6 +278,7 @@ def DeleteView(request):
             return HttpResponse("No authenticated user present", status=403)
     else:
         return HttpResponse("I'm a teapot", status=418)
+
 
 def LogoutView(request):
     if request.user.is_authenticated():

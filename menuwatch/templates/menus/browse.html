@@ -2,6 +2,20 @@
 
 {% block body %}
     <div class="container table-container">
+        {% if tab = "searchresults" %}
+            <h3 class="lato">Search results for "{{ searchstr }}":</h3>
+        {% endif %}
+        {% if foodlist == None and tab = "search" %}
+            <div class="searchboxwrapper">
+                <input type="text" class="lato searchbox form-control input-lg" placeholder="Search for foods...">
+                <div class="search cta active-button"><p class="lato cta-text unhighlightable">SEARCH</p><i class="icon-chevron-right"></i></div>
+            </div>
+        {% elif foodlist == None %}
+            <div class="searcherror">
+                <i class="icon-question-sign icon-4x"></i>
+                <h3 class="lato text-center"><em>Nothing found. <a href="/browse?sort=search">Go back?</a></em></h3>
+            </div>
+        {% else %}
         <table class="table table-hover">  {# bootstrap makes using htmltables just barely tolerable #}
             <thead>
                 <td><h4 class="lato narrow">FOOD</h4></td>
@@ -30,14 +44,31 @@
             {% endfor %}
             </tbody>
         </table>
+        {% endif %}
     </div>
     <div class="tabs">
-        <a href="/browse?sort=popular" id="popular" class="lato bold tab"><span>POPULAR</span></a>
-        <a href="/browse?sort=recent" id="recent" class="lato bold tab"><span>RECENT</span></a>
-        <a href="/browse?sort=search" id="search" class="lato bold tab"><span>SEARCH</span></a>
+        <a href="/browse?sort=popular" id="popular" class="lato bold tab"><p>POPULAR</p></a>
+        <a href="/browse?sort=recent" id="recent" class="lato bold tab"><p>RECENT</p></a>
+        <a href="/browse?sort=search" id="search" class="lato bold tab"><p>SEARCH</p></a>
     </div>
 {% endblock %}
 
 {% block footer_scripts %}
     {% include 'menus/api.html' %}
+    <script>
+        $('input').keypress(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                foodsearch();
+            }
+        });
+        $(".search").click(function () {
+            foodsearch();
+        });
+        function foodsearch() {
+            href = "/browse?sort=search&query="+$('input')[0].value;
+            console.log(href);
+            window.location.href = href;
+        };
+    </script>
 {% endblock %}

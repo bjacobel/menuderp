@@ -201,6 +201,7 @@ svg text {
     background-color:#3498DB;
     color:white;
     text-decoration:none;
+    cursor:pointer !important;
 }
 
 .cta-text {
@@ -490,12 +491,19 @@ td:hover .icon-plus {
             transition:left 0.15s ease-in;
 }
 
-.tab > span {
-    -webkit-transform:rotate(-90deg);
-       -moz-transform:rotate(-90deg);
-        -ms-transform:rotate(-90deg);
-         -o-transform:rotate(-90deg);
-            transform:rotate(-90deg);
+.tab > p {
+    position:relative;
+    top:45px;
+    left:3px;
+    -webkit-transform: rotate(-90deg);
+       -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+         -o-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+}
+
+#popular.tab > p {
+    top:50px;
 }
 
 .tab:hover {
@@ -513,4 +521,25 @@ td:hover .icon-plus {
 
 #search.tab {
     background-color:#3498DB;
+}
+
+.searcherror {
+    height:100px;
+    width:250px;
+    margin:100px auto;
+}
+
+.searcherror > i {
+    position:relative;
+    left:100px;
+}
+
+.searchboxwrapper {
+    width:100%;
+    padding:0 50px;
+    margin-top:80px;
+}
+
+.searchboxwrapper .cta {
+    width:150px;
 }
