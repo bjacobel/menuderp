@@ -10,6 +10,7 @@ class Food (models.Model):
     # fixed
     name = models.CharField(max_length=100)
     attrs = models.CharField(max_length=25, blank=True)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
+    myhash = models.CharField(max_length=32,editable=False)
 
     # variable
     last_date = models.DateField(null=True)
@@ -17,7 +18,7 @@ class Food (models.Model):
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
-    myhash = models.CharField(max_length=32,editable=False)
+   
 
     def is_vegan(self):
         return re.search('\s?V(,|$)', self.attrs)
