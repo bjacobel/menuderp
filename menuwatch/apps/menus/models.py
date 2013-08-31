@@ -13,7 +13,6 @@ class Food (models.Model):
 
     # variable
     last_date = models.DateField(null=True)
-    next_date = models.DateField(default=date.today())
     next_date_array = PickledObjectField(default=[])
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
