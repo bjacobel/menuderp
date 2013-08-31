@@ -66,12 +66,12 @@ class Food (models.Model):
             return "Today"
         elif self.peek_next_date() == date.today()+timedelta(days=1):
             return "Tomorrow"
-        elif self.peek_next_date() < date.today()+timedelta(days=30):
-            return self.next_date.strftime("%A")
+        elif self.peek_next_date() > date.today()+timedelta(days=1) and self.peek_next_date() < date.today()+timedelta(days=6):
+            return self.peek_next_date().strftime("%A")
         elif self.peek_next_date() is None:
             return "Next Month"
         else:
-            return self.next_date.strftime("%b %d")
+            return self.peek_next_date().strftime("%b %d")
 
     def __unicode__(self):
         return self.name

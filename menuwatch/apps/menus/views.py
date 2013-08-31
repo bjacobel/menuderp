@@ -11,10 +11,8 @@ from apps.menus import models as menumods
 from random import randint
 from hashlib import md5
 from urllib import urlencode
-import requests
 import datetime
 import operator
-import re
 
 
 # god damn this file is getting massive
@@ -55,7 +53,7 @@ def BrowseView(request):
             context = {"foodlist": menumods.Food.objects.order_by('-last_date')[:30]}
         else:
             # default to showing ALL the foods! (that are upcoming, at least)
-            context = {"foodlist": menumods.Food.objects.filter(next_date__gte=datetime.date.today()).order_by('-next_date')}
+            context = {"foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter('peek_next_date'))}
         return render(request, 'menus/browse.html', context)
     else:
         return HttpResponseRedirect('/login')
@@ -209,7 +207,7 @@ def UnsubView(request):
             User.objects.get(email__exact=user).delete()
             return render(request, 'menus/unsubscribe.html')
         else:
-            return HttpResponseServerError()
+            return HttpResponse("Request not authenticated", status=403)
     else:
         return HttpResponseRedirect('/')
 
@@ -224,7 +222,7 @@ def AddView(request):
                 user = int(request.user.pk)
                 if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
                     try:
-                        watch = menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
+                        menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
                         return HttpResponse("Watch successfully created", status=201)
                     except:
                         return HttpResponse("Specified food does not exist", status=404)
