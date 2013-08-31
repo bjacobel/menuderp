@@ -1,10 +1,12 @@
 from celery import task
 from datetime import date, timedelta
 from apps.menus import models as menu_models
+from django.db import transaction
 from hashlib import md5
 import requests
 import re
 
+@transaction.commit_manually
 @task()
 def build_db(lookahead=0):
     today = date.today() + timedelta(days=lookahead)
@@ -88,18 +90,21 @@ def build_db(lookahead=0):
                                 old_food.save()
                             else:
                                 # it's a brand new food
+                                sID = transaction.savepoint()
                                 try:
                                     new_food = menu_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
                                     new_food.push_next_date(today)
                                     new_food.save()
                                 except:  # they goofed something in the menu formatting. IDGAF. Drop it.
-                                    pass
+                                    transaction.savepoint_rollback(sID)
 
     # sync the dates
     for food in menu_models.Food.objects.all():
         if food.peek_next_date() == date.today() - timedelta(days=1):  # the food was offered yesterday
             food.last_date = food.pop_next_date()  # pop from the front of the array
             food.save()
+
+    transaction.commit()
 
 
 @task()
