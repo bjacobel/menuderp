@@ -66,8 +66,7 @@
             foodsearch();
         });
         function foodsearch() {
-            href = "/browse?sort=search&query="+$('input')[0].value;
-            console.log(href);
+            href = "/browse?sort=search&query="+$('input').val();
             window.location.href = href;
         };
     </script>
