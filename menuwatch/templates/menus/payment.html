@@ -3,12 +3,16 @@
 {% block body %}
     <div class="container">
         <a class="logo-bg" href="/">{% include "menus/logo.html" %}</a>
+        <form action="/payment" method="post">{% csrf_token %}</form>
     </div>
 {% endblock %}
 
+
+{% block footer_scripts_nocompress %}
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+{% endblock %}
 {% block footer_scripts %}
     <script>$(".navbar").addClass("invisible");</script>
-    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
     <script>
         $(document).ready(function(){
             var token = function(res){
@@ -17,7 +21,7 @@
             };
 
             StripeCheckout.open({
-                key:         'pk_test_3lJbgHb3MndGr6YnKjkoMpnz',
+                key:         'pk_live_XD4tFdJYSAZ7AgjbvWdUDMkP',
                 address:     false,
                 amount:      299,
                 currency:    'usd',

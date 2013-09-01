@@ -53,7 +53,11 @@ SECRET_KEY = environ.get('SECRET_KEY', '')
 
 ########## MAILGUN CONFIGURATION
 MAILGUN_ACCESS_KEY = environ.get('MAILGUN_KEY', '')
-########## MAILGUN CONFIGURATION
+########## END MAILGUN CONFIGURATION
+
+########## STRIPE CONFIGURATION
+MAILGUN_KEY = environ.get('STRIPE_KEY', '')
+########## END STRIPE CONFIGURATION
 
 ########## STORAGE CONFIGURATION
 # See: http://django-storages.readthedocs.org/en/latest/index.html

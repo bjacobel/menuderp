@@ -12,6 +12,7 @@ from random import randint
 from hashlib import md5
 from urllib import urlencode
 import operator
+import stripe
 
 
 # god damn this file is getting massive
@@ -178,7 +179,7 @@ def AccountView(request):
         return HttpResponseRedirect('/login')
     else:
         context = {
-            "profile": menumods.Profile.objects.get(user__exact=request.user.pk),
+            "profile": menumods.Profile.objects.get(user__exact=int(request.user.pk)),
             'unsub_link': urlencode({'u':request.user.email, 't':md5(request.user.date_joined.isoformat()).hexdigest()}),
         }
         return render(request, 'menus/account.html', context)
@@ -288,7 +289,7 @@ def LogoutView(request):
 
 def PaymentView(request):
     if request.method == 'POST':  # If the form has been submitted...
-        stripe.api_key = "sk_test_WzzFo7UJ7FiZz8vVS2ly72nC"
+        stripe.api_key = STRIPE_KEY
         token = request.POST['stripeToken']
         try:
             charge = stripe.Charge.create(
@@ -297,10 +298,12 @@ def PaymentView(request):
                 card=token,
                 description=request.user.username
             )
-            menumods.Profile.objects.get(user__exact=request.user).pro = True
-            HttpResponseRedirect("/account")
+            proprof = menumods.Profile.objects.get(user__exact=request.user)
+            proprof.pro = True
+            proprof.save()
+            return HttpResponseRedirect("/account")
         except stripe.CardError, e:
-            return HttpResponse("Your card did not validate, or was rejected. Sorry.", status=402)
+            return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1>", status=402)
     else:
         return render(request, 'menus/payment.html')
 

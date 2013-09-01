@@ -50,6 +50,12 @@ MAILGUN_ACCESS_KEY = open(MAILGUN_FILE).read().strip()
 ########## END MAILGUN CONFIGURATION
 
 
+########## STRIPE CONFIGURATION
+STRIPE_FILE = normpath(join(DJANGO_ROOT, 'settings/stripe_key'))
+STRIPE_KEY = open(STRIPE_FILE).read().strip()
+########## END STRIPE CONFIGURATION
+
+
 ########## CELERY CONFIGURATION
 # See: http://docs.celeryq.org/en/latest/configuration.html#celery-always-eager
 CELERY_ALWAYS_EAGER = True
