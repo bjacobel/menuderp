@@ -287,7 +287,22 @@ def LogoutView(request):
 
 
 def PaymentView(request):
-    return render(request, 'menus/payment.html')
+    if request.method == 'POST':  # If the form has been submitted...
+        stripe.api_key = "sk_test_WzzFo7UJ7FiZz8vVS2ly72nC"
+        token = request.POST['stripeToken']
+        try:
+            charge = stripe.Charge.create(
+                amount=299, # amount in cents, again
+                currency="usd",
+                card=token,
+                description=request.user.username
+            )
+            menumods.Profile.objects.get(user__exact=request.user).pro = True
+            HttpResponseRedirect("/account")
+        except stripe.CardError, e:
+            return HttpResponse("Your card did not validate, or was rejected. Sorry.", status=402)
+    else:
+        return render(request, 'menus/payment.html')
 
 
 def ExcludeView(request):
