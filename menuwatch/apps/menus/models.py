@@ -13,7 +13,7 @@ class Food (models.Model):
     myhash = models.CharField(max_length=32,editable=False)
 
     # variable
-    last_date = models.DateField(null=True)
+    last_date = models.DateField(blank=True, null=True)
     next_date_array = PickledObjectField(default=[])
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
