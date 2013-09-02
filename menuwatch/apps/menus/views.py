@@ -13,6 +13,7 @@ from hashlib import md5
 from urllib import urlencode
 import operator
 import stripe
+import re
 
 
 # god damn this file is getting massive
@@ -79,34 +80,48 @@ def BrowseView(request):
             }
         return render(request, 'menus/browse.html', context)
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login?next=browse')
 
 
 def LoginView(request):
+    if re.search(r'herokuapp', request.META.get('HTTP_HOST')):
+        logout(request)
+
     if request.user.is_authenticated():
         return HttpResponseRedirect('/browse')
     else:
-        if request.method == 'POST':  # If the form has been submitted...
+        if request.method == 'POST':
+            try:
+                redirect = re.search('(?:next=)(.+)', request.META.get('HTTP_REFERER')).group(1)
+            except:
+                redirect = "browse"
+            
             form = forms.LoginForm(request.POST)  # A form bound to the POST data
+
             if form.is_valid():  # All validation rules pass
                 email = form.cleaned_data['email']
                 pword = form.cleaned_data['pword']
                 user = authenticate(username=email, password=pword)
                 if user is not None and user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/browse')  # Redirect after POST
+                    return HttpResponseRedirect('/'+redirect)
                 else:
-                    return HttpResponseRedirect('/login')  # Redirect after POST
+                    return HttpResponseRedirect('/login?='+redirect)
         else:
             form = forms.LoginForm()  # An unbound form
 
-        return render(request, 'menus/auth.html', {
+        context = {
             'form': form,
             'action': 'login',
             'button_text': "LOG IN",
             'other_action': 'signup',
             'other_button_text': "sign up",
-        })
+        }
+
+        if 'HTTP_REFERER' in request.META and re.search('payment', request.META['HTTP_REFERER']):
+            context['reverify'] = True
+
+        return render(request, 'menus/auth.html', context)
 
 
 def SignupView(request):
@@ -161,7 +176,7 @@ def SignupView(request):
 
 def VerifyView(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/browse')
     elif request.GET and 'e' in request.GET and 'v' in request.GET:
         email = request.GET['e']
         emailhash = request.GET['v']
@@ -176,7 +191,7 @@ def VerifyView(request):
 
 def AccountView(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login?next=account')
     else:
         context = {
             "profile": menumods.Profile.objects.get(user__exact=int(request.user.pk)),
@@ -187,7 +202,7 @@ def AccountView(request):
 
 def ChangePasswordView(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login?next=account')
     else:
         if request.method == 'POST':  # If the form has been submitted...
             form = forms.ChangePasswordForm(request.POST)  # A form bound to the POST data
@@ -215,7 +230,7 @@ def ChangePasswordView(request):
 
 def UpgradeView(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login?next=upgrade')
     else:
         context = { "popular" : sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:10]}
         return render(request, 'menus/upgrade.html', context)
@@ -288,24 +303,27 @@ def LogoutView(request):
 
 
 def PaymentView(request):
-    if request.method == 'POST':  # If the form has been submitted...
-        stripe.api_key = STRIPE_KEY
-        token = request.POST['stripeToken']
-        try:
-            charge = stripe.Charge.create(
-                amount=299, # amount in cents, again
-                currency="usd",
-                card=token,
-                description=request.user.username
-            )
-            proprof = menumods.Profile.objects.get(user__exact=request.user)
-            proprof.pro = True
-            proprof.save()
-            return HttpResponseRedirect("/account")
-        except stripe.CardError, e:
-            return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1>", status=402)
+    if request.user.is_authenticated():
+        if request.method == 'POST':  # If the form has been submitted...
+            stripe.api_key = STRIPE_KEY
+            token = request.POST['stripeToken']
+            try:
+                charge = stripe.Charge.create(
+                    amount=299, # amount in cents, again
+                    currency="usd",
+                    card=token,
+                    description=request.user.username
+                )
+                proprof = menumods.Profile.objects.get(user__exact=request.user)
+                proprof.pro = True
+                proprof.save()
+                return HttpResponseRedirect("/account")
+            except stripe.CardError, e:
+                return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1>", status=402)
+        else:
+            return render(request, 'menus/payment.html')
     else:
-        return render(request, 'menus/payment.html')
+        return HttpResponseRedirect('/login?next=payment')
 
 
 def ExcludeView(request):
@@ -314,3 +332,6 @@ def ExcludeView(request):
 
 def AboutView(request):
     return render(request, 'menus/about.html')
+
+def BlockView(request):
+    return render(request, 'menus/block.html')

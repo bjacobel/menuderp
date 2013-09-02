@@ -3,6 +3,9 @@
 {% block body %}
 <div class="shim"></div>
 <div class="auth-box">
+    {% if reverify %}
+        <p class='lato'>Please verify your account details before continuing.</p>
+    {% endif %}
     <form class="auth-form" action="/{{ action }}" method="post">{% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}
