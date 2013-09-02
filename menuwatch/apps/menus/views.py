@@ -84,9 +84,6 @@ def BrowseView(request):
 
 
 def LoginView(request):
-    if re.search(r'herokuapp', request.META.get('HTTP_HOST')):
-        logout(request)
-
     if request.user.is_authenticated():
         return HttpResponseRedirect('/browse')
     else:
@@ -106,7 +103,7 @@ def LoginView(request):
                     login(request, user)
                     return HttpResponseRedirect('/'+redirect)
                 else:
-                    return HttpResponseRedirect('/login?='+redirect)
+                    return HttpResponseRedirect('/login?next='+redirect)
         else:
             form = forms.LoginForm()  # An unbound form
 
@@ -118,7 +115,7 @@ def LoginView(request):
             'other_button_text': "sign up",
         }
 
-        if 'HTTP_REFERER' in request.META and re.search('payment', request.META['HTTP_REFERER']):
+        if 'HTTP_HOST' in request.META and re.search('herokuapp', request.META['HTTP_HOST']):
             context['reverify'] = True
 
         return render(request, 'menus/auth.html', context)
@@ -303,9 +300,15 @@ def LogoutView(request):
 
 
 def PaymentView(request):
+    if not re.search(r'herokuapp', request.META.get('HTTP_HOST')):
+        return HttpResponseRedirect("https://menuwatch.herokuapp.com/login?next=payment")
+
     if request.user.is_authenticated():
         if request.method == 'POST':  # If the form has been submitted...
-            stripe.api_key = STRIPE_KEY
+            try:
+                from settings import prod; stripe.api_key = prod.STRIPE_KEY
+            except:
+                from settings import dev; stripe.api_key = dev.STRIPE_KEY
             token = request.POST['stripeToken']
             try:
                 charge = stripe.Charge.create(
@@ -317,9 +320,10 @@ def PaymentView(request):
                 proprof = menumods.Profile.objects.get(user__exact=request.user)
                 proprof.pro = True
                 proprof.save()
-                return HttpResponseRedirect("/account")
+                logout(request)
+                return HttpResponseRedirect("http://www.menuwat.ch/account")
             except stripe.CardError, e:
-                return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1>", status=402)
+                return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1><h2><a href='http://www.menuwat.ch/account'>Back to Account ></a></h2>", status=200)
         else:
             return render(request, 'menus/payment.html')
     else:
