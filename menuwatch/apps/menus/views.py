@@ -66,15 +66,15 @@ def BrowseView(request):
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
             context = {
                 "tab": "popular",
-                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches)[:30]
+                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches(), reverse=True)[:40]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
             context = {
                 "tab": "recent",
-                "foodlist": menumods.Food.objects.order_by('-last_date')[:30]
+                "foodlist": menumods.Food.objects.order_by('-last_date')[:40]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
-            foods = sorted(menumods.Food.objects.filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date)
+            foods = sorted(menumods.Food.objects.filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())
             if len(foods) == 0:
                 foods = None
             context = {
@@ -91,7 +91,7 @@ def BrowseView(request):
             # default to showing ALL the foods!
             context = {
                 "tab": "all",
-                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.peek_next_date)
+                "foodlist": sorted(menumods.Food.objects.exclude(next_date_array=[]), key=lambda x: x.peek_next_date())[:40]
             }
         return render(request, 'menus/browse.html', context)
     else:
@@ -258,7 +258,7 @@ def UpgradeView(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login?next=upgrade')
     else:
-        context = { "popular" : sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches)[:10]}
+        context = { "popular" : sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches(), reverse=True)[:10]}
         return render(request, 'menus/upgrade.html', context)
 
 

@@ -73,6 +73,18 @@ class Food (models.Model):
         else:
             return self.peek_next_date().strftime("%b %d")
 
+    def last_date_readable(self):
+        if self.last_date == date.today()-timedelta(days=1):
+            return "Yesterday"
+        elif self.last_date == date.today()-timedelta(days=2):
+            return "Two days ago"
+        elif self.last_date < date.today()+timedelta(days=2) and self.last_date > date.today()+timedelta(days=6):
+            return "Last " + self.last_date.strftime("%A")
+        elif self.last_date is None:
+            return "Last Month"
+        else:
+            return self.last_date.strftime("%b %d")
+
     def __unicode__(self):
         return self.name
 

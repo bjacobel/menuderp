@@ -163,7 +163,7 @@ def send_email(raised_alerts, user):
         'first_name': user.first_name,
         'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
         'email_type': 'alert',
-        'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date)
+        'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date(), reverse=True)
     }
     msg = EmailMultiAlternatives(
         "Menuwatch Signup Confirmation",

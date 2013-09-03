@@ -21,7 +21,11 @@
                 <td><h4 class="lato narrow">FOOD</h4></td>
                 <td><h4 class="lato narrow">INFO</h4></td>
                 <td><h4 class="lato narrow">COURSE</h4></td>
-                <td><h4 class="lato narrow">NEXT UP</h4></td>
+                {% if tab = "recent" %}
+                    <td><h4 class="lato narrow">LAST UP</h4></td>
+                {% else %}
+                    <td><h4 class="lato narrow">NEXT UP</h4></td>
+                {% endif %}
                 <td><h4 class="lato narrow">AT</h4></td>
                 <td><h4 class="lato narrow">FOR</h4></td>
                 <td><h4 class="lato narrow">WATCH?</h4></td>
@@ -32,7 +36,11 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.attrs }}</td>
                     <td>{{ item.foodgroup }}</td>
-                    <td>{{ item.next_date_readable }}</td>
+                    {% if tab = "recent" %}
+                        <td>{{ item.last_date_readable }}</td>
+                    {% else %}
+                        <td>{{ item.next_date_readable }}</td>
+                    {% endif %}
                     <td>{{ item.location }}</td>
                     <td>{{ item.meal }}</td>
                     {% if user in item.watchers %}
