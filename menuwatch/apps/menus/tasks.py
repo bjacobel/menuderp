@@ -103,7 +103,7 @@ def build_db(lookahead=28):
 
     # sync the dates
     for food in menu_models.Food.objects.all():
-        if food.peek_next_date() == date.today() - timedelta(days=1):  # the food was offered yesterday
+        if food.peek_next_date() < date.today() - timedelta(days=1):  # the food was offered yesterday or before
             food.last_date = food.pop_next_date()  # pop from the front of the array
             food.save()
 
