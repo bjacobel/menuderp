@@ -4,14 +4,13 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect, HttpResponse
-from django.template import RequestContext, loader
-from django.shortcuts import render
+from django.template import loader
+from django.shortcuts import render, render_to_response
 from apps.menus import forms
 from apps.menus import models as menumods
 from random import randint
 from hashlib import md5
 from urllib import urlencode
-import operator
 import stripe
 import re
 
@@ -67,7 +66,7 @@ def BrowseView(request):
         if 'sort' in request.GET and request.GET['sort'] == 'popular':
             context = {
                 "tab": "popular",
-                "foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:30]
+                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches)[:30]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
             context = {
@@ -75,7 +74,7 @@ def BrowseView(request):
                 "foodlist": menumods.Food.objects.order_by('-last_date')[:30]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
-            foods = sorted(menumods.Food.objects.filter(name__icontains=request.GET['query']), key=operator.attrgetter("peek_next_date"))
+            foods = sorted(menumods.Food.objects.filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date)
             if len(foods) == 0:
                 foods = None
             context = {
@@ -92,7 +91,7 @@ def BrowseView(request):
             # default to showing ALL the foods!
             context = {
                 "tab": "all",
-                "foodlist": sorted(menumods.Food.objects.all(), key=operator.attrgetter('peek_next_date'))
+                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.peek_next_date)
             }
         return render(request, 'menus/browse.html', context)
     else:
@@ -149,20 +148,19 @@ def LogoutView(request):
 
 def SignupView(request):
     def send_verify_mail(request, new_user):
-        template = loader.get_template('menus/email.html')
-        context = RequestContext(request, {
+        context = {
             'first_name': new_user.first_name,
             'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':new_user.email, 'v':md5(new_user.email).hexdigest()}),
             'unsubscribe_link': urlencode({'u':new_user.email, 't':md5(new_user.date_joined.isoformat()).hexdigest()}),
             'email_type': 'verify',
-        })
+        }
         msg = EmailMultiAlternatives(
             "Menuwatch Signup Confirmation",
             "Hi, {}! Please visit this URL to finish setting up your account. {}".format(context['first_name'], context['verify_link']),
             "Menuwatch <mail@menuwat.ch>",
             ["{} {} <{}>".format(new_user.first_name, new_user.last_name, new_user.email),],
         )
-        msg.attach_alternative(template.render(context), "text/html")
+        msg.attach_alternative(render_to_response('menus/email.html', context), "text/html")
         msg.content_subtype = "html"
         msg.send()
 
@@ -260,7 +258,7 @@ def UpgradeView(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login?next=upgrade')
     else:
-        context = { "popular" : sorted(menumods.Food.objects.all(), key=operator.attrgetter("num_watches"))[:10]}
+        context = { "popular" : sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches)[:10]}
         return render(request, 'menus/upgrade.html', context)
 
 
@@ -387,13 +385,11 @@ def SettingsView(request):
 
 def DebugEmailView(request):
     user = request.user
-    template = loader.get_template('menus/email.html')
-    context = RequestContext(request, {
+    context = {
         'first_name': user.first_name,
         'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
         'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
         'email_type': 'alert',
         'item_list': menumods.Food.objects.all()[:10]
-    })
-    return HttpResponse(template.render(context))
-    # return HttpResponse("OK", status=200)
+    }
+    return render_to_response("menus/email.html", context)

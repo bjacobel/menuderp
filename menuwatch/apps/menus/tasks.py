@@ -2,8 +2,10 @@ from celery import task
 from datetime import date, timedelta
 from apps.menus import models as menu_models
 from django.core.mail import EmailMultiAlternatives
+from django.shortcuts import render_to_response
 from django.db import transaction
 from hashlib import md5
+from urllib import urlencode
 import requests
 import re
 
@@ -135,54 +137,41 @@ def mailer():
 
     # get some querysets
     all_users = menu_models.Profile.objects.all()
-    upcoming_today = menu_models.Food.objects.filter(peek_next_date__exact=today)
     if sunday or wednesday or friday:
-        upcoming_soon = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=timedel))
-    if sunday:
-        upcoming_week = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=7))
+        upcoming = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=timedel))
+    elif sunday:
+        upcoming = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=7))
+    else:
+        upcoming = menu_models.Food.objects.filter(peek_next_date__exact=today)
 
     raised_alerts = []
 
-    # not very DRY but IDGAF
-
     for user in all_users:
-        if user.frequency is 1:
-            if not sunday:
-                pass
-            else:
-                for watch in user.my_watches:
-                    if watch.food in upcoming_week:
-                        raised_alerts.append(watch.food)
-                send_email(raised_alerts, user)
-        elif user.frequency is 3:
-            if not sunday or wednesday or friday:
-                pass
-            else:
-                for watch in user.my_watches:
-                    if watch.food in upcoming_soon:
-                        raised_alerts.append(watch.food)
-                send_email(raised_alerts, user)
-        elif user.frequency is 7:
+        pref_locs = ["Thorne", "Moulton"]
+        if user.locations is 2:
+            pref_locs = pref_locs.remove("Thorne")
+        elif user.locations is 3:
+            pref_locs = pref_locs.remove("Moulton")
+        if (user.frequency is 1 and sunday) or (user.frequency is 3 and (sunday or wednesday or friday)) or (user.frequency is 7):
             for watch in user.my_watches:
-                if watch.food in upcoming_today:
+                if watch.food in upcoming and watch.food.location in pref_locs:
                     raised_alerts.append(watch.food)
             send_email(raised_alerts, user)
 
 def send_email(raised_alerts, user):
-    template = loader.get_template('menus/email.html')
-    context = RequestContext(request, {
+    context = {
         'first_name': user.first_name,
         'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
         'email_type': 'alert',
-        'item_list': raised_alerts
-    })
+        'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date)
+    }
     msg = EmailMultiAlternatives(
         "Menuwatch Signup Confirmation",
         "Hi, {}! Menuwatch doesn't really support non-HTML email clients, but here's a taste of what's coming up in the next few days: {}".format(context['first_name'], context['raised_alerts']),
         "Menuwatch <mail@menuwat.ch>",
         ["{} {} <{}>".format(user.first_name, user.last_name, user.email),],
     )
-    msg.attach_alternative(template.render(context), "text/html")
+    msg.attach_alternative(render_to_response('menus/email.html', context), "text/html")
     msg.content_subtype = "html"
     msg.send()
 
