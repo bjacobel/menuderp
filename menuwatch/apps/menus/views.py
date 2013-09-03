@@ -379,3 +379,21 @@ def SettingsView(request):
             return HttpResponse("No authenticated user present", status=403)
     else:
         return HttpResponse("I'm a teapot", status=418)
+
+
+#################
+## DEBUG VIEWS ##
+#################
+
+def DebugEmailView(request):
+    user = request.user
+    template = loader.get_template('menus/email.html')
+    context = RequestContext(request, {
+        'first_name': user.first_name,
+        'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
+        'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
+        'email_type': 'alert',
+        'item_list': menumods.Food.objects.all()[:10]
+    })
+    return HttpResponse(template.render(context))
+    # return HttpResponse("OK", status=200)

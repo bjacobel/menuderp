@@ -32,4 +32,6 @@ urlpatterns = patterns(
     url(r'^api/add', menu_views.AddView, name='add'),
     url(r'^api/delete', menu_views.DeleteView, name='delete'),
     url(r'^api/settings', menu_views.SettingsView, name='settings'),
+
+    url(r'^debug/email', menu_views.DebugEmailView, name='debugemail'),
 )

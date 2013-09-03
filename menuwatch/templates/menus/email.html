@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>ZURBemails</title>
+<title>Menuwatch</title>
     
 <style>
 /* ------------------------------------- 
@@ -222,6 +222,11 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
     font-weight:bold;
 }
 
+tbody.foods tr {
+    border-collapse:disabled;
+    cellspacing:3;
+}
+
 /* Be sure to place a .clear element after each set of columns, just to be safe */
 .clear { display: block; clear: both; }
 
@@ -282,8 +287,26 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
                         <h3>Hi, {{ first_name }}!</h3>
                         {% if email_type == "alert" %}
                             <p class="lead">Just dropping you a line to let you know these favorites of yours are coming up soon:</p>
-                            <p class="items">{{ item_list }}</p>
-                            
+                            <table>
+                                {% if item_list|length > 1 %}
+                                    <thead>
+                                        <td><p><strong>Name</strong></p></td>
+                                        <td><p><strong>Meal</strong></p></td>
+                                        <td><p><strong>Date</strong></p></td>
+                                        <td><p><strong>Location</strong></p></td>
+                                    </thead>
+                                {% endif %}
+                                <tbody class="foods">
+                                    {% for item in item_list %}
+                                        <tr>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.meal }}</td>
+                                            <td>{{ item.next_date_readable }}</td>
+                                            <td>{{ item.location }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                             <!-- Callout Panel -->
                             <p class="callout">
                                 In the mood for something else? <a href="http://menuwat.ch/browse">Manage your alerts &raquo;</a>
