@@ -410,6 +410,14 @@ svg text {
     border-bottom:1px solid #333;
 }
 
+h4 i.left-spacer{
+    margin-left:15px;
+}
+
+h4 i:hover {
+    cursor:pointer;
+}
+
 a.del-account:hover {
     color:#E74C3C;
 }
