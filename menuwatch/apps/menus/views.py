@@ -247,52 +247,6 @@ def UnsubView(request):
         return HttpResponseRedirect('/')
 
 
-@never_cache
-@csrf_exempt
-def AddView(request):
-    if request.method == 'POST':  # api endpoint only accepts POSTs
-        if request.user is not None:  # api should only work for signed-in users
-            if 'food_pk' in request.POST:
-                food = int(request.POST['food_pk'])
-                user = int(request.user.pk)
-                if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
-                    try:
-                        menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
-                        return HttpResponse("Watch successfully created", status=201)
-                    except:
-                        return HttpResponse("Specified food does not exist", status=404)
-                else:
-                    return HttpResponse("Watch limit reached", status=431)  # 'server is unwilling to process the request' UNTIL YOU PAY ME MONIES
-            else:
-                return HttpResponse("No food_pk specified", status=400)
-        else:
-            return HttpResponse("No authenticated user present", status=403)
-    else:
-        return HttpResponse("I'm a teapot", status=418)
-
-
-@never_cache
-@csrf_exempt
-def DeleteView(request):
-    if request.method == 'POST':
-        if request.user is not None:
-            if 'food_pk' in request.POST:
-                food = int(request.POST['food_pk'])
-                user = int(request.user.pk)
-                try:
-                    watch = menumods.Watch.objects.get(food__exact=food, owner__exact=menumods.Profile.objects.get(user__exact=user))
-                    watch.delete()
-                    return HttpResponse("Watch successfully deleted", status=200)
-                except:
-                    return HttpResponse("No watch mathing those parameters found", status=404)
-            else:
-                return HttpResponse("No food_pk specified", status=400)
-        else:
-            return HttpResponse("No authenticated user present", status=403)
-    else:
-        return HttpResponse("I'm a teapot", status=418)
-
-
 def LogoutView(request):
     if request.user.is_authenticated():
         logout(request)
@@ -339,3 +293,76 @@ def AboutView(request):
 
 def BlockView(request):
     return render(request, 'menus/block.html')
+
+
+
+###############
+## API Views ##
+###############
+
+@never_cache
+@csrf_exempt
+def AddView(request):
+    if request.method == 'POST':  # api endpoint only accepts POSTs
+        if request.user is not None and request.user.is_authenticated():
+            if 'food_pk' in request.POST:
+                food = int(request.POST['food_pk'])
+                user = int(request.user.pk)
+                if menumods.Profile.objects.get(user__exact=user).can_create_new_watches():
+                    try:
+                        menumods.Watch.objects.create(food=menumods.Food.objects.get(pk__exact=food), owner=menumods.Profile.objects.get(user__exact=user))
+                        return HttpResponse("Watch successfully created", status=201)
+                    except:
+                        return HttpResponse("Specified food does not exist", status=404)
+                else:
+                    return HttpResponse("Watch limit reached", status=431)  # 'server is unwilling to process the request' UNTIL YOU PAY ME MONIES
+            else:
+                return HttpResponse("No food_pk specified", status=400)
+        else:
+            return HttpResponse("No authenticated user present", status=403)
+    else:
+        return HttpResponse("I'm a teapot", status=418)
+
+
+@never_cache
+@csrf_exempt
+def DeleteView(request):
+    if request.method == 'POST':
+        if request.user is not None and request.user.is_authenticated():
+            if 'food_pk' in request.POST:
+                food = int(request.POST['food_pk'])
+                user = int(request.user.pk)
+                try:
+                    watch = menumods.Watch.objects.get(food__exact=food, owner__exact=menumods.Profile.objects.get(user__exact=user))
+                    watch.delete()
+                    return HttpResponse("Watch successfully deleted", status=200)
+                except:
+                    return HttpResponse("No watch mathing those parameters found", status=404)
+            else:
+                return HttpResponse("No food_pk specified", status=400)
+        else:
+            return HttpResponse("No authenticated user present", status=403)
+    else:
+        return HttpResponse("I'm a teapot", status=418)
+
+
+@csrf_exempt
+def SettingsView(request):
+    if request.method == 'POST':
+        if request.user is not None and request.user.is_authenticated():
+            if 'setting_name' in request.POST and 'setting_value' in request.POST:
+                setting_name = request.POST['setting_name']
+                setting_value = request.POST['setting_value']
+                user = request.user
+                try:
+                    user.setting_name = setting_value
+                    user.save()
+                    return HttpResponse("{} changed to {}".format(setting_name, setting_value), status=200)
+                except:
+                    return HttpResponse("Unspecified fatal API error", status=500)
+            else:
+                return HttpResponse("Malformed request", status=400)
+        else:
+            return HttpResponse("No authenticated user present", status=403)
+    else:
+        return HttpResponse("I'm a teapot", status=418)

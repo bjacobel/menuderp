@@ -8,13 +8,13 @@
             <div class="col-xs-12 col-sm-4 account-field">
                 <h3 class="account-field-header lato narrow">SETTINGS</h3>
                 <h4 class="lato">Email frequency:<i data-title="<h4>Email frequency</h4>" data-content="<h5><strong>Weekly:</strong> Get just one email every Sunday with all your alerts for that week.<br/><br/><strong>Every Few:</strong> Get emails on Sunday, Wednesday and Friday mornings with the next few days' alerts.<br/><br/><strong>Daily:</strong> Get emails every morning with your alerts for the day.</h5>" class="left-spacer icon-question-sign"></i></h4>
-                <div class="btn-group setting-group frequency">
+                <div class="btn-group setting-group" setting="frequency">
                     <button id="1" type="button" class="btn btn-default">Weekly</button>
                     <button id="3" type="button" class="btn btn-default">Every few days</button>
                     <button id="7" type="button" class="btn btn-default">Daily</button>
                 </div>
                 <h4 class="lato">Locations:<i data-title="<h4>Locations</h4>" data-content="<h5><strong>Both:</strong> Get alerts for foods at both dining halls.<br/><br/><strong>Moulton:</strong> Get alerts only for foods at Moulton Union.<br/><br/><strong>Thorne:</strong> Get alerts only for foods at Thorne.</h5>" class="left-spacer icon-question-sign"></i></h4>
-                <div class="btn-group setting-group location">
+                <div class="btn-group setting-group" setting="locations">
                     <button id="1" type="button" class="btn btn-default">Both</button>
                     <button id="2" type="button" class="btn btn-default">Moulton Only</button>
                     <button id="3" type="button" class="btn btn-default">Thorne Only</button>
@@ -65,22 +65,42 @@
         // setup popovers
         $("h4 i.icon-question-sign").popover({"html":"true"});
         
-        //setup modal
+        // setup modal
         $(".del-account").click(function(){
             $('#deleteModal').modal();
         });
 
-        //setup display of active setting
+        // setup display of active setting
         $(".setting-group").each(function(){
-            if($(this).hasClass("frequency")) {
+            if($(this).attr("setting") == "frequency") {
                 currSetting = "{{ profile.frequency }}";
-            } else if ($(this).hasClass("location")) {
+            } else if ($(this).attr("setting") == "locations") {
                 currSetting = "{{ profile.locations }}";
             }
             $("button", $(this)).each(function(){
                 if($(this).attr("id") == currSetting){
                     $(this).removeClass("btn-default");
                     $(this).addClass("btn-primary");
+                }
+            });
+        });
+
+        // this only needs to run on this page so I'm just going to leave it inline here
+        // fuck best practices, we'll do it live
+        $(".setting-group button").click(function() {
+            $newChoice = $(this);
+            $.ajax({
+                data: {
+                    "setting_name": $newChoice.parent().attr("setting"),
+                    "setting_value": $newChoice.attr("id")
+                },
+                type: 'post',
+                url: '/api/settings',
+                success: function(response) {
+                    $(".btn-primary", $newChoice.parent()).removeClass("btn-primary").addClass("btn-default"); //oh jquery, you lovable clusterfuck
+                    $newChoice.addClass("btn-primary");
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
                 }
             });
         });
