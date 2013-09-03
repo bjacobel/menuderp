@@ -16,8 +16,25 @@ import stripe
 import re
 
 
-# god damn this file is getting massive
+##################
+## SIMPLE VIEWS ##
+##################
 
+def ExcludeView(request):
+    return render(request, 'menus/exclude.html')
+
+
+def AboutView(request):
+    return render(request, 'menus/about.html')
+
+
+def BlockView(request):
+    return render(request, 'menus/block.html')
+
+
+################
+## MAIN VIEWS ##
+################
 
 def IndexView(request):
     photo_num = randint(0,4)
@@ -37,12 +54,11 @@ def IndexView(request):
 
     name, link = credits.get(photo_num, (None,  None))
     
-    authed = request.user.is_authenticated()
     return render(request, 'menus/index.html', {
         "photo": photo,
         "name": name,
         "link": link,
-        "signedin": authed,
+        "signedin": request.user.is_authenticated(),
     })
 
 
@@ -83,6 +99,10 @@ def BrowseView(request):
         return HttpResponseRedirect('/login?next=browse')
 
 
+##########################
+## AUTHENTICATION VIEWS ##
+##########################
+
 def LoginView(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/browse')
@@ -119,6 +139,12 @@ def LoginView(request):
             context['reverify'] = True
 
         return render(request, 'menus/auth.html', context)
+
+
+def LogoutView(request):
+    if request.user.is_authenticated():
+        logout(request)
+    return HttpResponseRedirect('/')
 
 
 def SignupView(request):
@@ -186,6 +212,11 @@ def VerifyView(request):
         return render(request, 'menus/verify.html')
 
 
+
+###################
+## ACCOUNT VIEWS ##
+###################
+
 def AccountView(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login?next=account')
@@ -247,12 +278,6 @@ def UnsubView(request):
         return HttpResponseRedirect('/')
 
 
-def LogoutView(request):
-    if request.user.is_authenticated():
-        logout(request)
-    return HttpResponseRedirect('/')
-
-
 def PaymentView(request):
     if not re.search(r'herokuapp', request.META.get('HTTP_HOST')):
         return HttpResponseRedirect("https://menuwatch.herokuapp.com/login?next=payment")
@@ -284,26 +309,14 @@ def PaymentView(request):
         return HttpResponseRedirect('/login?next=payment')
 
 
-def ExcludeView(request):
-    return render(request, 'menus/exclude.html')
-
-
-def AboutView(request):
-    return render(request, 'menus/about.html')
-
-def BlockView(request):
-    return render(request, 'menus/block.html')
-
-
-
 ###############
-## API Views ##
+## API VIEWS ##
 ###############
 
 @never_cache
 @csrf_exempt
 def AddView(request):
-    if request.method == 'POST':  # api endpoint only accepts POSTs
+    if request.method == 'POST':
         if request.user is not None and request.user.is_authenticated():
             if 'food_pk' in request.POST:
                 food = int(request.POST['food_pk'])
