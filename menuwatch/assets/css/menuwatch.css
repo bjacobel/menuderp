@@ -466,7 +466,7 @@ td:hover .icon-plus {
 /* Browse Page (best for last) */
 
 .table-container {
-    margin-left:35px !important;
+    margin:0 auto !important;
 }
 
 .row-icon {
