@@ -137,12 +137,16 @@ def mailer():
 
     # get some querysets
     all_users = menu_models.Profile.objects.all()
-    if sunday or wednesday or friday:
-        upcoming = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=timedel))
-    elif sunday:
-        upcoming = menu_models.Food.objects.filter(peek_next_date__lte=today+timedelta(days=7))
-    else:
-        upcoming = menu_models.Food.objects.filter(peek_next_date__exact=today)
+    all_foods = menu_models.Food.objects.all()
+    upcoming = []
+
+    for food in all_foods:
+        if (sunday or wednesday or friday) and food.peek_next_date() <= today + timedelta(days=timedel):
+            upcoming.append(food)
+        elif sunday and food.peek_next_date() <= today + timedelta(days=7):
+            upcoming.append(food)
+        elif food.peek_next_date() == today:
+            upcoming.append(food)
 
     raised_alerts = []
 
