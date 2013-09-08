@@ -159,6 +159,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    # Transaction middleware
+    'django.middleware.transaction.TransactionMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
