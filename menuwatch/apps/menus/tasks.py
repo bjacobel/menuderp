@@ -172,7 +172,6 @@ def mailer():
                     if watch.food in upcoming_today:
                         raised_alerts.append(watch.food)
                     
-        print("Sending an email about {} foods to {}.".format(len(raised_alerts), user.fullname()))
         send_email(raised_alerts, user)
 
 def send_email(raised_alerts, user):
