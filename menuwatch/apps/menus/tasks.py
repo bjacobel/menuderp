@@ -138,15 +138,17 @@ def mailer():
     # get some querysets
     all_users = menu_models.Profile.objects.all()
     all_foods = menu_models.Food.objects.all()
-    upcoming = []
+    upcoming_soon = []
+    upcoming_week = []
+    upcoming_today = []
 
     for food in all_foods:
         if (sunday or wednesday or friday) and food.peek_next_date() <= today + timedelta(days=timedel):
-            upcoming.append(food)
+            upcoming_soon.append(food)
         elif sunday and food.peek_next_date() <= today + timedelta(days=7):
-            upcoming.append(food)
+            upcoming_week.append(food)
         elif food.peek_next_date() == today:
-            upcoming.append(food)
+            upcoming_today.append(food)
 
     raised_alerts = []
 
@@ -156,26 +158,37 @@ def mailer():
             pref_locs = pref_locs.remove("Thorne")
         elif user.locations is 3:
             pref_locs = pref_locs.remove("Moulton")
-        if (user.frequency is 1 and sunday) or (user.frequency is 3 and (sunday or wednesday or friday)) or (user.frequency is 7):
-            for watch in user.my_watches:
-                if watch.food in upcoming and watch.food.location in pref_locs:
-                    raised_alerts.append(watch.food)
-            send_email(raised_alerts, user)
+
+
+        for watch in user.my_watches():
+            if watch.food.location in pref_locs:
+                if (int(user.frequency) is 1 and sunday):
+                    if watch.food in upcoming_week:
+                        raised_alerts.append(watch.food)
+                elif (int(user.frequency) is 3 and (sunday or wednesday or friday)):
+                    if watch.food in upcoming_soon:
+                        raised_alerts.append(watch.food)
+                elif (int(user.frequency) is 7):
+                    if watch.food in upcoming_today:
+                        raised_alerts.append(watch.food)
+                    
+        print("Sending an email about {} foods to {}.".format(len(raised_alerts), user.fullname()))
+        send_email(raised_alerts, user)
 
 def send_email(raised_alerts, user):
     context = {
-        'first_name': user.first_name,
-        'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
+        'first_name': user.firstname(),
+        'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.user.date_joined.isoformat()).hexdigest()}),
         'email_type': 'alert',
         'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date(), reverse=True)
     }
     msg = EmailMultiAlternatives(
         "Menuwatch Signup Confirmation",
-        "Hi, {}! Menuwatch doesn't really support non-HTML email clients, but here's a taste of what's coming up in the next few days: {}".format(context['first_name'], context['raised_alerts']),
+        "Hi, {}! Menuwatch doesn't really support non-HTML email clients, but here's a taste of what's coming up in the next few days: {}".format(context['first_name'], context['item_list']),
         "Menuwatch <mail@menuwat.ch>",
-        ["{} {} <{}>".format(user.first_name, user.last_name, user.email),],
+        ["{} <{}>".format(user.fullname(), user.email()),],
     )
-    msg.attach_alternative(render_to_response('menus/email.html', context), "text/html")
+    msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
     msg.content_subtype = "html"
     msg.send()
 
