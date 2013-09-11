@@ -1,78 +1,6 @@
 {% load compress %}
 {% compress css %}
 <style>
-    @-webkit-keyframes clockwise {
-        0% {
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            -moz-transform: rotate(360deg);
-            -ms-transform: rotate(360deg);
-            -o-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
-
-    @-moz-keyframes clockwise {
-        0% {
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            -moz-transform: rotate(360deg);
-            -ms-transform: rotate(360deg);
-            -o-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
-
-    @-webkit-keyframes counter-clockwise {
-        0% {
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(-360deg);
-            -moz-transform: rotate(-360deg);
-            -ms-transform: rotate(-360deg);
-            -o-transform: rotate(-360deg);
-            transform: rotate(-360deg);
-        }
-    }
-
-    @-moz-keyframes counter-clockwise {
-        0% {
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(-360deg);
-            -moz-transform: rotate(-360deg);
-            -ms-transform: rotate(-360deg);
-            -o-transform: rotate(-360deg);
-            transform: rotate(-360deg);
-        }
-    }
-
     .gears-container {
         position:relative;
         margin:15px auto 0 auto;
@@ -163,22 +91,6 @@
         -o-border-radius: 60px;
         border-radius: 60px;
     }
-    .gear.one .gear-inner {
-        -webkit-animation: counter-clockwise 3s infinite linear;
-        -moz-animation: counter-clockwise 3s infinite linear;
-    }
-    .gear.two .gear-inner {
-        -webkit-animation: clockwise 3s infinite linear;
-        -moz-animation: clockwise 3s infinite linear;
-    }
-    .gear.three .gear-inner {
-        -webkit-animation: counter-clockwise 3s infinite linear;
-        -moz-animation: counter-clockwise 3s infinite linear;
-    }
-    .gear.four .gear-inner {
-        -webkit-animation: counter-clockwise 6s infinite linear;
-        -moz-animation: counter-clockwise 6s infinite linear;
-    }
     .gear-inner .bar {
         height: 16px;
         width: 76px;
@@ -254,9 +166,13 @@
 
 {% compress js %}
 <script type="text/javascript">
+    // inspired by http://croberts.me/2013/02/16/howto-rotating-gears-when-user-scrolls/
+
     var prevScroll = $(document).scrollTop();
     var rotation = 0.001;
    
+    var $vendor_prefixes = new Array("-webkit-transform", "-moz-transform", "-ms-transform", "-o-transform", "transform");
+
     $(document).scroll(function(){
         var newScroll = $(document).scrollTop();
 
@@ -266,34 +182,40 @@
             rotation += (newScroll-prevScroll)/($(document).height()-$(window).height());
         }
 
+        // do rotations
+        for ( var i in $vendor_prefixes ){
+            $(".small.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*360+"deg)");
+            $(".small.ccw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*-360+"deg)");
+            $(".large.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*180+"deg)");
+        };
         prevScroll = newScroll;
     });
 </script>
 {% endcompress %}
 
 <div class="gears-container">
-    <div class="gear one">
+    <div class="cw gear one small">
         <div class="gear-inner">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
     </div>
-    <div class="gear two">
+    <div class="ccw gear two small">
         <div class="gear-inner">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
     </div>
-    <div class="gear three">
+    <div class="cw gear three small">
         <div class="gear-inner">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
     </div>
-    <div class="gear four large">
+    <div class="cw gear four large">
         <div class="gear-inner">
             <div class="bar"></div>
             <div class="bar"></div>
