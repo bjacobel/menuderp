@@ -252,6 +252,25 @@
 </style>
 {% endcompress %}
 
+{% compress js %}
+<script type="text/javascript">
+    var prevScroll = $(document).scrollTop();
+    var rotation = 0.001;
+   
+    $(document).scroll(function(){
+        var newScroll = $(document).scrollTop();
+
+        if (prevScroll > newScroll) {
+            rotation -= (prevScroll-newScroll)/($(document).height()-$(window).height());
+        } else if (prevScroll < newScroll)  {
+            rotation += (newScroll-prevScroll)/($(document).height()-$(window).height());
+        }
+
+        prevScroll = newScroll;
+    });
+</script>
+{% endcompress %}
+
 <div class="gears-container">
     <div class="gear one">
         <div class="gear-inner">
