@@ -45,6 +45,19 @@
             </div>
         </div>
     </div>
+    <div class="container index-footer">
+        {% if user.is_authenticated %}
+            <h1 class="lato bold text-center">Welcome back, {{  user.first_name }}.</h1>
+            <a class="cta-link" href="/browse">
+                <div class="cta active-button"><p class="lato cta-text unhighlightable">SEE WHAT'S NEW</p><i class="icon-chevron-right"></i></div>
+            </a>
+        {% else %}
+            <h1 class="lato bold text-center">Start finding more of your favorites today.</h1>
+            <a class="cta-link" href="/signup">
+                <div class="cta active-button"><p class="lato cta-text unhighlightable">LET'S GO</p><i class="icon-chevron-right"></i></div>
+            </a>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block footer_scripts %}
