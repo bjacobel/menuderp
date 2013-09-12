@@ -164,35 +164,6 @@
 </style>
 {% endcompress %}
 
-{% compress js %}
-<script type="text/javascript">
-    // inspired by http://croberts.me/2013/02/16/howto-rotating-gears-when-user-scrolls/
-
-    var prevScroll = $(document).scrollTop();
-    var rotation = 0.001;
-   
-    var $vendor_prefixes = new Array("-webkit-transform", "-moz-transform", "-ms-transform", "-o-transform", "transform");
-
-    $(document).scroll(function(){
-        var newScroll = $(document).scrollTop();
-
-        if (prevScroll > newScroll) {
-            rotation -= (prevScroll-newScroll)/($(document).height()-$(window).height());
-        } else if (prevScroll < newScroll)  {
-            rotation += (newScroll-prevScroll)/($(document).height()-$(window).height());
-        }
-
-        // do rotations
-        for ( var i in $vendor_prefixes ){
-            $(".small.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*360+"deg)");
-            $(".small.ccw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*-360+"deg)");
-            $(".large.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+rotation*180+"deg)");
-        };
-        prevScroll = newScroll;
-    });
-</script>
-{% endcompress %}
-
 <div class="gears-container">
     <div class="cw gear one small">
         <div class="gear-inner">

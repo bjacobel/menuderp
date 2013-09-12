@@ -148,8 +148,9 @@ svg text {
 
 /*  Homepage */
 .banner {
+    min-width:102%;
     position:absolute;
-    height:102%;
+    min-height:102%;
     margin:0 -1% 0 -1%;
 }
 

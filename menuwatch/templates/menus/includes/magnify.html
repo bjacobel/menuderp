@@ -1,0 +1,71 @@
+{% load compress %}
+{% compress css %}
+<style>
+    .magnify-wrapper {
+        max-width:400px;
+        max-height:400px;
+        position:relative;
+        overflow:hidden;
+    }
+    .slide-text {
+        text-align:left;
+        white-space:nowrap;
+        font-size:16pt;
+        padding-left:0;
+        list-decoration:none;
+    }
+    .slide-text li {
+        display:inline-block;
+        width:260px;
+        text-align:center;
+    }
+    .slide-text.large {
+        font-size:22pt;
+        position:relative;
+        top:-45px;
+    }
+    .left-gradient {
+        z-index:99;
+        position:absolute;
+        height:200px;
+        width:65px;
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(transparent));
+        background-image: -webkit-linear-gradient(left, #fff, transparent); 
+        background-image:    -moz-linear-gradient(left, #fff, transparent);
+        background-image:     -ms-linear-gradient(left, #fff, transparent);
+        background-image:      -o-linear-gradient(left, #fff, transparent);
+        background-image:         linear-gradient(to right, #fff, transparent);
+    }
+    .right-gradient {
+        z-index:99;
+        position:absolute;
+        right:0;
+        top:-65px;
+        height:200px;
+        width:65px;
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(transparent));
+        background-image: -webkit-linear-gradient(right, #fff, transparent); 
+        background-image:    -moz-linear-gradient(right, #fff, transparent);
+        background-image:     -ms-linear-gradient(right, #fff, transparent);
+        background-image:      -o-linear-gradient(right, #fff, transparent);
+        background-image:         linear-gradient(to left, #fff, transparent);
+    }
+</style>
+{% endcompress %}
+
+<div class="magnify-wrapper">
+    <div class="left-gradient"></div>
+    <ul class="lato slide-text">
+        <li>White Wine Mussels</li>
+        <li>Roast Beef Au Jus</li>
+        <li>N.E. Clam Chowder</li>
+        <li>Hot Fudge Sundae Bar</li>
+    </ul>
+    <ul class="lato bold slide-text large">
+        <li>White Wine Mussels</li>
+        <li>Roast Beef Au Jus</li>
+        <li>N.E. Clam Chowder</li>
+        <li>Hot Fudge Sundae Bar</li>
+    </ul>
+    <div class="right-gradient"></div>
+</div>

@@ -24,7 +24,7 @@
     </div>
     <div class="container">
         <div class="container subhero-wrapper">
-            <div class="subhero right" style="background:url('http://placehold.it/400x400')"></div>
+            <div class="subhero right">{% include "menus/includes/magnify.html" %}</div>
             <div class="subhero left">
                 <h3 class="lato bold">Find your favorites.</h3>
                 <h4 class="lato hidden-xs">Browse the most popular and recent foods, or search for whatever your tastebuds desire.</h4>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="container subhero-wrapper">
-            <div class="subhero right">{% include "menus/gears.html" %}</div>
+            <div class="subhero right">{% include "menus/includes/gears.html" %}</div>
             <div class="subhero left">
                 <h3 class="lato bold">Customize.</h3>
                 <h4 class="lato hidden-xs">Get alerts for the locations you want, at the frequency you choose.</h4>
@@ -61,5 +61,38 @@
 {% endblock %}
 
 {% block footer_scripts %}
+<script type="text-javascript">
+    // inspired by http://croberts.me/2013/02/16/howto-rotating-gears-when-user-scrolls/
 
+    var prevScroll = $(document).scrollTop();
+    var scaler = 0.001;
+   
+    var $vendor_prefixes = new Array("-webkit-transform", "-moz-transform", "-ms-transform", "-o-transform", "transform");
+
+    $(document).scroll(function(){
+        var newScroll = $(document).scrollTop();
+
+        if (prevScroll > newScroll) {
+            scaler -= (prevScroll-newScroll)/($(document).height()-$(window).height());
+        } else if (prevScroll < newScroll)  {
+            scaler += (newScroll-prevScroll)/($(document).height()-$(window).height());
+        }
+
+        // do rotations for gears
+        for ( var i in $vendor_prefixes ){
+            $(".small.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+scaler*360+"deg)");
+            $(".small.ccw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+scaler*-360+"deg)");
+            $(".large.cw.gear .gear-inner").css($vendor_prefixes[i], "rotate("+scaler*180+"deg)");
+        };
+        
+        // do panning for words
+        $(".slide-text").css("margin-left", scaler*-900+"px");
+
+
+        // do ascending for email alert
+
+
+        prevScroll = newScroll;
+    });
+</script>
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container">
-        <a class="logo-bg" href="/">{% include "menus/logo.html" %}</a>
+        <a class="logo-bg" href="/">{% include "menus/includes/logo.html" %}</a>
         <form action="/payment" method="post">{% csrf_token %}</form>
     </div>
 {% endblock %}
