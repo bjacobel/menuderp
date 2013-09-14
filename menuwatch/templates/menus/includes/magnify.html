@@ -2,27 +2,23 @@
 {% compress css %}
 <style>
     .magnify-wrapper {
-        max-width:400px;
         max-height:400px;
+        max-width:400px;
         position:relative;
         overflow:hidden;
     }
     .slide-text {
         text-align:left;
         white-space:nowrap;
-        font-size:16pt;
+        font-size:18pt;
         padding-left:0;
         list-decoration:none;
+        margin-top:60px;
     }
     .slide-text li {
         display:inline-block;
-        width:260px;
+        margin:0 15px;
         text-align:center;
-    }
-    .slide-text.large {
-        font-size:22pt;
-        position:relative;
-        top:-45px;
     }
     .left-gradient {
         z-index:99;
@@ -50,22 +46,27 @@
         background-image:      -o-linear-gradient(right, #fff, transparent);
         background-image:         linear-gradient(to left, #fff, transparent);
     }
+    .magnifier {
+        position:absolute;
+        width:40%;
+        height:45%;
+        top:50%;
+        left:30%;
+        border:1px solid black;
+        -webkit-transform: scale(1.2);
+        zoom:200%;
+    }
 </style>
 {% endcompress %}
 
 <div class="magnify-wrapper">
     <div class="left-gradient"></div>
-    <ul class="lato slide-text">
+    <ul class="lato bold slide-text">
         <li>White Wine Mussels</li>
         <li>Roast Beef Au Jus</li>
-        <li>N.E. Clam Chowder</li>
-        <li>Hot Fudge Sundae Bar</li>
-    </ul>
-    <ul class="lato bold slide-text large">
-        <li>White Wine Mussels</li>
-        <li>Roast Beef Au Jus</li>
-        <li>N.E. Clam Chowder</li>
+        <li>New England Clam Chowder</li>
         <li>Hot Fudge Sundae Bar</li>
     </ul>
     <div class="right-gradient"></div>
+    <div class="magnifier"></div>
 </div>
