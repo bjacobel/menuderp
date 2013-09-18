@@ -182,7 +182,7 @@ def send_email(raised_alerts, user):
         'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date(), reverse=True)
     }
     msg = EmailMultiAlternatives(
-        "Menuwatch Signup Confirmation",
+        "Coming soon: {} and more".format(raised_alerts[0].name),
         "Hi, {}! Menuwatch doesn't really support non-HTML email clients, but here's a taste of what's coming up in the next few days: {}".format(context['first_name'], context['item_list']),
         "Menuwatch <mail@menuwat.ch>",
         ["{} <{}>".format(user.fullname(), user.email()),],
