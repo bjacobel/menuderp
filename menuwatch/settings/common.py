@@ -296,7 +296,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 ############ DJANGO-MAILGUN CONFIGURATION
 
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_SERVER_NAME = 'app16993132.mailgun.org'
+MAILGUN_SERVER_NAME = 'menuwat.ch'
 
 ############ END DJANGO-MAILGUN CONFIGURATION
 
