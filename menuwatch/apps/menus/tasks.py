@@ -143,12 +143,13 @@ def mailer():
     upcoming_today = []
 
     for food in all_foods:
-        if (sunday or wednesday or friday) and food.peek_next_date() <= today + timedelta(days=timedel):
-            upcoming_soon.append(food)
-        elif sunday and food.peek_next_date() <= today + timedelta(days=7):
-            upcoming_week.append(food)
-        elif food.peek_next_date() == today:
-            upcoming_today.append(food)
+        if food.peek_next_date():
+            if (sunday or wednesday or friday) and food.peek_next_date() <= today + timedelta(days=timedel):
+                upcoming_soon.append(food)
+            elif sunday and food.peek_next_date() <= today + timedelta(days=7):
+                upcoming_week.append(food)
+            elif food.peek_next_date() == today:
+                upcoming_today.append(food)
 
     raised_alerts = []
 
