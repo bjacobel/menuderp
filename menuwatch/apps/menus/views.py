@@ -161,7 +161,6 @@ def SignupView(request):
             ["{} {} <{}>".format(new_user.first_name, new_user.last_name, new_user.email),],
         )
         msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
-        msg.content_subtype = "html"
         msg.send()
 
     if request.user.is_authenticated():
