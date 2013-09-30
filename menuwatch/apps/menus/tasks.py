@@ -51,7 +51,7 @@ def build_db(lookahead=28):
 
                 # fuck express meal
                 for meal_chunk in html:
-                    if not re.search("Express Meal", meal):
+                    if not re.search("Express Meal", meal_chunk):
 
                         # grab the food group (main course, soup, vegetable, etc)
                         foodgroup = re.split('<span>', meal_chunk)[0]
@@ -189,14 +189,18 @@ def send_email(raised_alerts, user):
         'email_type': 'alert',
         'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date(), reverse=True)
     }
+
+    raised_alerts_as_string = ""
+    for alert in raised_alerts:
+        raised_alerts_as_string += "{} on {} for {} at {}\n".format(alert.name, alert.next_date_readable(), alert.meal, alert.location)
+
     msg = EmailMultiAlternatives(
         "Coming soon: {} and more".format(raised_alerts[0].name),
-        "Hi, {}! Menuwatch doesn't really support non-HTML email clients, but here's a taste of what's coming up in the next few days: {}".format(context['first_name'], context['item_list']),
+        "Hi, {}! Here's a taste of what's coming up in the next few days: \n{}".format(context['first_name'], raised_alerts_as_string),
         "Menuwatch <mail@menuwat.ch>",
         ["{} <{}>".format(user.fullname(), user.email()),],
     )
     msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
-    msg.content_subtype = "html"
     msg.send()
 
 
