@@ -100,14 +100,20 @@ def build_db(lookahead=28):
                                     new_food.save()
                                 except:  # they goofed something in the menu formatting. IDGAF. Drop it.
                                     transaction.savepoint_rollback(sID)
+                                else:
+                                    transaction.commit()
 
     # sync the dates
     for food in menu_models.Food.objects.exclude(next_date_array=[]):
-        if food.peek_next_date() < date.today():  # the food was offered yesterday or before
-            food.last_date = food.pop_next_date()  # pop from the front of the array
-            food.save()
-
-    transaction.commit()
+        sID = transaction.savepoint()
+        try:
+            if food.peek_next_date() < date.today():  # the food was offered yesterday or before
+                food.last_date = food.pop_next_date()  # pop from the front of the array
+                food.save()
+        except:
+            transaction.savepoint_rollback(sID)
+        else:
+            transaction.commit()
 
 
 @task()
