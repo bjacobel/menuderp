@@ -107,9 +107,9 @@ def build_db(lookahead=28):
     for food in menu_models.Food.objects.exclude(next_date_array=[]):
         sID = transaction.savepoint()
         try:
-            if food.peek_next_date() < date.today():  # the food was offered yesterday or before
+            while food.peek_next_date() < date.today():  # the food was offered yesterday or before
                 food.last_date = food.pop_next_date()  # pop from the front of the array
-                food.save()
+            food.save()
         except:
             transaction.savepoint_rollback(sID)
         else:
