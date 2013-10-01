@@ -90,6 +90,10 @@ a {
     cursor:pointer;
 }
 
+.wrapper.wholepage {
+    margin-bottom:40px;
+}
+
 /* End global element styles */
 
 
