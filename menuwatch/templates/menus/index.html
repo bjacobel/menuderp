@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="container subhero-wrapper">
-            <div class="subhero left">{% include "menus/includes/envelope.html" %}</div>
+            <div class="subhero left" style="overflow:visible !important">{% include "menus/includes/envelope.html" %}</div>
             <div class="subhero right">
                 <h3 class="lato bold">Get alerts.</h3>
                 <h4 class="lato hidden-xs">Menuwatch will let you know when and where your favorites are coming up.</h4>
@@ -90,6 +90,7 @@
 
 
         // do ascending for email alert
+        $(".page-icon").css("top", 75 - scaler*80 +"px");
 
 
         prevScroll = newScroll;
