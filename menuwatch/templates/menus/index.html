@@ -22,30 +22,30 @@
         </div>
         {% endif %}
     </div>
-    <div class="container">
+    <div class="container hidden-xs">
         <div class="container subhero-wrapper">
             <div class="subhero right">{% include "menus/includes/magnify.html" %}</div>
             <div class="subhero left">
                 <h3 class="lato bold">Find your favorites.</h3>
-                <h4 class="lato hidden-xs">Browse the most popular and recent foods, or search for whatever your tastebuds desire.</h4>
+                <h4 class="lato">Browse the most popular and recent foods, or search for whatever your tastebuds desire.</h4>
             </div>
         </div>
         <div class="container subhero-wrapper">
             <div class="subhero left" style="overflow:visible !important">{% include "menus/includes/envelope.html" %}</div>
             <div class="subhero right">
                 <h3 class="lato bold">Get alerts.</h3>
-                <h4 class="lato hidden-xs">Menuwatch will let you know when and where your favorites are coming up.</h4>
+                <h4 class="lato">Menuwatch will let you know when and where your favorites are coming up.</h4>
             </div>
         </div>
         <div class="container subhero-wrapper">
             <div class="subhero right">{% include "menus/includes/gears.html" %}</div>
             <div class="subhero left">
                 <h3 class="lato bold">Customize.</h3>
-                <h4 class="lato hidden-xs">Get alerts for the locations you want, at the frequency you choose.</h4>
+                <h4 class="lato">Get alerts for the locations you want, at the frequency you choose.</h4>
             </div>
         </div>
     </div>
-    <div class="container index-footer">
+    <div class="container index-footer hidden-xs">
         {% if user.is_authenticated %}
             <h1 class="lato bold text-center">Welcome back, {{  user.first_name }}.</h1>
             <a class="cta-link" href="/browse">
