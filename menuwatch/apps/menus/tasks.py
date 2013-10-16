@@ -91,6 +91,7 @@ def build_db(lookahead=28):
                                     pass
 
                                 old_food.save()
+                                transaction.commit()
                             else:
                                 # it's a brand new food
                                 sID = transaction.savepoint()
