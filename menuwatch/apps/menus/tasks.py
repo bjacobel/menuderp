@@ -103,7 +103,11 @@ def build_db(lookahead=28):
                                 else:
                                     transaction.commit()
 
-    # sync the dates
+
+# update the dates once a day so that old "upcoming" foods aren't anymore
+@transaction.commit_manually
+@task()
+def date_update():
     for food in menu_models.Food.objects.exclude(next_date_array=[]):
         sID = transaction.savepoint()
         try:
