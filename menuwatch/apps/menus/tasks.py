@@ -184,7 +184,7 @@ def mailer():
                     if watch.food in upcoming_today:
                         raised_alerts.append(watch.food)
                     
-        if raised_alerts:
+        #if raised_alerts:
             # send_email(raised_alerts, user)
 
 def send_email(raised_alerts, user):
