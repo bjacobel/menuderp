@@ -27,7 +27,7 @@ class SignupForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email = email).count():
-            raise forms.ValidationError(mark_safe('A user with this email already exists. Did you mean to <a href="/login/">login</a>, or to <a href="/login#reset">reset your password</a>?'))
+            raise forms.ValidationError(mark_safe('A user with this email already exists. Did you mean to <a href="/login">login</a>, or to <a href="/reset">reset your password</a>?'))
         return email
 
 
@@ -35,11 +35,27 @@ class LoginForm(forms.Form):
     email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     pword = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not User.objects.filter(email = email).count():
+            raise forms.ValidationError(mark_safe('We don\'t have a user with that address. Did you mean to <a href="/signup">sign up</a>?'))
+        return email
+
 
 class ChangePasswordForm(forms.Form):
     pword0 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
     pword1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
     pword2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password, again'}))
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+
+    def clean_pword0(self):
+        pword0 = self.cleaned_data.get('pword0')
+        if not self.user.check_password(pword0):
+            raise forms.ValidationError("Incorrect old password")
+        return pword0
 
     def clean_pword1(self):
         pword1 = self.cleaned_data.get('pword1')

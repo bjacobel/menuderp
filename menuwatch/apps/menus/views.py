@@ -112,7 +112,7 @@ def LoginView(request):
             except:
                 redirect = "browse"
             
-            form = forms.LoginForm(request.POST)  # A form bound to the POST data
+            form = forms.LoginForm(request.POST)
 
             if form.is_valid():  # All validation rules pass
                 email = form.cleaned_data['email']
@@ -129,9 +129,6 @@ def LoginView(request):
         context = {
             'form': form,
             'action': 'login',
-            'button_text': "LOG IN",
-            'other_action': 'signup',
-            'other_button_text': "sign up",
         }
 
         if 'HTTP_HOST' in request.META and re.search('herokuapp', request.META['HTTP_HOST']):
@@ -188,9 +185,6 @@ def SignupView(request):
         return render(request, 'menus/auth.html', {
             'form': form,
             'action': 'signup',
-            'button_text': "SIGN UP",
-            'other_action': 'login',
-            'other_button_text': "log in",
         })
 
 
@@ -230,7 +224,7 @@ def ChangePasswordView(request):
         return HttpResponseRedirect('/login?next=account')
     else:
         if request.method == 'POST':  # If the form has been submitted...
-            form = forms.ChangePasswordForm(request.POST)  # A form bound to the POST data
+            form = forms.ChangePasswordForm(request.user, request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
                 old_pword = form.cleaned_data['pword0']
                 new_pword = form.cleaned_data['pword1']
@@ -242,14 +236,11 @@ def ChangePasswordView(request):
                 else:
                     return HttpResponseRedirect('/account/password')
         else:
-            form = forms.ChangePasswordForm()  # An unbound form
+            form = forms.ChangePasswordForm(request.user)  # An unbound form
 
         return render(request, 'menus/auth.html', {
             'form': form,
             'action': 'account/password',
-            'button_text': "CHANGE",
-            'other_action': 'account',
-            'other_button_text': "go back",
         })    
 
 
