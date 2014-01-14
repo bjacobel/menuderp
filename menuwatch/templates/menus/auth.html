@@ -6,6 +6,11 @@
     {% if reverify %}
         <p class='lato'>Please verify your account details before continuing.</p>
     {% endif %}
+    {% if action == "reset" %}
+        <p class='lato'>A password reset email will be sent to the address below.</p>
+    {% elif action == "account/password/reset" %}
+        <p class='lato'>Password reset request successful. Please pick a new one.</p>
+    {% endif %}
     <form class="auth-form" action="/{{ action }}" method="post">{% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}
@@ -32,9 +37,19 @@
                 <i class="icon-chevron-right pointer"></i>
             </p>
             <p class="lato text-center">(or, did you mean to <a href="/login">log in</a>?)</p>
-        {% elif action == "account/password" %}
+        {% elif action == "account/password/change" %}
             <p class="cta active-button auth-action-wrapper">
                 <input class="auth-action lato cta-text" type="submit" value="CHANGE"/>
+                <i class="icon-chevron-right pointer"></i>
+            </p>
+        {% elif action == "account/password/reset" %} {# this is to pick a new pword after you've reset #}
+            <p class="cta active-button auth-action-wrapper">
+                <input class="auth-action lato cta-text" type="submit" value="FINISH"/>
+                <i class="icon-chevron-right pointer"></i>
+            </p>
+        {% elif action == "reset" %} {# this is to ask for a reset #}
+            <p class="cta active-button auth-action-wrapper">
+                <input class="auth-action lato cta-text" type="submit" value="RESET"/>
                 <i class="icon-chevron-right pointer"></i>
             </p>
         {% endif %}

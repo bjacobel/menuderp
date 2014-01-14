@@ -12,6 +12,7 @@ from random import randint
 from hashlib import md5
 from urllib import urlencode
 import stripe
+import uuid
 import re
 
 
@@ -198,11 +199,56 @@ def VerifyView(request):
             to_verify = User.objects.get(username__exact=email)
             to_verify.is_active=True
             to_verify.save()
-        return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/login')
     else:
-        return render(request, 'menus/verify.html')
+        return render(request, '500.html')
 
 
+def RequestResetView(request):
+    def send_reset_mail(request, dumb_user, newpass):
+        context = {
+            'first_name': dumb_user.first_name,
+            'reset_link': "http://www.menuwat.ch/account/password/reset?" + urlencode({'e':dumb_user.email, 'p':newpass}),
+            'unsubscribe_link': urlencode({'u':dumb_user.email, 't':md5(dumb_user.date_joined.isoformat()).hexdigest()}),
+            'email_type': 'reset',
+        }
+        msg = EmailMultiAlternatives(
+            "Menuwatch Password Reset",
+            "Hi, {}! A password reset was just requested for this account.\n\nIf you didn't request a password reset, simply delete this email. If you would like to reset your password, please click below. {}".format(context['first_name'], context['reset_link']),
+            "Menuwatch <mail@menuwat.ch>",
+            ["{} {} <{}>".format(dumb_user.first_name, dumb_user.last_name, dumb_user.email),],
+        )
+        msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
+        msg.send()
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/account/password/change')
+    else:
+        if request.method == 'POST':      
+            form = forms.RequestResetForm(request.POST)
+
+            if form.is_valid():  # All validation rules pass
+                email = form.cleaned_data['email']
+                u = User.objects.get(email__exact=email)
+                if u is not None:
+                    # generate a new password: a random alphanumeric string
+                    newpass = uuid.uuid4().hex
+                    print newpass
+                    u.set_password(newpass)
+                    u.save()
+                    send_reset_mail(request, u, newpass)
+                    return HttpResponseRedirect('/')
+                else:
+                    return HttpResponseRedirect('/reset')
+        else:
+            form = forms.RequestResetForm()  # An unbound form
+
+        context = {
+            'form': form,
+            'action': 'reset',
+        }
+
+        return render(request, 'menus/auth.html', context)
 
 ###################
 ## ACCOUNT VIEWS ##
@@ -240,9 +286,34 @@ def ChangePasswordView(request):
 
         return render(request, 'menus/auth.html', {
             'form': form,
-            'action': 'account/password',
-        })    
+            'action': 'account/password/change',
+        })
 
+def ResetPasswordView(request):  # not to be confused with RequestResetView, which does what it says 
+    if 'e' in request.GET and 'p' in request.GET:
+        email = request.GET['e']
+        old_pword = request.GET['p']
+
+        user = authenticate(username=email, password=old_pword)
+        login(request, user)
+
+    if request.method == 'POST':  
+        form = forms.ProcessResetForm(request.POST)
+
+        if form.is_valid():  # All validation rules pass
+            new_pword = form.cleaned_data['pword1']
+            request.user.set_password(new_pword)
+            request.user.save()
+            return HttpResponseRedirect('/account')
+    else:
+        form = forms.ProcessResetForm()  # An unbound form
+
+    context = {
+        'form': form,
+        'action': 'account/password/reset',
+    }
+
+    return render(request, 'menus/auth.html', context)
 
 def UpgradeView(request):
     if not request.user.is_authenticated():
@@ -379,7 +450,7 @@ def DebugEmailView(request):
         'first_name': user.first_name,
         'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
         'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
-        'email_type': 'alert',
+        'email_type': 'reset',
         'item_list': menumods.Food.objects.all()[:10]
     }
     return render_to_response("menus/email.html", context)

@@ -38,9 +38,46 @@ class LoginForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if not User.objects.filter(email = email).count():
-            raise forms.ValidationError(mark_safe('We don\'t have a user with that address. Did you mean to <a href="/signup">sign up</a>?'))
+            raise forms.ValidationError(mark_safe('We don\'t have any users with that email address. Did you mean to <a href="/signup">sign up</a>?'))
         return email
 
+    def clean_pword(self):
+        email = self.cleaned_data.get('email')
+        pword = self.cleaned_data.get('pword')
+        if User.objects.filter(email = email).count() == 1:
+            u = User.objects.filter(email = email)[:1].get()
+            if not u.check_password(pword):
+                raise forms.ValidationError(mark_safe('Incorrect password. If you forgot, you can request a <a href="/reset">password reset</a>.'))
+        return pword
+
+
+class RequestResetForm(forms.Form):
+    email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not User.objects.filter(email = email).count():
+            raise forms.ValidationError(mark_safe('We don\'t have any users with that email address. <a href="/signup">Sign up</a> for a new account?'))
+        return email
+
+
+class ProcessResetForm(forms.Form):
+    pword1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    pword2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New password, again'}))
+
+    def clean_pword1(self):
+        pword1 = self.cleaned_data.get('pword1')
+        if len(pword1) < 6:
+            raise forms.ValidationError("Your password must be at least six characters")
+        return pword1
+
+    def clean_pword2(self):
+        pword1 = self.cleaned_data.get('pword1')
+        pword2 = self.cleaned_data.get('pword2')
+
+        if pword1 != pword2:
+            raise forms.ValidationError("Passwords do not match")
+        return pword2
 
 class ChangePasswordForm(forms.Form):
     pword0 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
