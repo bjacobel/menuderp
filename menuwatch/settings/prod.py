@@ -103,7 +103,8 @@ COMPRESS_JS_FILTERS += [
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     '.herokuapp.com',
-    '.menuwat.ch'
+    '.menuwat.ch',
+    'mailgun.org'
 ]
 ########## END ALLOWED HOST CONFIGURATION
 
