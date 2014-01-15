@@ -12,7 +12,7 @@ import sys
 
 @transaction.commit_manually
 @task()
-def build_db(lookahead=28):
+def build_db(lookahead=14):
     today = date.today() + timedelta(days=lookahead)
     locations = {
         "Moulton": 48,
