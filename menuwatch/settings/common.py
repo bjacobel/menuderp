@@ -291,6 +291,10 @@ SUIT_CONFIG = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+NOSE_ARGS = [
+    '--verbosity=0'
+]
+
 ############ END NOSE CONFIGURATION
 
 ############ DJANGO-MAILGUN CONFIGURATION
