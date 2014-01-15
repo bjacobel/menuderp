@@ -1,6 +1,6 @@
 from celery import task
 from datetime import date, timedelta
-from apps.menus import models as menu_models
+from apps.menus import models as menus_models
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.db import transaction
@@ -8,6 +8,7 @@ from hashlib import md5
 from urllib import urlencode
 import requests
 import re
+import sys
 
 @transaction.commit_manually
 @task()
@@ -73,7 +74,7 @@ def build_db(lookahead=28):
                             new_hash = md5(food + attrs).hexdigest()
 
                             try:
-                                old_food = menu_models.Food.objects.get(myhash__exact=new_hash)
+                                old_food = menus_models.Food.objects.get(myhash__exact=new_hash)
                             except: 
                                 old_food = None
 
@@ -96,7 +97,7 @@ def build_db(lookahead=28):
                                 # it's a brand new food
                                 sID = transaction.savepoint()
                                 try:
-                                    new_food = menu_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
+                                    new_food = menus_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
                                     new_food.push_next_date(today)
                                     new_food.save()
                                 except:  # they goofed something in the menu formatting. IDGAF. Drop it.
@@ -108,17 +109,18 @@ def build_db(lookahead=28):
 # update the dates once a day so that old "upcoming" foods aren't anymore
 @transaction.commit_manually
 @task()
-def date_update():
-    for food in menu_models.Food.objects.exclude(next_date_array=[]):
+def date_update(date_today=date.today()):
+    for food in menus_models.Food.objects.exclude(next_date_array=[]):
         sID = transaction.savepoint()
         try:
-            while food.peek_next_date() < date.today():  # the food was offered yesterday or before
+            while food.peek_next_date() is not None and food.peek_next_date() < date_today:  # the food was offered yesterday or before
                 food.last_date = food.pop_next_date()  # pop from the front of the array
             food.save()
         except:
             transaction.savepoint_rollback(sID)
         else:
             transaction.commit()
+
 
 
 @task()
@@ -147,8 +149,8 @@ def mailer():
         timedel=2
 
     # get some querysets
-    all_users = menu_models.Profile.objects.all()
-    all_foods = menu_models.Food.objects.all()
+    all_users = menus_models.Profile.objects.all()
+    all_foods = menus_models.Food.objects.all()
     upcoming_soon = []
     upcoming_week = []
     upcoming_today = []

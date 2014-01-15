@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
 from apps.menus import models as menus_models
+from apps.menus import tasks as menus_tasks
+from datetime import date, timedelta
  
 class APITest(TestCase):
     def test_add_endpoint(self):
@@ -78,4 +80,18 @@ class APITest(TestCase):
 class TasksTest(TestCase):
     # aquire foods ten days out for twenty days. Check foods left at the end. 
     def test_food_popping(self):
-        self.assertEqual(0, 0)
+
+        # build database for the next month
+        for i in xrange(30):
+            menus_tasks.build_db(i)
+
+        # now pretend it's 31 days from now; delete every food that's 'past'
+        # should end up with every food being deleted (but doesn't!)
+        menus_tasks.date_update(date.today() + timedelta(days=31))
+
+        broken = []
+        for food in menus_models.Food.objects.all():
+            if food.peek_next_date() is not None and food.peek_next_date() < date.today() + timedelta(days=31):
+                broken.append(food)
+
+        self.assertEqual(len(broken), 0)
