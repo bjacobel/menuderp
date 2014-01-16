@@ -55,6 +55,7 @@
         {% endif %}
     </div>
     <div class="tabs">
+        <a href="/browse" id="upcoming" class="lato bold tab"><p>UPCOMING</p></a>
         <a href="/browse?sort=popular" id="popular" class="lato bold tab"><p>POPULAR</p></a>
         <a href="/browse?sort=recent" id="recent" class="lato bold tab"><p>RECENT</p></a>
         <a href="/browse?sort=search" id="search" class="lato bold tab"><p>SEARCH</p></a>
@@ -77,5 +78,8 @@
             href = "/browse?sort=search&query="+$('input').val();
             window.location.href = href;
         };
+    </script>
+    <script>
+        $(".tab#{{ tab }}").addClass("hover");
     </script>
 {% endblock %}

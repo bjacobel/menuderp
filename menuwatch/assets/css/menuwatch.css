@@ -514,9 +514,23 @@ td:hover .icon-plus {
     top:50px;
 }
 
+#upcoming.tab > p {
+    top:60px;
+}
+
 .tab:hover {
     color:white !important;
     left:7px;
+}
+
+.tab.hover {
+    color:white !important;
+    left:7px;
+}
+
+#upcoming.tab {
+    background-color:#E74C3C;
+    height:110px;
 }
 
 #popular.tab {

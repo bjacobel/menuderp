@@ -89,9 +89,8 @@ def BrowseView(request):
                 "foodlist": None
             }
         else:
-            # default to showing ALL the foods!
             context = {
-                "tab": "all",
+                "tab": "upcoming",
                 "foodlist": sorted(menumods.Food.objects.exclude(next_date_array=[]), key=lambda x: x.peek_next_date())[:40]
             }
         return render(request, 'menus/browse.html', context)
