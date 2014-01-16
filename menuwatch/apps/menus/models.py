@@ -62,26 +62,26 @@ class Food (models.Model):
             return None
 
     def next_date_readable(self):
-        if self.peek_next_date() == date.today():
+        if self.peek_next_date() is None:
+            return "Unknown"
+        elif self.peek_next_date() == date.today():
             return "Today"
         elif self.peek_next_date() == date.today()+timedelta(days=1):
             return "Tomorrow"
         elif self.peek_next_date() > date.today()+timedelta(days=1) and self.peek_next_date() < date.today()+timedelta(days=6):
             return self.peek_next_date().strftime("%A")
-        elif self.peek_next_date() is None:
-            return "Next Month"
         else:
             return self.peek_next_date().strftime("%b %d")
 
     def last_date_readable(self):
-        if self.last_date == date.today()-timedelta(days=1):
+        if self.last_date is None:
+            return "Ages ago"
+        elif self.last_date == date.today()-timedelta(days=1):
             return "Yesterday"
         elif self.last_date == date.today()-timedelta(days=2):
             return "Two days ago"
         elif self.last_date < date.today()+timedelta(days=2) and self.last_date > date.today()+timedelta(days=6):
             return "Last " + self.last_date.strftime("%A")
-        elif self.last_date is None:
-            return "Last Month"
         else:
             return self.last_date.strftime("%b %d")
 
