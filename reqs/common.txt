@@ -12,3 +12,7 @@ django-mailgun==0.2.2
 django-picklefield==0.3.0
 stripe==1.9.4
 psycopg2==2.5.2
+django-user-agents==0.2.2
+pyyaml==3.10
+ua-parser==0.3.4
+user-agents==0.2.0

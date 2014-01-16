@@ -565,3 +565,11 @@ td:hover .icon-plus {
 .searchboxwrapper .cta {
     width:150px;
 }
+
+
+/* MEDIA QUERIES (aka godawful hacks) */
+@media all and (max-width: 706px){
+    .navbar {
+        display:none !important;
+    }
+}

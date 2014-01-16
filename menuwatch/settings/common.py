@@ -162,6 +162,9 @@ MIDDLEWARE_CLASSES = (
 
     # Transaction middleware
     'django.middleware.transaction.TransactionMiddleware',
+
+    # Mobile (UA) helper middleware
+    'django_user_agents.middleware.UserAgentMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -204,6 +207,9 @@ THIRD_PARTY_APPS = (
 
     # Nose test suite
     'django_nose',
+
+    # Mobile helper
+    'django_user_agents'
 )
 
 LOCAL_APPS = (

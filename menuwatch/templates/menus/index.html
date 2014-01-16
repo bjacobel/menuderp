@@ -22,7 +22,7 @@
         </div>
         {% endif %}
     </div>
-    <div class="container hidden-xs">
+    <div class="container">
         <div class="container subhero-wrapper">
             <div class="subhero right">{% include "menus/includes/magnify.html" %}</div>
             <div class="subhero left">
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="container index-footer hidden-xs">
+    <div class="container index-footer">
         {% if user.is_authenticated %}
             <h1 class="lato bold text-center">Welcome back, {{  user.first_name }}.</h1>
             <a class="cta-link" href="/browse">
