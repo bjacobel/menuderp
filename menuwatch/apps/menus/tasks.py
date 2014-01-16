@@ -125,12 +125,12 @@ def date_update(date_today=date.today()):
 
 @task()
 def build_db_future(days):
-    for i in xrange(0, days):
+    for i in xrange(days):
         build_db(i)
 
 
 @task()
-def mailer():
+def mailer(dryrun=False):
     today = date.today()
     weekday = today.isoweekday()
 
@@ -173,21 +173,26 @@ def mailer():
         elif user.locations is 3:
             pref_locs = pref_locs.remove("Moulton")
 
-
         for watch in user.my_watches():
             if watch.food.location in pref_locs:
-                if (int(user.frequency) is 1 and sunday):
+                if int(user.frequency) is 1 and sunday:
                     if watch.food in upcoming_week:
                         raised_alerts.append(watch.food)
-                elif (int(user.frequency) is 3 and (sunday or wednesday or friday)):
+                elif int(user.frequency) is 3 and (sunday or wednesday or friday):
                     if watch.food in upcoming_soon:
                         raised_alerts.append(watch.food)
-                elif (int(user.frequency) is 7):
+                elif int(user.frequency) is 7:
                     if watch.food in upcoming_today:
                         raised_alerts.append(watch.food)
+                elif dryrun:  # fudge things a little if we're running tests: it doesn't matter if it's sunday or how frequent our fake users want to see alerts
+                    if watch.food in upcoming_week:
+                        raised_alerts.append(watch.food)
+
                     
-        #if raised_alerts:
-            # send_email(raised_alerts, user)
+        if raised_alerts and not dryrun:
+            send_email(raised_alerts, user)
+
+        return raised_alerts
 
 def send_email(raised_alerts, user):
     context = {

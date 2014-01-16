@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from apps.menus import models as menus_models
 from apps.menus import tasks as menus_tasks
 from datetime import date, timedelta
+import random
+import string
+
+def randchars(n):
+    return ''.join(random.choice(string.ascii_lowercase) for x in range(n))
  
 class APITest(TestCase):
     def test_add_endpoint(self):
@@ -78,15 +83,45 @@ class APITest(TestCase):
 
 
 class TasksTest(TestCase):
-    # aquire foods ten days out for twenty days. Check foods left at the end. 
-    def test_food_popping(self):
-
+    def test_food_acquisition(self):
         # build database for the next month
         for i in xrange(30):
             menus_tasks.build_db(i)
 
-        # now pretend it's 31 days from now; delete every food that's 'past'
-        # should end up with every food being deleted (but doesn't!)
+
+    # Run the script to send emails as a dry run, check what would have been sent
+    # and make sure that everybody was actually watching that food
+    def test_mailer(self):
+        
+        self.test_food_acquisition()
+
+        # create 50 fake users and profiles
+        for i in xrange(50):
+            email = "{}@{}.com".format(randchars(8), randchars(3))
+            password = randchars(10)
+            u = User.objects.create_user(email, email, password)
+            p = menus_models.Profile(user=u)
+            p.save()
+
+            # for each user, watch 5 random foods
+            for i in xrange(5):
+                w = menus_models.Watch(owner=p, food=random.choice(menus_models.Food.objects.all()))
+                w.save()
+
+        dryrun = True  # just to be clear what we're doing
+        alerts = menus_tasks.mailer(dryrun)
+
+        # assert that each alert must be in its owner's watches
+        for alert in alerts:
+            self.assertIn(alert, alert.owner.watch_set)
+
+
+    def test_food_popping(self):
+        
+        self.test_food_acquisition()
+
+        # pretend it's 31 days from now; delete every food that's 'past'
+        # should end up with every food being past date (ie, peek_next_date() = None)
         menus_tasks.date_update(date.today() + timedelta(days=31))
 
         broken = []
@@ -95,3 +130,4 @@ class TasksTest(TestCase):
                 broken.append(food)
 
         self.assertEqual(len(broken), 0)
+
