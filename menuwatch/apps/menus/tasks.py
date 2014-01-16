@@ -79,9 +79,16 @@ def build_db(lookahead=14):
                                 old_food = None
 
                             if old_food is not None:
-                                #it's a food we've seen before
-                                old_food.location = key
-                                old_food.meal = meal
+                                # it's a food we've seen before
+
+                                # but did we see it before __on the same day and meal__, because both dining halls have it?
+                                if old_food.peek_next_date() == today and old_food.meal == meal:
+                                    old_food.location = "Both"
+                                    # meal doesn't need to change
+                                else:
+                                    old_food.location = key
+                                    old_food.meal = meal
+                                
                                 old_food.foodgroup = foodgroup
 
                                 try:
@@ -167,7 +174,7 @@ def mailer(dryrun=False):
     raised_alerts = []
 
     for user in all_users:
-        pref_locs = ["Thorne", "Moulton"]
+        pref_locs = ["Thorne", "Moulton", "Both"]
         if user.locations is 2:
             pref_locs = pref_locs.remove("Thorne")
         elif user.locations is 3:
