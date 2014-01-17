@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load compress %}
+{% load user_agents %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,24 +34,39 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menuwatch.css"/>
 
     {% compress css %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     {% endcompress %}
 
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
     {% compress js %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/menuwatch.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ga.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bigslide.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/ga.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/menuwatch.js"></script>
     {% endcompress %}
 
 </head>
 
 <body>
+    {% if request|is_mobile %}
+        <nav id="menu" class="navpanel" role="navigation">
+            <ul>
+                <li><a class="lato" href="#">About</a></li>
+                <li><a class="lato" href="#">News</a></li>
+                <li><a class="lato" href="#">Foods</a></li>
+                <li><a class="lato" href="#">Account</a></li>
+                <li><a class="lato" href="#">Log In</a></li>
+                <li><a class="lato" href="#">Sign Up</a></li>
+                <li><a class="lato" href="#">Sign Out</a></li>
+            </ul>
+        </nav>
+    {% endif %}
     <div class="wrapper wholepage">
         <div class="navbar">
             <div class="container">
+                <a href="#menu" class="menu-link">&#9776;</a>
                 <a class="navbar-brand" href="/">
                     {% include "menus/includes/logo.html" %}
                 </a>
@@ -79,9 +95,18 @@
 
 {% block footer_scripts_nocompress %}
 {% endblock %}
+
 {% compress js %}
-{% block footer_scripts %}
-{% endblock %}
+    {% if request|is_mobile %}
+    <script>
+        $(document).ready(function() {
+            $('.menu-link').bigSlide();
+        });
+    </script>
+    {% endif %}
+
+    {% block footer_scripts %}
+    {% endblock %}
 {% endcompress %}
 
 </html>

@@ -111,7 +111,7 @@ a {
 .nav-buttons {
     float:right;
     height:auto;
-    margin-top:10px;
+    margin-top:14px;
 }
 .nav > li {
     display:inline-block !important;
@@ -149,6 +149,22 @@ svg text {
 }
 
 /* End nav bar */
+
+/* Alternate nav bar on mobile */
+
+.navpanel {
+    position: fixed;
+    left: -15.625em;
+    width: 15.625em;
+    z-index:9999;
+    background:#34495D;
+}
+
+.menu-link {
+    display:none;
+}
+
+/* End alternate nav bar */
 
 /*  Homepage */
 .banner {
@@ -581,4 +597,18 @@ td:hover .icon-plus {
     .banner-wrap { height:480px; }
     .subhero.pic { display:none; }
     .subhero.words { width:100%; }
+    .menu-link {
+        display:block;
+        position:absolute;
+        right:10px;
+        top:14px;
+        font-size:18pt;
+        background-color:rgba(100,100,100,0.3);
+        padding:0 5px;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+             -o-border-radius: 5px;
+                border-radius: 5px;
+    }
 }
