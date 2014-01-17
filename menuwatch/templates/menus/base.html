@@ -30,10 +30,9 @@
     <!--[if IE]><link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico"><![endif]-->
 
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet" type="text/css">
-    
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menuwatch.css"/>
 
     {% compress css %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menuwatch.css"/>
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     {% endcompress %}
 
@@ -52,14 +51,22 @@
 <body>
     {% if request|is_mobile %}
         <nav id="menu" class="navpanel" role="navigation">
-            <ul>
-                <li><a class="lato" href="#">About</a></li>
-                <li><a class="lato" href="#">News</a></li>
-                <li><a class="lato" href="#">Foods</a></li>
-                <li><a class="lato" href="#">Account</a></li>
-                <li><a class="lato" href="#">Log In</a></li>
-                <li><a class="lato" href="#">Sign Up</a></li>
-                <li><a class="lato" href="#">Sign Out</a></li>
+            <div class="navpanel-logo">
+                <div class="circle">
+                    <img src="{{ STATIC_URL }}img/favicon-256.png">
+                </div>
+            </div>
+            <ul class="no-decoration">
+                <li><a class="lato bold" href="/about">About</a></li>
+                <li><a class="lato bold" href="http://news.menuwat.ch">News</a></li>
+                {% if user.is_authenticated %}
+                    <li><a class="lato bold" href="/browse">Foods</a></li>
+                    <li><a class="lato bold" href="/account">Account</a></li>
+                    <li><a class="lato bold" href="/logout">Log Out</a></li>
+                {% else %}
+                    <li><a class="lato bold" href="/login">Log In</a></li>
+                    <li><a class="lato bold" href="/signup">Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
     {% endif %}

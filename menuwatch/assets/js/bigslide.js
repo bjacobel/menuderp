@@ -10,7 +10,7 @@
       'menu': ('#menu'),
       'push': ('.push'),
       'side': 'left',
-      'menuWidth': '15.625em',
+      'menuWidth': '9em',
       'speed': '300'
     }, options);
 
@@ -46,12 +46,18 @@
       menu._state = 'open';
       menu.css(settings.side, '0');
       push.css(settings.side, width);
+      menu.css("-webkit-box-shadow", "3px 0px 9px 0px rgba(50, 50, 50, 0.75)");
+      menu.css("-moz-box-shadow", "3px 0px 9px 0px rgba(50, 50, 50, 0.75)");
+      menu.css("box-shadow", "3px 0px 9px 0px rgba(50, 50, 50, 0.75)");
     };
 
     menu.close = function() {
       menu._state = 'closed';
       menu.css(settings.side, '-' + width);
       push.css(settings.side, '0');
+      menu.css("-webkit-box-shadow", "none");
+      menu.css("-moz-box-shadow", "none");
+      menu.css("box-shadow", "none");
     };
 
     menuLink.on('click.bigSlide', function(e) {

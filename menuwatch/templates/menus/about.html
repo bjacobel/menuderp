@@ -3,11 +3,11 @@
 
 {% block body %}
     <div class="container">
-        <h1 class="lato text-center">The menu tracker for Bowdoin students.</h1>
+        <h1 class="lato text-center">The menu tracker for Bowdoin students.</h1></br>
         {% if not request|is_mobile %}
             <a class="about-header" href="/">{% include "menus/includes/logo.html" %}</a>
         {% endif %}
-        <h3 class="lato text-center" style="max-width:975px;margin:0 auto">
+        <h3 class="lato text-justify" style="max-width:975px;margin:0 auto">
             Finding the foods you love at the best college dining in the world shouldn't be hard. That's why Menuwatch exists: to make the dining experience of Bowdoin students easier and more fun. 
             <br/><br/>
             The idea is simple — sign in, find a food you love, and add it to your account. When Menuwatch sees that your food is coming up at Moulton or Thorne, we'll send you an alert.
