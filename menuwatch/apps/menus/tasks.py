@@ -1,7 +1,7 @@
 from celery import task
 from datetime import date, timedelta
 from apps.menus import models as menus_models
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.shortcuts import render_to_response
 from django.db import transaction
 from hashlib import md5
@@ -222,6 +222,15 @@ def send_email(raised_alerts, user):
     msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
     msg.send()
 
+
+@task
+def test_task():
+    send_mail(
+        "Test",
+        "If you got this, it means that Celery is working.",
+        "Menuwatch <mail@menuwat.ch>",
+        ["Brian Jacobel <bjacobel@gmail.com>",],
+    )
 
 
 
