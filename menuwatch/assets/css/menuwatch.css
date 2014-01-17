@@ -177,6 +177,7 @@ svg text {
     text-align: center;
     margin-left:auto;
     margin-right:auto;
+    padding:0 25px;
     color:white;
     top:100px;
     width:100%;
@@ -569,7 +570,15 @@ td:hover .icon-plus {
 
 /* MEDIA QUERIES (aka godawful hacks) */
 @media all and (max-width: 706px){
-    .navbar {
-        display:none !important;
+    .navbar-brand {
+        float:none !important;
+        margin:0 auto;
+        width:242px;
+        display:block;
+        padding-left:0;
     }
+    .nav-buttons { display:none !important; }
+    .banner-wrap { height:480px; }
+    .subhero.pic { display:none; }
+    .subhero.words { width:100%; }
 }

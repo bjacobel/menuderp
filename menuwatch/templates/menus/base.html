@@ -30,8 +30,9 @@
 
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet" type="text/css">
     
-    {% compress css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menuwatch.css"/>
+
+    {% compress css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css"/>
     {% endcompress %}
 
@@ -50,7 +51,7 @@
     <div class="wrapper wholepage">
         <div class="navbar">
             <div class="container">
-                <a class="navbar-brand" href="/" width="200">
+                <a class="navbar-brand" href="/">
                     {% include "menus/includes/logo.html" %}
                 </a>
                 <div class="nav-buttons unhighlightable">
