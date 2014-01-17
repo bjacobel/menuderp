@@ -171,9 +171,10 @@ def mailer(dryrun=False):
             if food.peek_next_date() == today:
                 upcoming_today.append(food)
 
-    raised_alerts = []
+    all_alerts = []
 
     for user in all_users:
+        this_users_alerts = []
         pref_locs = ["Thorne", "Moulton", "Both"]
         if user.locations is 2:
             pref_locs = pref_locs.remove("Thorne")
@@ -184,22 +185,33 @@ def mailer(dryrun=False):
             if watch.food.location in pref_locs:
                 if int(user.frequency) is 1 and sunday:
                     if watch.food in upcoming_week:
-                        raised_alerts.append(watch.food)
+                        this_users_alerts.append(watch.food)
                 elif int(user.frequency) is 3 and (sunday or wednesday or friday):
                     if watch.food in upcoming_soon:
-                        raised_alerts.append(watch.food)
+                        this_users_alerts.append(watch.food)
                 elif int(user.frequency) is 7:
                     if watch.food in upcoming_today:
-                        raised_alerts.append(watch.food)
+                        this_users_alerts.append(watch.food)
                 elif dryrun:  # fudge things a little if we're running tests: it doesn't matter if it's sunday or how frequent our fake users want to see alerts
                     if watch.food in upcoming_week:
-                        raised_alerts.append(watch.food)
+                        this_users_alerts.append(watch.food)
 
                     
-        if raised_alerts and not dryrun:
-            send_email(raised_alerts, user)
+        if this_users_alerts and not dryrun:
+            send_email(this_users_alerts, user)
 
-        return raised_alerts
+        all_alerts += this_users_alerts
+
+    if not dryrun:
+        send_mail(
+            "Menuwatch mailer successful",
+            "Just mailed out {} alerts. Here they are:\n\n {}".format(len(all_alerts), all_alerts),
+            "Menuwatch <mail@menuwat.ch>",
+            ["Brian Jacobel <bjacobel@gmail.com>",],
+        )
+
+    return all_alerts
+
 
 def send_email(raised_alerts, user):
     context = {
