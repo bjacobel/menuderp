@@ -34,14 +34,24 @@ class APITest(TestCase):
         f4 = menus_models.Food(name="f4"); f4.save()
         f5 = menus_models.Food(name="f5"); f5.save()
         f6 = menus_models.Food(name="f6"); f6.save()
+        f7 = menus_models.Food(name="f7"); f7.save()
+        f8 = menus_models.Food(name="f8"); f8.save()
+        f9 = menus_models.Food(name="f9"); f9.save()
+        f10 = menus_models.Food(name="f10"); f10.save()
+        f11 = menus_models.Food(name="f11"); f11.save()
 
         self.assertEqual(c.post('/api/add', {'food_pk': f1.pk}).status_code, 201)
         self.assertEqual(c.post('/api/add', {'food_pk': f2.pk}).status_code, 201)
         self.assertEqual(c.post('/api/add', {'food_pk': f3.pk}).status_code, 201)
         self.assertEqual(c.post('/api/add', {'food_pk': f4.pk}).status_code, 201)
         self.assertEqual(c.post('/api/add', {'food_pk': f5.pk}).status_code, 201)
-        # normal user runs out of watches at 5
-        self.assertEqual(c.post('/api/add', {'food_pk': f6.pk}).status_code, 431)
+        self.assertEqual(c.post('/api/add', {'food_pk': f6.pk}).status_code, 201)
+        self.assertEqual(c.post('/api/add', {'food_pk': f7.pk}).status_code, 201)
+        self.assertEqual(c.post('/api/add', {'food_pk': f8.pk}).status_code, 201)
+        self.assertEqual(c.post('/api/add', {'food_pk': f9.pk}).status_code, 201)
+        self.assertEqual(c.post('/api/add', {'food_pk': f10.pk}).status_code, 201)
+        # normal user runs out of watches at 10
+        self.assertEqual(c.post('/api/add', {'food_pk': f11.pk}).status_code, 431)
 
 
     def test_delete_endpoint(self):
@@ -103,8 +113,8 @@ class TasksTest(TestCase):
             p = menus_models.Profile(user=u)
             p.save()
 
-            # for each user, watch 5 random foods
-            for i in xrange(5):
+            # for each user, watch 10 random foods
+            for i in xrange(10):
                 w = menus_models.Watch(owner=p, food=random.choice(menus_models.Food.objects.all()))
                 w.save()
 

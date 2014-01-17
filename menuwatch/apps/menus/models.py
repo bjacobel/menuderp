@@ -144,7 +144,7 @@ class Profile (models.Model):
         return self.username()
 
     def can_create_new_watches(self):
-        if self.pro or self.used_watches() < 5:
+        if self.pro or self.used_watches() < 10:
             return True
         return False
 
