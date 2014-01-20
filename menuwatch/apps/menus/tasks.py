@@ -13,6 +13,7 @@ import sys
 @transaction.commit_manually
 @task()
 def build_db(lookahead=14):
+    found_foods = []
     today = date.today() + timedelta(days=lookahead)
     locations = {
         "Moulton": 48,
@@ -58,6 +59,7 @@ def build_db(lookahead=14):
                         foodgroup = re.split('<span>', meal_chunk)[0]
 
                         foods = re.split('<span>', meal_chunk)[1:]
+
                         for food in foods:
 
                             # grab the food specialty attributes (ve, gf)
@@ -81,14 +83,8 @@ def build_db(lookahead=14):
                             if old_food is not None:
                                 # it's a food we've seen before
 
-                                # but did we see it before __on the same day and meal__, because both dining halls have it?
-                                if old_food.peek_next_date() == today and old_food.meal == meal:
-                                    old_food.location = "Both"
-                                    # meal doesn't need to change
-                                else:
-                                    old_food.location = key
-                                    old_food.meal = meal
-                                
+                                old_food.location = key
+                                old_food.meal = meal
                                 old_food.foodgroup = foodgroup
 
                                 try:
@@ -99,6 +95,7 @@ def build_db(lookahead=14):
                                     pass
 
                                 old_food.save()
+                                found_foods.append(old_food)
                                 transaction.commit()
                             else:
                                 # it's a brand new food
@@ -107,10 +104,13 @@ def build_db(lookahead=14):
                                     new_food = menus_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
                                     new_food.push_next_date(today)
                                     new_food.save()
+                                    found_foods.append(new_food)
                                 except:  # they goofed something in the menu formatting. IDGAF. Drop it.
                                     transaction.savepoint_rollback(sID)
                                 else:
                                     transaction.commit()
+    return found_foods
+
 
 
 # update the dates once a day so that old "upcoming" foods aren't anymore

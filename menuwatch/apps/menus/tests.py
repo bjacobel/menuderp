@@ -118,6 +118,9 @@ class TasksTest(TestCase):
                 w = menus_models.Watch(owner=p, food=random.choice(menus_models.Food.objects.all()))
                 w.save()
 
+        # 50 users * 10 watches each = 500 watches
+        self.assertEqual(len(menus_models.Watch.objects.all()), 500)
+
         dryrun = True  # just to be clear what we're doing
         alerts = menus_tasks.mailer(dryrun)
 
