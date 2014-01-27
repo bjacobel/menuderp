@@ -171,10 +171,10 @@ def mailer(dryrun=False):
             if food.peek_next_date() == today:
                 upcoming_today.append(food)
 
-    all_alerts = []
+    all_upcoming_foods = []
 
     for user in all_users:
-        this_users_alerts = []
+        this_users_upcoming_foods = []
         pref_locs = ["Thorne", "Moulton", "Both"]
         if user.locations is 2:
             pref_locs = pref_locs.remove("Thorne")
@@ -185,49 +185,49 @@ def mailer(dryrun=False):
             if watch.food.location in pref_locs:
                 if int(user.frequency) is 1 and sunday:
                     if watch.food in upcoming_week:
-                        this_users_alerts.append(watch.food)
+                        this_users_upcoming_foods.append(watch.food)
                 elif int(user.frequency) is 3 and (sunday or wednesday or friday):
                     if watch.food in upcoming_soon:
-                        this_users_alerts.append(watch.food)
+                        this_users_upcoming_foods.append(watch.food)
                 elif int(user.frequency) is 7:
                     if watch.food in upcoming_today:
-                        this_users_alerts.append(watch.food)
+                        this_users_upcoming_foods.append(watch.food)
                 elif dryrun:  # fudge things a little if we're running tests: it doesn't matter if it's sunday or how frequent our fake users want to see alerts
                     if watch.food in upcoming_week:
-                        this_users_alerts.append(watch.food)
+                        this_users_upcoming_foods.append(watch.food)
 
                     
-        if this_users_alerts and not dryrun:
-            send_email(this_users_alerts, user)
+        if this_users_upcoming_foods and not dryrun:
+            send_email(this_users_upcoming_foods, user)
 
-        all_alerts += this_users_alerts
+        all_upcoming_foods += this_users_upcoming_foods
 
     if not dryrun:
         send_mail(
             "Menuwatch mailer successful",
-            "Just mailed out {} alerts. Here they are:\n\n {}".format(len(all_alerts), all_alerts),
+            "Just mailed out {} alerts. Here they are:\n\n {}".format(len(all_upcoming_foods), all_upcoming_foods),
             "Menuwatch <mail@menuwat.ch>",
             ["Brian Jacobel <bjacobel@gmail.com>",],
         )
 
-    return all_alerts
+    return all_upcoming_foods
 
 
-def send_email(raised_alerts, user):
+def send_email(alerted_foods, user):
     context = {
         'first_name': user.firstname(),
         'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.user.date_joined.isoformat()).hexdigest()}),
         'email_type': 'alert',
-        'item_list': sorted(raised_alerts, key=lambda x: x.peek_next_date(), reverse=True)
+        'item_list': sorted(alerted_foods, key=lambda x: x.peek_next_date(), reverse=True)
     }
 
-    raised_alerts_as_string = ""
-    for alert in raised_alerts:
-        raised_alerts_as_string += "{} on {} for {} at {}\n".format(alert.name, alert.next_date_readable(), alert.meal, alert.location)
+    alerted_foods_as_string = ""
+    for food in alerted_foods:
+        alerted_foods_as_string += "{} on {} for {} at {}\n".format(food.name, food.next_date_readable(), food.meal, food.location)
 
     msg = EmailMultiAlternatives(
-        "Coming soon: {} and more".format(raised_alerts[0].name),
-        "Hi, {}! Here's a taste of what's coming up in the next few days: \n{}".format(context['first_name'], raised_alerts_as_string),
+        "Coming soon: {} and more".format(alerted_foods[0].name),
+        "Hi, {}! Here's a taste of what's coming up in the next few days: \n{}".format(context['first_name'], alerted_foods_as_string),
         "Menuwatch <mail@menuwat.ch>",
         ["{} <{}>".format(user.fullname(), user.email()),],
     )

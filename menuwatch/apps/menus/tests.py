@@ -122,11 +122,16 @@ class TasksTest(TestCase):
         self.assertEqual(len(menus_models.Watch.objects.all()), 500)
 
         dryrun = True  # just to be clear what we're doing
-        alerts = menus_tasks.mailer(dryrun)
+        alerted_foods = menus_tasks.mailer(dryrun)
 
-        # assert that each alert must be in its owner's watches
-        for alert in alerts:
-            self.assertIn(alert, alert.owner.watch_set)
+        # assert that every food is watched by somebody
+        watched_foods = []
+        for profile in menus_models.Profile.objects.all():
+            for watch in profile.my_watches():
+                watched_foods.append(watch.food)
+
+        for food in alerted_foods:
+            self.assertIn(food, watched_foods)
 
 
     def test_food_popping(self):
