@@ -9,7 +9,7 @@ django-suit==0.2.2
 requests==1.2.3
 django-nose==1.1
 django-mailgun==0.2.2
-django-picklefield==0.3.0
+django-picklefield==0.3.1
 stripe==1.9.4
 psycopg2==2.5.2
 django-user-agents==0.2.2

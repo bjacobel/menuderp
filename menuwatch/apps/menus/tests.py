@@ -125,13 +125,8 @@ class TasksTest(TestCase):
         alerted_foods = menus_tasks.mailer(dryrun)
 
         # assert that every food is watched by somebody
-        watched_foods = []
-        for profile in menus_models.Profile.objects.all():
-            for watch in profile.my_watches():
-                watched_foods.append(watch.food)
-
         for food in alerted_foods:
-            self.assertIn(food, watched_foods)
+            self.assertNotEqual(len(food.watchers()), 0)
 
 
     def test_food_popping(self):

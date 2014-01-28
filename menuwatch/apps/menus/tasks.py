@@ -8,7 +8,7 @@ from hashlib import md5
 from urllib import urlencode
 import requests
 import re
-import sys
+import traceback
 
 @transaction.commit_manually
 @task()
@@ -87,6 +87,8 @@ def build_db(lookahead=14):
                                 old_food.meal = meal
                                 old_food.foodgroup = foodgroup
 
+                                old_food.save()
+
                                 try:
                                     most_recent_date_found = old_food.next_date_array[-1]
                                     if most_recent_date_found != today:
@@ -102,8 +104,9 @@ def build_db(lookahead=14):
                                 sID = transaction.savepoint()
                                 try:
                                     new_food = menus_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
-                                    new_food.push_next_date(today)
                                     new_food.save()
+                                    new_food.push_next_date(today)
+                                    new_food.save()  # have to save before and after making a ManyToManyField, unfortunately
                                     found_foods.append(new_food)
                                 except:  # they goofed something in the menu formatting. IDGAF. Drop it.
                                     transaction.savepoint_rollback(sID)
@@ -117,11 +120,13 @@ def build_db(lookahead=14):
 @transaction.commit_manually
 @task()
 def date_update(date_today=date.today()):
-    for food in menus_models.Food.objects.exclude(next_date_array=[]):
+    for food in menus_models.Food.objects.exclude(next_dates=None):
         sID = transaction.savepoint()
         try:
             while food.peek_next_date() is not None and food.peek_next_date() < date_today:  # the food was offered yesterday or before
-                food.last_date = food.pop_next_date()  # pop from the front of the array
+                popped_date = menus_models.FoodDate(date=food.pop_next_date())
+                popped_date.save()
+                food.last_date = popped_date  # pop from the front of the array
             food.save()
         except:
             transaction.savepoint_rollback(sID)

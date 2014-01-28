@@ -2,8 +2,37 @@ from django.contrib.auth.models import User
 from django.db import models
 from hashlib import md5
 from datetime import date, timedelta
-from picklefield.fields import PickledObjectField
 import re
+
+class FoodDate (models.Model):
+    date = models.DateField(null=True, blank=True)
+
+    # return a short, human-readable description of the date
+    def readable(self):
+        if self.date is None:
+            return "Unknown"
+        elif self.date == date.today():
+            return "Today"
+        elif self.date > date.today():
+            if self.date == date.today()+timedelta(days=1):
+                return "Tomorrow"
+            elif self.date > date.today()+timedelta(days=1) and self.date < date.today()+timedelta(days=6):
+                return self.peek_next_date().strftime("%A")
+            else:
+                return self.peek_next_date().strftime("%b %d")
+        elif self.date < date.today():
+            if self.date == date.today()-timedelta(days=1):
+                return "Yesterday"
+            elif self.late == date.today()-timedelta(days=2):
+                return "Two days ago"
+            elif self.date < date.today()+timedelta(days=2) and self.date > date.today()+timedelta(days=6):
+                return "Last " + self.last_date.strftime("%A")
+            else:
+                return self.date.strftime("%b %d")
+
+    # return the date as YYYY-MM-DD
+    def __unicode__(self):
+        return self.date.isoformat()
 
 
 class Food (models.Model):
@@ -13,8 +42,8 @@ class Food (models.Model):
     myhash = models.CharField(max_length=32,editable=False)
 
     # variable
-    last_date = models.DateField(blank=True, null=True)
-    next_date_array = PickledObjectField(default=[])
+    last_date = models.ForeignKey(FoodDate, null=True, related_name='last_date_food_was_offered')
+    next_dates = models.ManyToManyField(FoodDate, null=True, related_name='upcoming_dates_for_food')
     location = models.CharField(max_length=7)
     meal = models.CharField(max_length=9)
     foodgroup = models.CharField(max_length=25)  # a food could get offered as a different group but we wouldn't want it to show up separately
@@ -45,45 +74,27 @@ class Food (models.Model):
             watchers.append(watch.owner.user)
         return watchers
 
-    def push_next_date(self, date):  # add a future date to the end of the date array
-        self.next_date_array = list(self.next_date_array) + [date,]
-        return self.next_date_array
+    # push/pop/peek is an anachronism that explains what I'm achieving, not what I'm doing
+
+    def push_next_date(self, date):  # add a future date, return the queryset of all
+        found_date = FoodDate(date=date)
+        found_date.save()
+        self.next_dates.add(found_date)
+        return self.next_dates.all()
 
     def pop_next_date(self):  # pop and return the true next date
         try:
-            return self.next_date_array.pop(0)
+            next = self.next_dates.all().order_by('-date')[:1].get()
+            next.delete()
+            return next.date
         except:
             return None
 
     def peek_next_date(self):  # peek at the true next date
         try:
-            return self.next_date_array[0]
+            return self.next_dates.all().order_by('-date')[:1].get().date
         except:
             return None
-
-    def next_date_readable(self):
-        if self.peek_next_date() is None:
-            return "Unknown"
-        elif self.peek_next_date() == date.today():
-            return "Today"
-        elif self.peek_next_date() == date.today()+timedelta(days=1):
-            return "Tomorrow"
-        elif self.peek_next_date() > date.today()+timedelta(days=1) and self.peek_next_date() < date.today()+timedelta(days=6):
-            return self.peek_next_date().strftime("%A")
-        else:
-            return self.peek_next_date().strftime("%b %d")
-
-    def last_date_readable(self):
-        if self.last_date is None:
-            return "Ages ago"
-        elif self.last_date == date.today()-timedelta(days=1):
-            return "Yesterday"
-        elif self.last_date == date.today()-timedelta(days=2):
-            return "Two days ago"
-        elif self.last_date < date.today()+timedelta(days=2) and self.last_date > date.today()+timedelta(days=6):
-            return "Last " + self.last_date.strftime("%A")
-        else:
-            return self.last_date.strftime("%b %d")
 
     def __unicode__(self):
         return self.name
