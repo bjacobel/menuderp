@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.db import transaction
 from hashlib import md5
 from urllib import urlencode
+from bs4 import BeautifulSoup
 import requests
 import re
 import traceback
