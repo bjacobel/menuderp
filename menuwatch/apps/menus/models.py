@@ -9,7 +9,7 @@ class FoodDate (models.Model):
 
     # return a short, human-readable description of the date
     def readable(self):
-        if self.date is None:
+        if self.date is None:  # don't know why it would ever be, but w/e
             return "Unknown"
         elif self.date == date.today():
             return "Today"
@@ -95,6 +95,18 @@ class Food (models.Model):
             return self.next_dates.all().order_by('-date')[:1].get().date
         except:
             return None
+
+    def next_date_readable(self):
+        try:
+            return self.next_dates.all().order_by('-date')[:1].get().readable()
+        except:
+            return "Unknown"
+
+    def last_date_readable(self):
+        try:
+            return self.last_date.readable()
+        except:
+            return "Ages ago"
 
     def __unicode__(self):
         return self.name

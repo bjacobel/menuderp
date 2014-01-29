@@ -75,7 +75,7 @@ def BrowseView(request):
                 "foodlist": menumods.Food.objects.order_by('-last_date')[:40]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
-            foods = sorted(menumods.Food.objects.exclude(next_date_array__exact=[]).filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())
+            foods = sorted(menumods.Food.objects.exclude(next_dates=None).filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())
             if len(foods) == 0:
                 foods = None
             context = {
@@ -91,7 +91,7 @@ def BrowseView(request):
         else:
             context = {
                 "tab": "upcoming",
-                "foodlist": sorted(menumods.Food.objects.exclude(next_date_array=[]), key=lambda x: x.peek_next_date())[:40]
+                "foodlist": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.peek_next_date())[:40]
             }
         return render(request, 'menus/browse.html', context)
     else:
