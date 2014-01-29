@@ -17,3 +17,6 @@ Does finding out that there's Taco Bar on Thursday totally make your week?
 
 ***
 Menuwatch is a Django 1.5 app. To get started, ensure that you have Python 2.7.x, clone this repo, then `pip install -r reqs/dev.txt`. Install Postgres (the reccommended way is with [Postgres.app](http://postgresapp.com/)) and create a database named `menuwatch`. After you `manage.py syncdb` and `manage.py migrate`, you'll be able to `manage.py runserver` to get up and running. 
+
+***
+#####Travis-CI status: [![Build Status](https://travis-ci.org/bjacobel/menuwatch.png?branch=master)](https://travis-ci.org/bjacobel/menuwatch)
