@@ -553,11 +553,11 @@ td:hover .icon-plus {
     /* this is insane. fuck everyone who ever worked on a non-standards-compliant browser
     and didn't speak out against fusterclucks like this. */
 
-    -webkit-transition:left 0.15s ease-in;
-       -moz-transition:left 0.15s ease-in;
-        -ms-transition:left 0.15s ease-in;
-         -o-transition:left 0.15s ease-in;
-            transition:left 0.15s ease-in;
+    -webkit-transition:left 0.25s ease-in;
+       -moz-transition:left 0.25s ease-in;
+        -ms-transition:left 0.25s ease-in;
+         -o-transition:left 0.25s ease-in;
+            transition:left 0.25s ease-in;
 }
 
 .tab > p {
@@ -580,11 +580,6 @@ td:hover .icon-plus {
 }
 
 .tab:hover {
-    color:white !important;
-    left:7px;
-}
-
-.tab.hover {
     color:white !important;
     left:7px;
 }
@@ -652,4 +647,20 @@ td:hover .icon-plus {
         padding:0 5px;
         border-radius: 5px;
     }
+
+    .tab {
+        width:30px;
+        height:65px;
+    }
+    .tab > p { 
+        font-size: 75%;
+        top: 32px;
+    }
+    #upcoming.tab, #popular.tab {
+        height:75px;
+    }
+    #upcoming.tab > p, #popular.tab > p {
+        top:43px;
+    }
+    .table { margin:0 6px;}
 }
