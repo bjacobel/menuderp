@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from django.db import transaction
 from urllib import urlencode
 from datetime import date, timedelta
+from hashlib import md5
 from bs4 import BeautifulSoup
 import requests
 import re
