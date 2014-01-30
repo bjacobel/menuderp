@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from hashlib import md5
 from datetime import date, timedelta
 import re
 
@@ -39,7 +38,6 @@ class Food (models.Model):
     # fixed
     name = models.CharField(max_length=100)
     attrs = models.CharField(max_length=25, blank=True)  # my logic here being that the vegan and non-vegan versions of a food are not really the same thing at all
-    myhash = models.CharField(max_length=32,editable=False)
 
     # variable
     last_date = models.ForeignKey(FoodDate, null=True, related_name='last_date_food_was_offered')
@@ -110,10 +108,6 @@ class Food (models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def save(self):
-        self.myhash = md5(self.name + self.attrs).hexdigest()
-        super(Food, self).save()
 
     num_watches.short_description = "Watched by"
 

@@ -1,20 +1,45 @@
 from celery import task
-from datetime import date, timedelta
 from apps.menus import models as menus_models
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.shortcuts import render_to_response
 from django.db import transaction
-from hashlib import md5
 from urllib import urlencode
+from datetime import date, timedelta
+from bs4 import BeautifulSoup
 import requests
 import re
-import traceback
 
-@transaction.commit_manually
+
+# take food specialty attributes (V, GF, Display) 
+# and return them separate from the food name
+def parse_food_attrs(food):
+
+    # first off, just remove "(Display) and - Display". Nobody cares if it's a display food!
+    # Sorry. Pet peeve.
+    food = re.sub(r'[\(\ -]*Display[\)\ -]*', '', food)
+
+    attrs = ""
+    for attr in re.findall(r'\([A-Z]+\)', food):
+        attrs += "{}, ".format(attr[1:-1])
+    attrs = attrs[:-2]
+
+    # remove them from the food, leaving just the title
+    food = re.sub(r'\([A-Z]+\)', '', food)
+
+    # also remove the weird spacing they sometimes give things
+    food = re.sub(r'\ {2,}', ' ', food)
+
+    return (food, attrs)
+
+
+#@transaction.commit_manually
 @task()
 def build_db(lookahead=14):
-    found_foods = []
+    
+    updated_foods = []
+    
     today = date.today() + timedelta(days=lookahead)
+    
     locations = {
         "Moulton": 48,
         "Thorne": 49,
@@ -24,12 +49,13 @@ def build_db(lookahead=14):
         meals_available_today = ["Brunch", "Dinner"]
     else:
         meals_available_today = ["Breakfast", "Lunch", "Dinner"]
-
-    for key, value in locations.iteritems():
+    
+    for location, number in locations.iteritems(): 
+        
         for meal in meals_available_today:
 
             payload = {
-                "unit": value,  # number of hall
+                "unit": number,  # number of hall
                 "meal": meal,
                 "mo": today.month-1,
                 "dy": today.day,
@@ -39,80 +65,58 @@ def build_db(lookahead=14):
             r = requests.get('http://www.bowdoin.edu/atreus/views', params=payload)
 
             if r.status_code is 200:
-                html = r.text
+                text = re.sub(r"<br>", "<br></br>", r.text)  # unclosed brs were throwing off BS4's sibling function
+                soup = BeautifulSoup(text)
 
-                # remove <br>, \n, </h3>, </span>, </html>, </body>s
-                html = re.sub(r'\n|<br>|</h3>|</span>|</html>|</body>', "", html)
+                foodgroups = soup.find_all("h3")
+                foods = soup.find_all("span")
 
-                # their utf-8 is broken, probably in more ways than just this
-                html = re.sub(r'&amp;', '&', html)
+                menu = {}
 
-                # remove everything up to the first header
-                html = re.split(r'<h3>', html)
-                html.pop(0)
+                for foodgroup in foodgroups:
+                    foodgroup_name = unicode(foodgroup.string)
 
-                # fuck express meal
-                for meal_chunk in html:
-                    if not re.search("Express Meal", meal_chunk):
+                    if foodgroup_name != "Express Meal":
+                        menu[foodgroup_name] = []
+                        
+                        for sibling in foodgroup.next_siblings:
+                            
+                            # foodgroups and food aren't properly nested, so this will kick over into
+                            # a new course when it begins by breaking the loop
+                            if sibling in foodgroups:
+                                break
+                            elif sibling in foods:
+                                food_name = unicode(sibling.string)
+                                menu[foodgroup_name].append(food_name)
 
-                        # grab the food group (main course, soup, vegetable, etc)
-                        foodgroup = re.split('<span>', meal_chunk)[0]
 
-                        foods = re.split('<span>', meal_chunk)[1:]
+                for (foodgroup, menu_foods) in menu.items():
+                    
+                    for menu_food in menu_foods:
 
-                        for food in foods:
+                        (name, attrs) = parse_food_attrs(menu_food)
 
-                            # grab the food specialty attributes (ve, gf)
-                            attrs = ""
-                            match = re.search(r'\(.+\)', food)
-                            if match:
-                                attrs = match.group()
-                                attrs = re.sub(r'\(', '', attrs)
-                                attrs = re.sub(r'\)', ', ', attrs)[:-2]
+                        # generally good policy to do this any time I'm hitting the database in a loop, I think
+                        sID = transaction.savepoint()
+                        try:
+                            (food, created) = menus_models.Food.objects.get_or_create(name__exact=name, attrs__exact=attrs)
 
-                            # then remove them
-                            food = re.sub(r'\(.+\)', '', food)
+                            food.name = name
+                            food.attrs = attrs
+                            food.location = location
+                            food.meal = meal
+                            food.foodgroup = foodgroup
+                            food.push_next_date(today)
 
-                            new_hash = md5(food + attrs).hexdigest()
+                            food.save()
+                        except:
+                            transaction.savepoint_rollback(sID)
+                            raise
+                        else:
+                            transaction.commit()
 
-                            try:
-                                old_food = menus_models.Food.objects.get(myhash__exact=new_hash)
-                            except: 
-                                old_food = None
-
-                            if old_food is not None:
-                                # it's a food we've seen before
-
-                                old_food.location = key
-                                old_food.meal = meal
-                                old_food.foodgroup = foodgroup
-
-                                old_food.save()
-
-                                try:
-                                    most_recent_date_found = old_food.next_date_array[-1]
-                                    if most_recent_date_found != today:
-                                        old_food.push_next_date(today)  # stick on the end of the array
-                                except:
-                                    pass
-
-                                old_food.save()
-                                found_foods.append(old_food)
-                                transaction.commit()
-                            else:
-                                # it's a brand new food
-                                sID = transaction.savepoint()
-                                try:
-                                    new_food = menus_models.Food(name=food, attrs=attrs, location=key, meal=meal, foodgroup=foodgroup)
-                                    new_food.save()
-                                    new_food.push_next_date(today)
-                                    new_food.save()  # have to save before and after making a ManyToManyField, unfortunately
-                                    found_foods.append(new_food)
-                                except:  # they goofed something in the menu formatting. IDGAF. Drop it.
-                                    transaction.savepoint_rollback(sID)
-                                else:
-                                    transaction.commit()
-    return found_foods
+                        updated_foods.append(food)
+    return updated_foods
 
 
 
