@@ -663,4 +663,7 @@ td:hover .icon-plus {
         top:43px;
     }
     .table { margin:0 6px;}
+    td:hover .icon-plus {
+        color:black;
+    }
 }

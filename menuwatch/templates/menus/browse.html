@@ -17,7 +17,7 @@
                 <h3 class="lato text-center"><em>Nothing found. <a href="/browse?sort=search">Go back?</a></em></h3>
             </div>
         {% else %}
-        <table class="table table-hover">  {# bootstrap makes using htmltables just barely tolerable #}
+        <table class="table {% if not request|is_mobile %}table-hover{% endif %}">  {# bootstrap makes using htmltables just barely tolerable #}
             <thead>
                 <td><h4 class="lato narrow">FOOD</h4></td>
                 
