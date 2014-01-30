@@ -16,7 +16,7 @@ def parse_food_attrs(food):
 
     # first off, just remove "(Display) and - Display". Nobody cares if it's a display food!
     # Sorry. Pet peeve.
-    food = re.sub(r'[\(\ -]*Display[\)\ -]*', '', food)
+    food = re.sub(r'[\(\ -]*Display[\)\ -]*', '', food, flags=re.IGNORECASE)
 
     attrs = ""
     for attr in re.findall(r'\([A-Z]+\)', food):
