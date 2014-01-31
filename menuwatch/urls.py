@@ -30,6 +30,7 @@ urlpatterns = patterns(
     url(r'^payment', menu_views.PaymentView, name='payment'),
     url(r'^exclude', menu_views.ExcludeView, name='exclude'),
     url(r'^unsubscribe', menu_views.UnsubView, name='unsub'),
+    url(r'^getready', menu_views.GetReadyView, name='getready'),
 
     url(r'^api/add', menu_views.AddView, name='add'),
     url(r'^api/delete', menu_views.DeleteView, name='delete'),

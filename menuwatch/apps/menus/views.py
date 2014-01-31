@@ -31,6 +31,9 @@ def AboutView(request):
 def BlockView(request):
     return render(request, 'menus/block.html')
 
+def GetReadyView(request):
+    return render(request, 'menus/getready.html')
+
 
 ################
 ## MAIN VIEWS ##
@@ -178,7 +181,7 @@ def SignupView(request):
                 profile = menumods.Profile.objects.create(user_id=new_user.pk)
                 profile.save()
                 send_verify_mail(request, new_user)
-                return HttpResponseRedirect('/verify')  # Redirect after POST
+                return HttpResponseRedirect('/getready')  # Redirect after POST
         else:
             form = forms.SignupForm()  # An unbound form
 
