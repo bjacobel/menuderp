@@ -494,6 +494,10 @@ a.del-account:hover {
     max-width:80%;
 }
 
+.watch-row {
+    margin:1px 0;
+}
+
 .watch-row > h4 > i {
     padding:0;
 }
