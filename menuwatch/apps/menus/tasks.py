@@ -135,6 +135,7 @@ def date_update(date_today=date.today()):
             food.save()
         except:
             transaction.savepoint_rollback(sID)
+            raise
         else:
             transaction.commit()
 
