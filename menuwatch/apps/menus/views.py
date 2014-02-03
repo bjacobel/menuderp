@@ -75,7 +75,7 @@ def BrowseView(request):
         elif 'sort' in request.GET and request.GET['sort'] == 'recent':
             context = {
                 "tab": "recent",
-                "foodlist": menumods.Food.objects.order_by('-last_date')[:40]
+                "foodlist": sorted(menumods.Food.objects.exclude(last_date=None), key=lambda x: x.last_date.date, reverse=True)[:40]
             }
         elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
             foods = sorted(menumods.Food.objects.exclude(next_dates=None).filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())

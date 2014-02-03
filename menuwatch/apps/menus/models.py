@@ -16,16 +16,16 @@ class FoodDate (models.Model):
             if self.date == date.today()+timedelta(days=1):
                 return "Tomorrow"
             elif self.date > date.today()+timedelta(days=1) and self.date < date.today()+timedelta(days=6):
-                return self.peek_next_date().strftime("%A")
+                return self.date.strftime("%A")
             else:
-                return self.peek_next_date().strftime("%b %d")
+                return self.date.strftime("%b %d")
         elif self.date < date.today():
             if self.date == date.today()-timedelta(days=1):
                 return "Yesterday"
-            elif self.late == date.today()-timedelta(days=2):
+            elif self.date == date.today()-timedelta(days=2):
                 return "Two days ago"
-            elif self.date < date.today()+timedelta(days=2) and self.date > date.today()+timedelta(days=6):
-                return "Last " + self.last_date.strftime("%A")
+            elif self.date < date.today()+timedelta(days=2) and self.date > date.today()-timedelta(days=6):
+                return "Last " + self.date.strftime("%A")
             else:
                 return self.date.strftime("%b %d")
 
