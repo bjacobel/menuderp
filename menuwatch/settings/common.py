@@ -310,5 +310,6 @@ MAILGUN_SERVER_NAME = 'menuwat.ch'
 
 ############ END DJANGO-MAILGUN CONFIGURATION
 
-SERVER_EMAIL = "errors@menuwat.ch"
+SERVER_EMAIL = "mail@menuwat.ch"
+EMAIL_SUBJECT_PREFIX = "[Menuwatch] "
 

@@ -183,6 +183,7 @@ def mailer(dryrun=False):
                 upcoming_today.append(food)
 
     all_upcoming_foods = []
+    all_notified_users = []
 
     for user in all_users:
         this_users_upcoming_foods = []
@@ -210,15 +211,15 @@ def mailer(dryrun=False):
                     
         if this_users_upcoming_foods and not dryrun:
             send_email(this_users_upcoming_foods, user)
+            all_notified_users.append(user)
 
         all_upcoming_foods += this_users_upcoming_foods
 
-    if not dryrun:
-        send_mail(
-            "Menuwatch mailer successful",
-            "Just mailed out {} alerts. Here they are:\n\n {}".format(len(all_upcoming_foods), all_upcoming_foods),
-            "Menuwatch <mail@menuwat.ch>",
-            ["Brian Jacobel <bjacobel@gmail.com>",],
+    if not dryrun and len(all_upcoming_foods) > 0:
+        mail_admins(
+            "Mailed {} alerts".format(len(all_upcoming_foods)),
+            #  a format inside a format. fdintino would be losing his shit
+            "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_upcoming_foods]), "\n".join(["{} {}".format(user.first_name, user.last_name) for user in all_notified_users])),
         )
 
     return all_upcoming_foods
