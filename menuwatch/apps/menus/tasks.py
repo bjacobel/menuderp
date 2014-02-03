@@ -1,4 +1,4 @@
-from celery import task
+from celery.task import task
 from apps.menus import models as menus_models
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.shortcuts import render_to_response
@@ -33,8 +33,8 @@ def parse_food_attrs(food):
     return (food, attrs)
 
 
-#@transaction.commit_manually
-@task()
+@task
+@transaction.commit_manually
 def build_db(lookahead=14):
     
     updated_foods = []
@@ -122,8 +122,8 @@ def build_db(lookahead=14):
 
 
 # update the dates once a day so that old "upcoming" foods aren't anymore
+@task
 @transaction.commit_manually
-@task()
 def date_update(date_today=date.today()):
     for food in menus_models.Food.objects.exclude(next_dates=None):
         sID = transaction.savepoint()
@@ -141,13 +141,13 @@ def date_update(date_today=date.today()):
 
 
 
-@task()
+@task
 def build_db_future(days):
     for i in xrange(days):
         build_db(i)
 
 
-@task()
+@task
 def mailer(dryrun=False):
     today = date.today()
     weekday = today.isoweekday()
