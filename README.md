@@ -1,4 +1,4 @@
-# Menuwatch
+# [Menuwatch](http://www.menuwat.ch)
 
 
 ### The menu tracker for Bowdoin students.
