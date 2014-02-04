@@ -142,7 +142,7 @@ def date_update(date_today=date.today()):
 
 
 @task
-def build_db_future(days):
+def build_db_future(days=14):
     for i in xrange(days):
         build_db(i)
 
