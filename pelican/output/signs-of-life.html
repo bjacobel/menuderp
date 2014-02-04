@@ -8,11 +8,13 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,400,300|Inconsolata' rel='stylesheet' type='text/css'>
 
 	<link href="http://news.menuwat.ch/" type="application/atom+xml" rel="alternate" title="News | Menuwatch ATOM Feed" />
-	
-	
-			<title>News | Menuwatch</title>
+
+
+		<title>News | Menuwatch</title>
 		<meta charset="utf-8" />
-	</head>
+		<meta name="robots" content="index, nofollow">
+		<meta name="google-site-verification" content="qca7xirUgIqDqaVoA2tSXnoDs1QA45Qgoffdjb-bCng" />
+</head>
 <body>
 	<section id="sidebar">
 		<figure id="user_logo">
@@ -22,11 +24,11 @@
 		<div class="user_meta">
             <h1 id="user"><a href="http://news.menuwat.ch" class="">Menuwatch</a></h1>
 			<h2></h2>
-						<p class="bio">A website designed around the Bowdoin dining experience. <a href="http://www.menuwat.ch">menuwat.ch</a></p>
-						<ul>
-																										<li><a href="http://twitter.com/menuwatdotch">Twitter ></a></li>
-									<li><a href="http://github.com/bjacobel/menuwatch">GitHub ></a></li>
-							</ul>
+			<p class="bio">A website designed around the Bowdoin dining experience. <a href="http://www.menuwat.ch">menuwat.ch</a></p>
+			<ul>
+					<li><a href="http://twitter.com/menuwatdotch">Twitter ></a></li>
+					<li><a href="http://github.com/bjacobel/menuwatch">GitHub ></a></li>
+			</ul>
 		</div>
 		<footer>
 			<address>
@@ -37,7 +39,7 @@
 	</section>
 
 	<section id="posts">
-			<header>
+	<header>
 		<h1>Brian's blog</h1>
 		<h3>Posted Mon 18 November 2013</h3>
 	</header>
@@ -47,7 +49,7 @@
 				title="Permalink to Signs of Life">Signs of Life</a>
 		</h1>
 		<hr />
-<p>It's been over three months since I posted an update on the status of Menuwatch. Not cool. Without further ado:</p>
+<p>It's been a long time since I posted anything about the status of Menuwatch. I've still been working on the app in my free time, and I'm hoping to get it out sometime during around Winter Break. Here's the state of things:</p>
 <h4>What Works</h4>
 <ul>
 <li>Menuwatch has a beautiful splash page with amusing CSS animations that I spent far too long coding for how many devices support them.</li>
@@ -58,35 +60,33 @@
 <li>The popularity food view allows you to see which foods are watched by the most people.</li>
 <li>The search view allows you to do an exact-text search for a food you like. </li>
 <li>All food views allow addition and deletion of watches over AJAX, with an animation indicating progress to be displayed over slow connections.</li>
-<li>Most of the functionality available on the account and food pages works via a JSON API that may or may not be a teapot.</li>
+<li>Most of the functionality available on the account and food pages works via an API that may or may not be a teapot.</li>
 <li>Menu acquisition runs nightly, and is fairly resistant to errors caused by mis-formatting by Dining employees. Issues exist here with the task that moves upcoming foods to past foods once their date passes.</li>
 </ul>
 <h4>What Doesn't</h4>
 <ul>
 <li>Mobile support is iffy. The worst of it is the table for foods, which just plain isn't responsive. Bootstrap may have developed a solution for this since 3.0 went out of beta, or I may just be using it wrong.</li>
-<li>People get alerts for foods they're not watching. Outbound email has been disabled for the greater part of two months while I try to find time to search for the cause of the issue.</li>
+<li>People get alerts for foods they're not watching. Outbound email has been disabled for the greater part of a month while I try to find time to search for the cause of the issue.</li>
 <li>Past foods don't always "pop." A certain number of foods on the <em>n</em>th of the month will still show up as upcoming when it becomes the <em>n+1</em>th of the month. I believe this bug is related to transactions in Postgres, and I've been playing with Django's manual commit and rollback abilities to try to fix it with little success.</li>
 <li>The 'recent' foods page doesn't work. At all.</li>
 </ul>
-<h4>Game Plan</h4>
-<p>I'm currently planning on devoting a large part of Thanksgiving Break to getting Menuwatch off the ground. I'm also planning on using Thanksgiving to catch up on school, write a paper, do Christmas shopping, get to Inbox Zero, and find a job. So we'll see how that goes.</p>
 <h4>As always</h4>
-<p>Menuwatch is looking for beta testers. You'll get a free pro account, and if I ever order branded #swag, you'll get some of that for free, too. Email <a href="me">mailto:bjacobel@gmail.com</a>, DM <a href="@bjacobel">http://twitter.com/bjacobel</a>, <a href="@menuwatdotch">http://twitter.com/menuwatdotch</a>, or submit a pull request, you brave soul.</p>
+<p>Menuwatch is looking for beta testers. You'll get a free pro account, and if I ever order branded #swag, you'll get some of that for free, too. <a href="mailto:bjacobel@gmail.com">Email me</a>, DM <a href="http://twitter.com/bjacobel">@bjacobel</a>, <a href="http://twitter.com/menuwatdotch">@menuwatdotch</a>, or submit a pull request.</p>
 
 		<div id="article_meta">
-							Category:
+				Category:
 					<a href="http://news.menuwat.ch/category/misc.html">misc</a>
-								</div>
+		</div>
 	</article>
 
 	<footer>
 		<a href="http://news.menuwat.ch/" class="button_accent">&larr;&nbsp;&nbsp;&nbsp;Back to blog</a>
 	</footer>
 
-	
+
 	</section>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 	</script>
