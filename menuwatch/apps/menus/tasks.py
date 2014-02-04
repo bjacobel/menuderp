@@ -1,6 +1,6 @@
 from celery.task import task
 from apps.menus import models as menus_models
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import EmailMultiAlternatives, mail_admins
 from django.shortcuts import render_to_response
 from django.db import transaction
 from urllib import urlencode
