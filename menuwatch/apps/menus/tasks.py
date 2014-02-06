@@ -247,6 +247,17 @@ def send_email(alerted_foods, user):
     msg.send()
 
 
+# Could just drop_tables but why bother figuring out the syntax when you have a nice ORM
+@task
+def drop_dates():
+    for food in menus_models.Food.objects.all():
+        while food.pop_next_date() is not None:
+            continue
+        if food.last_date is not None:
+            food.last_date.delete()
+        food.save()
+
+
 @task
 def test_task():
     send_mail(

@@ -75,7 +75,7 @@ class Food (models.Model):
     # push/pop/peek is an anachronism that explains what I'm achieving, not what I'm doing
 
     def push_next_date(self, date):  # add a future date, return the queryset of all
-        found_date = FoodDate(date=date)
+        (found_date, created) = FoodDate.objects.get_or_create(date=date)
         found_date.save()
         self.next_dates.add(found_date)
         return self.next_dates.all()
