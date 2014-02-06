@@ -219,7 +219,7 @@ def mailer(dryrun=False):
         mail_admins(
             "Mailed {} alerts".format(len(all_upcoming_foods)),
             #  a format inside a format. fdintino would be losing his shit
-            "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_upcoming_foods]), "\n".join(["{} {}".format(user.first_name, user.last_name) for user in all_notified_users])),
+            "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_upcoming_foods]), "\n".join(["{} {}".format(user.firstname(), user.lastname()) for user in all_notified_users])),
         )
 
     return all_upcoming_foods
