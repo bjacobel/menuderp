@@ -251,11 +251,16 @@ def send_email(alerted_foods, user):
 @task
 def drop_dates():
     for food in menus_models.Food.objects.all():
-        while food.pop_next_date() is not None:
-            continue
-        if food.last_date is not None:
-            food.last_date.delete()
-        food.save()
+        try:
+            while food.pop_next_date() is not None:
+                continue
+            if food.last_date is not None:
+                food.last_date.delete()
+            food.save()
+        except:
+            pass
+    for date in menus_models.FoodDate.objects.all():
+        date.delete()
 
 
 @task
