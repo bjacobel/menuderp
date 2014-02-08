@@ -1,1 +1,1 @@
-web: honcho -f Procfile_sched-on-web start
+web: honcho -f Procfile_honcho start
