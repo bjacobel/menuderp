@@ -135,7 +135,7 @@ class TasksTest(TestCase):
 
         # pretend it's 31 days from now; delete every food that's 'past'
         # should end up with every food being past date (ie, peek_next_date() = None)
-        menus_tasks.date_update(date.today() + timedelta(days=31))
+        menus_tasks.date_update(31)
 
         broken = []
         for food in menus_models.Food.objects.all():

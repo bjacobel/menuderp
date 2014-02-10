@@ -124,11 +124,11 @@ def build_db(lookahead=14):
 # update the dates once a day so that old "upcoming" foods aren't anymore
 @task
 @transaction.commit_manually
-def date_update(date_today=date.today()):
+def date_update(future_days=0):
     for food in menus_models.Food.objects.exclude(next_dates=None):
         sID = transaction.savepoint()
         try:
-            while food.peek_next_date() is not None and food.peek_next_date() < date_today:  # the food was offered yesterday or before
+            while food.peek_next_date() is not None and food.peek_next_date() < (date.today()+timedelta(days=future_days)):  # the food was offered yesterday or before
                 popped_date = menus_models.FoodDate(date=food.pop_next_date())
                 popped_date.save()
                 food.last_date = popped_date  # pop from the front of the array
