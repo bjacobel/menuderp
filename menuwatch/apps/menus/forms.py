@@ -25,7 +25,7 @@ class SignupForm(forms.Form):
         return pword2
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower()
         if User.objects.filter(email = email).count():
             raise forms.ValidationError(mark_safe('A user with this email already exists. Did you mean to <a href="/login">login</a>, or to <a href="/reset">reset your password</a>?'))
         return email
@@ -36,7 +36,7 @@ class LoginForm(forms.Form):
     pword = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower()
         if not User.objects.filter(email = email).count():
             raise forms.ValidationError(mark_safe('We don\'t have any users with that email address. Did you mean to <a href="/signup">sign up</a>?'))
         return email
@@ -55,7 +55,7 @@ class RequestResetForm(forms.Form):
     email = forms.EmailField(max_length=50,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower()
         if not User.objects.filter(email = email).count():
             raise forms.ValidationError(mark_safe('We don\'t have any users with that email address. <a href="/signup">Sign up</a> for a new account?'))
         return email
