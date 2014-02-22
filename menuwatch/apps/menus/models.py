@@ -82,7 +82,7 @@ class Food (models.Model):
 
     def pop_next_date(self):  # pop and return the true next date
         try:
-            next = self.next_dates.all().order_by('-date')[:1].get()
+            next = self.next_dates.all().order_by('date')[:1].get()
             next.delete()
             return next.date
         except:
@@ -90,13 +90,13 @@ class Food (models.Model):
 
     def peek_next_date(self):  # peek at the true next date
         try:
-            return self.next_dates.all().order_by('-date')[:1].get().date
+            return self.next_dates.all().order_by('date')[:1].get().date
         except:
             return None
 
     def next_date_readable(self):
         try:
-            return self.next_dates.all().order_by('-date')[:1].get().readable()
+            return self.next_dates.all().order_by('date')[:1].get().readable()
         except:
             return "Unknown"
 

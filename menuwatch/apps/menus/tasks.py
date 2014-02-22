@@ -132,6 +132,7 @@ def date_update(future_days=0):
                 popped_date = menus_models.FoodDate(date=food.pop_next_date())
                 popped_date.save()
                 food.last_date = popped_date  # pop from the front of the array
+            import ipdb; ipdb.set_trace()
             food.save()
         except:
             transaction.savepoint_rollback(sID)
