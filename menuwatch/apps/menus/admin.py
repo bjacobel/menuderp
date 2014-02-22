@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
+from django.db import models
 from models import Food, Watch, Profile
 
 
@@ -34,9 +35,17 @@ class FoodsAdmin(admin.ModelAdmin):
         ('Up Next',       {'fields': ['location', 'meal', 'foodgroup']}),
         ('More',       {'fields': ['last_date']}),
     ]
-    list_display = ('name', 'meal', 'location', 'foodgroup', 'attrs', 'num_watches', 'last_date', 'peek_next_date')
+    list_display = ('name', 'meal', 'location', 'foodgroup', 'attrs', 'watched_by', 'last_date', 'peek_next_date')
     list_filter = ['meal', 'foodgroup', 'location', 'attrs', UpcomingDatesFilter]
     search_fields = ['name']
+
+    def queryset(self, request):
+        return Food.objects.annotate(watch_count=models.Count('watch'))
+
+    def watched_by(self, inst):
+        return inst.watch_count
+
+    watched_by.admin_order_field = 'watch_count'
 
 admin.site.register(Food, FoodsAdmin)
 

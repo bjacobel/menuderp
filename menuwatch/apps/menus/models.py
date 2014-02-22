@@ -64,7 +64,7 @@ class Food (models.Model):
         return re.search('\s?D(,|$)', self.attrs)
 
     def num_watches(self):
-        return len(self.watch_set.all())
+        return self.watch_set.count()
 
     def watchers(self):
         watchers = []
@@ -137,7 +137,7 @@ class Profile (models.Model):
     locations = models.IntegerField(default=1)
 
     def used_watches(self):
-        return len(self.my_watches())
+        return self.my_watches().count()
 
     def my_watches(self):
         return self.watch_set.all()
