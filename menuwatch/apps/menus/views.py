@@ -126,12 +126,21 @@ def LoginView(request):
                     return HttpResponseRedirect('/'+redirect)
                 else:
                     return HttpResponseRedirect('/login?next='+redirect)
+
+            email = None  # don't try to auto-fill if the form was invalid
+
         else:
             form = forms.LoginForm()  # An unbound form
+
+            if request.GET.get('e') is not None:
+                email = request.GET.get('e')
+            else:
+                email = None
 
         context = {
             'form': form,
             'action': 'login',
+            'email': email,
         }
 
         if 'HTTP_HOST' in request.META and re.search('herokuapp', request.META['HTTP_HOST']):
@@ -201,7 +210,7 @@ def VerifyView(request):
             to_verify = User.objects.get(username__exact=email)
             to_verify.is_active=True
             to_verify.save()
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/login?{}'.format(urlencode({'e':email})))
     else:
         return render(request, '500.html')
 

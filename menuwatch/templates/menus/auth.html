@@ -62,5 +62,12 @@
 {% endblock %}
 
 {% block footer_scripts %}
-
+    {% if email != None %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#id_email").val("{{ email }}");
+                $("#id_pword").focus();
+            });
+        </script>
+    {% endif %}
 {% endblock %}
