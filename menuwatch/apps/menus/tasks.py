@@ -150,6 +150,11 @@ def build_db_future(days=14):
 @task
 def mailer(dryrun=False):
     today = date.today()
+    
+    if dryrun:  # everyone gets emails on sunday, so make the date the next sunday
+        while today.isoweekday() != 7:
+            today = today + timedelta(days=1)
+
     weekday = today.isoweekday()
 
     # a little fudging so I can write semantic if statements later
@@ -182,7 +187,7 @@ def mailer(dryrun=False):
             if food.peek_next_date() == today:
                 upcoming_today.append(food)
 
-    all_upcoming_foods = []
+    all_alerted_foods = []
     all_notified_users = []
 
     for user in all_users:
@@ -204,25 +209,29 @@ def mailer(dryrun=False):
                 elif int(user.frequency) is 7:
                     if watch.food in upcoming_today:
                         this_users_upcoming_foods.append(watch.food)
-                elif dryrun:  # fudge things a little if we're running tests: it doesn't matter if it's sunday or how frequent our fake users want to see alerts
-                    if watch.food in upcoming_week:
-                        this_users_upcoming_foods.append(watch.food)
 
                     
         if this_users_upcoming_foods and not dryrun:
             send_email(this_users_upcoming_foods, user)
             all_notified_users.append(user)
 
-        all_upcoming_foods += this_users_upcoming_foods
+        all_alerted_foods += this_users_upcoming_foods
 
     if not dryrun and len(all_upcoming_foods) > 0:
         mail_admins(
             "Mailed {} alerts".format(len(all_upcoming_foods)),
             #  a format inside a format. fdintino would be losing his shit
-            "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_upcoming_foods]), "\n".join(["{} {}".format(user.firstname(), user.lastname()) for user in all_notified_users])),
+            "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_alerted_foods]), "\n".join(["{} {}".format(user.firstname(), user.lastname()) for user in all_notified_users])),
         )
 
-    return all_upcoming_foods
+    upcoming = {
+        "today": upcoming_today,
+        "soon": upcoming_soon,
+        "week": upcoming_week,
+        "alerted": all_alerted_foods
+    }
+
+    return upcoming
 
 
 def send_email(alerted_foods, user):

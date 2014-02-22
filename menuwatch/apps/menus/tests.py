@@ -122,7 +122,7 @@ class TasksTest(TestCase):
         self.assertEqual(len(menus_models.Watch.objects.all()), 500)
 
         dryrun = True  # just to be clear what we're doing
-        alerted_foods = menus_tasks.mailer(dryrun)
+        alerted_foods = menus_tasks.mailer(dryrun)['alerted']
 
         # assert that every food is watched by somebody
         for food in alerted_foods:
@@ -143,4 +143,3 @@ class TasksTest(TestCase):
                 broken.append(food)
 
         self.assertEqual(len(broken), 0)
-
