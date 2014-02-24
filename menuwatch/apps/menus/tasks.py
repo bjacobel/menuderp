@@ -217,9 +217,9 @@ def mailer(dryrun=False):
 
         all_alerted_foods += this_users_upcoming_foods
 
-    if not dryrun and len(all_upcoming_foods) > 0:
+    if not dryrun and len(all_alerted_foods) > 0:
         mail_admins(
-            "Mailed {} alerts".format(len(all_upcoming_foods)),
+            "Mailed {} alerts".format(len(all_alerted_foods)),
             #  a format inside a format. fdintino would be losing his shit
             "Just mailed alerts about these foods:\n\n {} \n\n To these users:\n\n {}".format("\n".join([food.name for food in all_alerted_foods]), "\n".join(["{} {}".format(user.firstname(), user.lastname()) for user in all_notified_users])),
         )
