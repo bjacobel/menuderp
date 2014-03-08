@@ -468,7 +468,7 @@ def SettingsView(request):
 #################
 
 def DebugEmailView(request):
-    if request.user.is_staff():
+    if request.user.is_staff:
         user = request.user
         context = {
             'first_name': user.first_name,
@@ -480,7 +480,7 @@ def DebugEmailView(request):
         return render_to_response("menus/email.html", context)
 
 def OnboardView(request):
-    if request.user.is_staff():
+    if request.user.is_staff:
         context = {
             # get five foods coming up in the next two weeks
             "popular": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.num_watches(), reverse=True)[:5]
