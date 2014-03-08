@@ -19,7 +19,6 @@
         left: 'auto' // Left position relative to parent in px
     };
     $(".api").click(function() {
-        // drop your cocks and grab your socks
         $button = $(this);
         $icon = $('i', $(this))
 
@@ -36,6 +35,14 @@
             apiendpoint = 'add';
         }
 
+        // determine size of button
+        bigicon = false;
+        if($icon.hasClass("icon-2x")){
+            bigicon = true;
+        }
+
+        console.log(bigicon);
+
         $.ajax({
             data: {"food_pk": $(this).attr("data")},
             type: 'post',
@@ -45,11 +52,23 @@
                 if (apiendpoint == 'delete') {
                     $button.removeClass("delete");
                     $button.addClass("add");
-                    $icon.replaceWith("<i class='icon-plus'></i>");
+
+                    // just .addClass("icon-2x") didn't work for some reason 
+                    if(bigicon) {
+                        $icon.replaceWith("<i class='icon-plus icon-2x'></i>");
+                    } else {
+                        $icon.replaceWith("<i class='icon-plus'></i>");
+                    }
                 } else if (apiendpoint == 'add') {
                     $button.removeClass("api add");
                     $button.unbind("click");
-                    $icon.replaceWith("<i class='icon-ok'></i>");
+
+                    // just .addClass("icon-2x") didn't work for some reason 
+                    if(bigicon) {
+                        $icon.replaceWith("<i class='icon-ok icon-2x'></i>");
+                    } else {
+                        $icon.replaceWith("<i class='icon-ok'></i>");
+                    }
                 }
                 $icon.fadeIn();
             },

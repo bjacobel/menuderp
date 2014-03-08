@@ -135,6 +135,7 @@ class Profile (models.Model):
     pro = models.BooleanField(default=False)
     frequency = models.IntegerField(default=1)
     locations = models.IntegerField(default=1)
+    onboarded = models.BooleanField(default=False)
 
     def used_watches(self):
         return self.my_watches().count()

@@ -1,0 +1,28 @@
+{% extends "menus/base.html" %}
+{% load user_agents %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="lato text-center">Hi, {{user.first_name}}! &nbsp;What looks good?</h1>
+        <h3 class="lato text-center">Add some foods to get your account started.</h2>
+        <table id="onboard-table">
+            {% for item in popular %}
+                <tr>
+                    <td><h3 class="lato popular-item">{{ item.name }}</h3></td>
+                    {% if user in item.watchers %}
+                        <td class="row-icon large api delete" data="{{ item.pk }}"><i class="icon-remove icon-2x"></i></td>
+                    {% else %}
+                        <td class="row-icon large api add" data="{{ item.pk }}"><i class="icon-plus icon-2x"></i></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+        <a class="cta-link" href="/browse">
+            <div class="cta active-button"><p class="lato cta-text unhighlightable">CONTINUE</p><i class="icon-chevron-right"></i></div>
+        </a>
+    </div>
+{% endblock %}
+
+{% block footer_scripts %}
+    {% include 'menus/api.html' %}
+{% endblock %}

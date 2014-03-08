@@ -37,4 +37,5 @@ urlpatterns = patterns(
     url(r'^api/settings', menu_views.SettingsView, name='settings'),
 
     url(r'^debug/email', menu_views.DebugEmailView, name='debugemail'),
+    url(r'^debug/onboard', menu_views.OnboardView, name='onboard'),
 )

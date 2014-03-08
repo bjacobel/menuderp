@@ -67,38 +67,50 @@ def IndexView(request):
 
 def BrowseView(request):
     if request.user.is_authenticated():
-        if 'sort' in request.GET and request.GET['sort'] == 'popular':
-            context = {
-                "tab": "popular",
-                "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches(), reverse=True)[:40]
-            }
-        elif 'sort' in request.GET and request.GET['sort'] == 'recent':
-            context = {
-                "tab": "recent",
-                "foodlist": sorted(menumods.Food.objects.exclude(last_date=None), key=lambda x: x.last_date.date, reverse=True)[:40]
-            }
-        elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
-            foods = sorted(menumods.Food.objects.exclude(next_dates=None).filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())
-            if len(foods) == 0:
-                foods = None
-            context = {
-                "tab": "searchresults",
-                "searchstr": request.GET['query'],
-                "foodlist": foods
-            } 
-        elif 'sort' in request.GET and request.GET['sort'] == 'search':
-            context = {
-                "tab": "search",
-                "foodlist": None
-            }
+        profile = menumods.Profile.objects.get(user__exact=int(request.user.pk))
+        if profile.onboarded:
+            if 'sort' in request.GET and request.GET['sort'] == 'popular':
+                context = {
+                    "tab": "popular",
+                    "foodlist": sorted(menumods.Food.objects.all(), key=lambda x: x.num_watches(), reverse=True)[:40]
+                }
+            elif 'sort' in request.GET and request.GET['sort'] == 'recent':
+                context = {
+                    "tab": "recent",
+                    "foodlist": sorted(menumods.Food.objects.exclude(last_date=None), key=lambda x: x.last_date.date, reverse=True)[:40]
+                }
+            elif 'sort' in request.GET and request.GET['sort'] == 'search' and 'query' in request.GET:
+                foods = sorted(menumods.Food.objects.exclude(next_dates=None).filter(name__icontains=request.GET['query']), key=lambda x: x.peek_next_date())
+                if len(foods) == 0:
+                    foods = None
+                context = {
+                    "tab": "searchresults",
+                    "searchstr": request.GET['query'],
+                    "foodlist": foods
+                } 
+            elif 'sort' in request.GET and request.GET['sort'] == 'search':
+                context = {
+                    "tab": "search",
+                    "foodlist": None
+                }
+            else:
+                context = {
+                    "tab": "upcoming",
+                    "foodlist": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.peek_next_date())[:40]
+                }
+            return render(request, 'menus/browse.html', context)
         else:
+            profile.onboarded = True
+            profile.save()
             context = {
-                "tab": "upcoming",
-                "foodlist": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.peek_next_date())[:40]
+                # get five foods coming up in the next two weeks
+                "popular": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.num_watches(), reverse=True)[:5]
             }
-        return render(request, 'menus/browse.html', context)
+            return render(request, 'menus/onboard.html', context)
+
     else:
         return HttpResponseRedirect('/login?next=browse')
+
 
 
 ##########################
@@ -456,12 +468,21 @@ def SettingsView(request):
 #################
 
 def DebugEmailView(request):
-    user = request.user
-    context = {
-        'first_name': user.first_name,
-        'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
-        'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
-        'email_type': 'reset',
-        'item_list': menumods.Food.objects.all()[:10]
-    }
-    return render_to_response("menus/email.html", context)
+    if request.user.is_staff():
+        user = request.user
+        context = {
+            'first_name': user.first_name,
+            'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
+            'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
+            'email_type': 'reset',
+            'item_list': menumods.Food.objects.all()[:10]
+        }
+        return render_to_response("menus/email.html", context)
+
+def OnboardView(request):
+    if request.user.is_staff():
+        context = {
+            # get five foods coming up in the next two weeks
+            "popular": sorted(menumods.Food.objects.exclude(next_dates=None), key=lambda x: x.num_watches(), reverse=True)[:5]
+        }
+        return render(request, 'menus/onboard.html', context)

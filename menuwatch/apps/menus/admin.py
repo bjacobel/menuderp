@@ -62,10 +62,10 @@ admin.site.register(Watch, WatchesAdmin)
 
 class ProfilesAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,                  {'fields': ['user', 'pro', 'frequency']}),
+        (None,                  {'fields': ['user', 'pro', 'onboarded', 'frequency']}),
     ]
-    list_display = ('fullname', 'email', 'used_watches', 'pro', 'frequency_name', 'can_create_new_watches')
-    list_filter = ['pro', 'frequency']
+    list_display = ('fullname', 'email', 'used_watches', 'pro', 'onboarded', 'frequency_name', 'can_create_new_watches')
+    list_filter = ['pro', 'onboarded', 'frequency']
     search_fields = ['firstname', 'lastname', 'email']
 
 admin.site.register(Profile, ProfilesAdmin)

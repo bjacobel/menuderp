@@ -11,6 +11,9 @@
 .narrow {
     font-weight: 300 !important;
 }
+.caps {
+    text-transform:uppercase;
+}
 html{
     -webkit-font-smoothing: antialiased;
 }
@@ -402,6 +405,30 @@ svg text {
 
 /* end About page */
 
+
+
+/* Onboard page */
+
+#onboard-table {
+    width:100%;
+    max-width:650px;
+    margin:40px auto;
+}
+
+.popular-item {
+    margin: 15px 0;
+}
+
+.row-icon.large {
+    height:55px;
+    width:55px;
+    margin: 0 auto;
+}
+
+/* End onboard page */
+
+
+
 /* Upgrade Page */
 
 .show-more-info {
@@ -512,7 +539,6 @@ h4 .icon-caret-right {
 /* Shared between Account and Browse page */
 
 .icon-remove {
-    padding:7px 30px;
     cursor:pointer;
     color:#E74C3C;
 }
@@ -535,6 +561,7 @@ td:hover .icon-plus {
 }
 
 .row-icon {
+    width:55px !important;
     cursor:pointer;
     text-align:center;
 }
