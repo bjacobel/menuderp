@@ -249,7 +249,7 @@ def send_email(alerted_foods, user):
     msg = EmailMultiAlternatives(
         "Coming soon: {} and more".format(alerted_foods[0].name),
         "Hi, {}! Here's a taste of what's coming up in the next few days: \n{}".format(context['first_name'], alerted_foods_as_string),
-        "Menuwatch <mail@menuwat.ch>",
+        "Menuwatch <mail@menuwatch.bjacobel.com>",
         ["{} <{}>".format(user.fullname(), user.email()),],
     )
     msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
@@ -277,7 +277,7 @@ def test_task():
     send_mail(
         "Test",
         "If you got this, it means that Celery is working.",
-        "Menuwatch <mail@menuwat.ch>",
+        "Menuwatch <mail@menuwatch.bjacobel.com>",
         ["Brian Jacobel <bjacobel@gmail.com>",],
     )
 

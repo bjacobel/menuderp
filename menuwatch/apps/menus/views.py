@@ -171,14 +171,14 @@ def SignupView(request):
     def send_verify_mail(request, new_user):
         context = {
             'first_name': new_user.first_name,
-            'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':new_user.email, 'v':md5(new_user.email).hexdigest()}),
+            'verify_link': "http://menuwatch.bjacobel.com/verify?" + urlencode({'e':new_user.email, 'v':md5(new_user.email).hexdigest()}),
             'unsubscribe_link': urlencode({'u':new_user.email, 't':md5(new_user.date_joined.isoformat()).hexdigest()}),
             'email_type': 'verify',
         }
         msg = EmailMultiAlternatives(
             "Menuwatch Signup Confirmation",
             "Hi, {}! Please visit this URL to finish setting up your account. {}".format(context['first_name'], context['verify_link']),
-            "Menuwatch <mail@menuwat.ch>",
+            "Menuwatch <mail@menuwatch.bjacobel.com>",
             ["{} {} <{}>".format(new_user.first_name, new_user.last_name, new_user.email),],
         )
         msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
@@ -231,14 +231,14 @@ def RequestResetView(request):
     def send_reset_mail(request, dumb_user, newpass):
         context = {
             'first_name': dumb_user.first_name,
-            'reset_link': "http://www.menuwat.ch/account/password/reset?" + urlencode({'e':dumb_user.email, 'p':newpass}),
+            'reset_link': "http://menuwatch.bjacobel.com/account/password/reset?" + urlencode({'e':dumb_user.email, 'p':newpass}),
             'unsubscribe_link': urlencode({'u':dumb_user.email, 't':md5(dumb_user.date_joined.isoformat()).hexdigest()}),
             'email_type': 'reset',
         }
         msg = EmailMultiAlternatives(
             "Menuwatch Password Reset",
             "Hi, {}! A password reset was just requested for this account.\n\nIf you didn't request a password reset, simply delete this email. If you would like to reset your password, please click below. {}".format(context['first_name'], context['reset_link']),
-            "Menuwatch <mail@menuwat.ch>",
+            "Menuwatch <mail@menuwatch.bjacobel.com>",
             ["{} {} <{}>".format(dumb_user.first_name, dumb_user.last_name, dumb_user.email),],
         )
         msg.attach_alternative(render_to_response('menus/email.html', context).content, "text/html")
@@ -382,9 +382,9 @@ def PaymentView(request):
                 proprof.pro = True
                 proprof.save()
                 logout(request)
-                return HttpResponseRedirect("http://www.menuwat.ch/account")
+                return HttpResponseRedirect("http://menuwatch.bjacobel.com/account")
             except stripe.CardError, e:
-                return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1><h2><a href='http://www.menuwat.ch/account'>Back to Account ></a></h2>", status=200)
+                return HttpResponse("<h1 style='text-align:center; margin-top:50px'>Your card did not validate, or was rejected. Sorry.</h1><h2><a href='http://menuwatch.bjacobel.com/account'>Back to Account ></a></h2>", status=200)
         else:
             return render(request, 'menus/payment.html')
     else:
@@ -472,7 +472,7 @@ def DebugEmailView(request):
         user = request.user
         context = {
             'first_name': user.first_name,
-            'verify_link': "http://www.menuwat.ch/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
+            'verify_link': "http://menuwatch.bjacobel.com/verify?" + urlencode({'e':user.email, 'v':md5(user.email).hexdigest()}),
             'unsubscribe_link': urlencode({'u':user.email, 't':md5(user.date_joined.isoformat()).hexdigest()}),
             'email_type': 'reset',
             'item_list': menumods.Food.objects.all()[:10]

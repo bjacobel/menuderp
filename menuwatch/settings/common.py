@@ -306,10 +306,10 @@ NOSE_ARGS = [
 ############ DJANGO-MAILGUN CONFIGURATION
 
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_SERVER_NAME = 'menuwat.ch'
+MAILGUN_SERVER_NAME = 'menuwatch.bjacobel.com'
 
 ############ END DJANGO-MAILGUN CONFIGURATION
 
-SERVER_EMAIL = "mail@menuwat.ch"
+SERVER_EMAIL = "mail@menuwatch.bjacobel.com"
 EMAIL_SUBJECT_PREFIX = "[Menuwatch] "
 
